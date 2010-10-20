@@ -7,8 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		026DF5F3126EDB4E005466CF /* RPRubyTraceLogReader.m in Sources */ = {isa = PBXBuildFile; fileRef = 026DF5F2126EDB4E005466CF /* RPRubyTraceLogReader.m */; };
 		0628E06A1253952A00B9255B /* RPCallTree.m in Sources */ = {isa = PBXBuildFile; fileRef = 0628E0691253952A00B9255B /* RPCallTree.m */; };
-		0628E06D125396DB00B9255B /* RPLogReader.m in Sources */ = {isa = PBXBuildFile; fileRef = 0628E06C125396DB00B9255B /* RPLogReader.m */; };
+		0628E06D125396DB00B9255B /* RPDTraceLogReader.m in Sources */ = {isa = PBXBuildFile; fileRef = 0628E06C125396DB00B9255B /* RPDTraceLogReader.m */; };
 		0628E4BA125A361E00B9255B /* RPLogLine.m in Sources */ = {isa = PBXBuildFile; fileRef = 0628E4B9125A361E00B9255B /* RPLogLine.m */; };
 		1DDD582C0DA1D0D100B32029 /* MyDocument.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1DDD58280DA1D0D100B32029 /* MyDocument.xib */; };
 		1DDD582D0DA1D0D100B32029 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1DDD582A0DA1D0D100B32029 /* MainMenu.xib */; };
@@ -20,10 +21,12 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		026DF5F1126EDB4E005466CF /* RPRubyTraceLogReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RPRubyTraceLogReader.h; sourceTree = "<group>"; };
+		026DF5F2126EDB4E005466CF /* RPRubyTraceLogReader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RPRubyTraceLogReader.m; sourceTree = "<group>"; };
 		0628E0681253952900B9255B /* RPCallTree.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RPCallTree.h; sourceTree = "<group>"; };
 		0628E0691253952A00B9255B /* RPCallTree.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RPCallTree.m; sourceTree = "<group>"; };
-		0628E06B125396DB00B9255B /* RPLogReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RPLogReader.h; sourceTree = "<group>"; };
-		0628E06C125396DB00B9255B /* RPLogReader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RPLogReader.m; sourceTree = "<group>"; };
+		0628E06B125396DB00B9255B /* RPDTraceLogReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RPDTraceLogReader.h; sourceTree = "<group>"; };
+		0628E06C125396DB00B9255B /* RPDTraceLogReader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RPDTraceLogReader.m; sourceTree = "<group>"; };
 		0628E4B8125A361E00B9255B /* RPLogLine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RPLogLine.h; sourceTree = "<group>"; };
 		0628E4B9125A361E00B9255B /* RPLogLine.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RPLogLine.m; sourceTree = "<group>"; };
 		089C1660FE840EACC02AAC07 /* English */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
@@ -99,10 +102,12 @@
 				2A37F4ACFDCFA73011CA2CEA /* RPTraceDocument.m */,
 				0628E0681253952900B9255B /* RPCallTree.h */,
 				0628E0691253952A00B9255B /* RPCallTree.m */,
-				0628E06B125396DB00B9255B /* RPLogReader.h */,
-				0628E06C125396DB00B9255B /* RPLogReader.m */,
+				0628E06B125396DB00B9255B /* RPDTraceLogReader.h */,
+				0628E06C125396DB00B9255B /* RPDTraceLogReader.m */,
 				0628E4B8125A361E00B9255B /* RPLogLine.h */,
 				0628E4B9125A361E00B9255B /* RPLogLine.m */,
+				026DF5F1126EDB4E005466CF /* RPRubyTraceLogReader.h */,
+				026DF5F2126EDB4E005466CF /* RPRubyTraceLogReader.m */,
 			);
 			name = Classes;
 			sourceTree = "<group>";
@@ -204,8 +209,9 @@
 				8D15AC310486D014006FF6A4 /* RPTraceDocument.m in Sources */,
 				8D15AC320486D014006FF6A4 /* main.m in Sources */,
 				0628E06A1253952A00B9255B /* RPCallTree.m in Sources */,
-				0628E06D125396DB00B9255B /* RPLogReader.m in Sources */,
+				0628E06D125396DB00B9255B /* RPDTraceLogReader.m in Sources */,
 				0628E4BA125A361E00B9255B /* RPLogLine.m in Sources */,
+				026DF5F3126EDB4E005466CF /* RPRubyTraceLogReader.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

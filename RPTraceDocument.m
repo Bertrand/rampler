@@ -8,7 +8,7 @@
 
 #import "RPTraceDocument.h"
 #import "RPCallTree.h"
-#import "RPLogReader.h"
+#import "RPDTraceLogReader.h"
 
 
 
@@ -61,8 +61,12 @@
 
 - (BOOL)readFromData:(NSData *)data ofType:(NSString *)typeName error:(NSError **)outError
 {
-	RPLogReader* reader = [[RPLogReader alloc] initWithData:data];
+	RPDTraceLogReader* reader = nil;
 	
+	if ([typeName isEqualToString:@"Dtrace files"]) {
+		reader = [[RPDTraceLogReader alloc] initWithData:data];
+	} else if ([typeName isEqualToString:@"Ruby trace"]) {
+	}
 	root = [[RPCallTree alloc] init];
 	[root feedFromLogReader:reader];
 	[root freeze];

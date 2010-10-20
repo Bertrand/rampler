@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@class RPLogReader;
+@class RPDTraceLogReader;
 
 @interface RPCallTree : NSObject {
 	double		totalTime;
@@ -39,7 +39,7 @@
 @property (readwrite, assign)	NSInteger callCount;
 
 
-- (void) feedFromLogReader:(RPLogReader*)reader;
+- (void) feedFromLogReader:(RPDTraceLogReader*)reader;
 - (RPCallTree*) subTreeForSymbol:(NSString*)symbol;
 
 

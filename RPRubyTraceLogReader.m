@@ -1,15 +1,15 @@
 //
-//  RPLogReader.m
+//  RPRubyTraceLogReader.m
 //  Rampler
 //
-//  Created by Guiheneuf Bertrand on 9/29/10.
+//  Created by Jérôme Lebel on 20/10/10.
 //  Copyright 2010 Fotonauts. All rights reserved.
 //
 
-#import "RPLogReader.h"
-#import "RPLogLine.h"
+#import "RPRubyTraceLogReader.h"
 
-@implementation RPLogReader
+
+@implementation RPRubyTraceLogReader
 
 @synthesize logLineNumber;
 @synthesize eof;
@@ -101,8 +101,5 @@
 {
 	return (currentLineNumber >= [lines count]);
 }
-
-
-
 
 @end

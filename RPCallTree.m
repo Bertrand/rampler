@@ -7,7 +7,7 @@
 //
 
 #import "RPCallTree.h"
-#import "RPLogReader.h"
+#import "RPDTraceLogReader.h"
 
 @implementation RPCallTree
 
@@ -34,7 +34,7 @@
 	return _defaultSortDescriptor;
 }
 
-- (void) feedFromLogReader:(RPLogReader*)reader
+- (void) feedFromLogReader:(RPDTraceLogReader*)reader
 {
 	
 	SInt64 startTime = reader.currentLine.time;

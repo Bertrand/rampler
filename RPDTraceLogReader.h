@@ -1,5 +1,5 @@
 //
-//  RPLogReader.h
+//  RPDTraceLogReader.h
 //  Rampler
 //
 //  Created by Guiheneuf Bertrand on 9/29/10.
@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "RPLogLine.h"
 
-@interface RPLogReader : NSObject {
+@interface RPDTraceLogReader : NSObject {
 	NSInteger	logLineNumber; 
 	NSData*		data;
 	NSMutableArray* lines;
