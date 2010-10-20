@@ -9,6 +9,8 @@
 #import "RPDTraceLogReader.h"
 #import "RPLogLine.h"
 
+#import "RPCallTree.h"
+
 @implementation RPDTraceLogReader
 
 @synthesize logLineNumber;
@@ -84,7 +86,8 @@
 	parsedLine.type = [components objectAtIndex:4];
 	parsedLine.ns = [components objectAtIndex:5];
 	parsedLine.function = [components objectAtIndex:6];
-	parsedLine.symbol = nil; // computed lazily
+	parsedLine.symbol = [NSString stringWithFormat:@"%@::%@", parsedLine.ns, parsedLine.function];
+	parsedLine.symbolId = [NSString stringWithFormat:@"%@::%@", parsedLine.ns, parsedLine.function];
 	
 	return [parsedLine autorelease];
 }
@@ -102,6 +105,66 @@
 	return (currentLineNumber >= [lines count]);
 }
 
+- (void) feedCallTree:(RPCallTree*)callTree
+{
+	
+	SInt64 startTime = self.currentLine.time;
+	// NSLog(@"start time : %ld", startTime);
+	callTree.thread = self.currentLine.threadId;
+	callTree.stackDepth = self.currentLine.stackDepth;
+	callTree.startLine = self.currentLine.logLineNumber;
+	callTree.symbol = self.currentLine.symbol;
+	callTree.callCount++;
+	
+	[self moveNextLine];
+
+	BOOL shouldEatCurrentLine;
+
+	do {
+		shouldEatCurrentLine = YES;
+		
+		if (self.eof) {
+			break;
+			// [NSException raise:@"InvalidLogFile" format:@"the logFile ended too early"];
+		}
+		
+		if ([self.currentLine isFunctionBegin]) {
+			[self feedCallTree:[callTree subTreeForSymbolId:self.currentLine.symbolId]];
+			
+			continue;	
+		} 
+		
+		if (NO == [self.currentLine.symbol isEqual:callTree.symbol]) {
+			NSLog(@"oops, returning out of current symbol (%@) with symbol %@ (out line %d, begin line:%d)", callTree.symbol, self.currentLine.symbol, self.currentLine.logLineNumber, callTree.startLine);
+			shouldEatCurrentLine = NO;
+		}
+		
+		if (callTree.parent) break; // found a function output, end processing at this level.
+
+		
+		// No parent, we're at root level. We're going to ignore the line, but let's whine a little bit. 
+		NSLog(@"found a function-out log at root level, ignoring it (line %d: \"%@\")", self.currentLine.logLineNumber, self.currentLine.logLine);
+		[self moveNextLine];
+		
+	} while(!self.eof);
+	
+	// processing ended at this level. Compute total time
+	SInt64 endTime = self.currentLine.time; 
+	callTree.totalTime += endTime - startTime;
+	// NSLog(@"start time : %ld, end time : %ld, delta : %ld, totalTime : %ld", startTime, endTime, endTime - startTime, callTree.totalTime);
+	
+	// before moving up, eat current line. 
+	if (shouldEatCurrentLine) [self moveNextLine];	
+}
+
+- (RPCallTree*)callTree
+{
+	RPCallTree *root;
+	root = [[RPCallTree alloc] init];
+	[self feedCallTree:root];
+	[root freeze];
+	return [root autorelease];
+}
 
 
 

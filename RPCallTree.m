@@ -12,9 +12,11 @@
 @implementation RPCallTree
 
 @synthesize symbol;
+@synthesize symbolId;
 @synthesize subTrees;
 @synthesize totalTime;
 @synthesize selfTime;
+@synthesize file;
 @synthesize parent;
 @synthesize children;
 @synthesize thread;
@@ -34,73 +36,22 @@
 	return _defaultSortDescriptor;
 }
 
-- (void) feedFromLogReader:(RPDTraceLogReader*)reader
-{
-	
-	SInt64 startTime = reader.currentLine.time;
-	// NSLog(@"start time : %ld", startTime);
-	self.thread = reader.currentLine.threadId;
-	self.stackDepth = reader.currentLine.stackDepth;
-	self.startLine = reader.currentLine.logLineNumber;
-	self.callCount++;
-	
-	[reader moveNextLine];
-
-	BOOL shouldEatCurrentLine;
-
-	do {
-		shouldEatCurrentLine = YES;
-		
-		if (reader.eof) {
-			break;
-			// [NSException raise:@"InvalidLogFile" format:@"the logFile ended too early"];
-		}
-		
-		if ([reader.currentLine isFunctionBegin]) {
-			[[self subTreeForSymbol:reader.currentLine.symbol] feedFromLogReader:reader];
-			
-			continue;	
-		} 
-		
-		if (NO == [reader.currentLine.symbol isEqual:self.symbol]) {
-			NSLog(@"oops, returning out of current symbol (%@) with symbol %@ (out line %d, begin line:%d)", self.symbol, reader.currentLine.symbol, reader.currentLine.logLineNumber, self.startLine);
-			shouldEatCurrentLine = NO;
-		}
-		
-		if (parent) break; // found a function output, end processing at this level.
-
-		
-		// No parent, we're at root level. We're going to ignore the line, but let's whine a little bit. 
-		NSLog(@"found a function-out log at root level, ignoring it (line %d: \"%@\")", reader.currentLine.logLineNumber, reader.currentLine.logLine);
-		[reader moveNextLine];
-		
-	} while(!reader.eof);
-	
-	// processing ended at this level. Compute total time
-	SInt64 endTime = reader.currentLine.time; 
-	self.totalTime += endTime - startTime;
-	// NSLog(@"start time : %ld, end time : %ld, delta : %ld, totalTime : %ld", startTime, endTime, endTime - startTime, self.totalTime);
-	
-	// before moving up, eat current line. 
-	if (shouldEatCurrentLine) [reader moveNextLine];	
-}
-
-- (RPCallTree*) subTreeForSymbol:(NSString*)sym
+- (RPCallTree*) subTreeForSymbolId:(NSString*)symId
 {
 	if (self.subTrees == nil) {
 		self.subTrees = [NSMutableDictionary dictionary];
 	}
 	
-	RPCallTree* subTree = [self.subTrees objectForKey:sym];
+	RPCallTree* subTree = [self.subTrees objectForKey:symId];
 	if (subTree == nil) {
-		//NSLog(@"Creating subtree for symbol %@", sym);
+		//NSLog(@"Creating subtree for symbol %@", symId);
 		subTree = [[RPCallTree alloc] init];
 
 		subTree->parent = self;
-		subTree.symbol = sym;
+		subTree.symbolId = symId;
 
 
-		[self.subTrees setObject:subTree forKey:sym];
+		[self.subTrees setObject:subTree forKey:symId];
 		[subTree release];
 	} else {
 		//NSLog(@"Reusing subtree");

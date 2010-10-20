@@ -18,11 +18,14 @@
 @synthesize ns;
 @synthesize function;
 @synthesize file;
+@synthesize fileName;
+@synthesize fileLine;
 @synthesize stackDepth;
 @synthesize logLineNumber;
 @synthesize logLine;
 
 @synthesize symbol;
+@synthesize symbolId;
 
 
 

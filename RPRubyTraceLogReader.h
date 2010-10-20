@@ -9,10 +9,10 @@
 #import <Cocoa/Cocoa.h>
 #import "RPLogLine.h"
 
-@interface RPRubyTraceLogReader : NSObject {
+@interface RPRubyTraceLogReader : NSObject<RPLogReader> {
 	NSInteger	logLineNumber; 
 	NSData*		data;
-	NSMutableArray* lines;
+	NSMutableArray* stacks;
 	
 	// xxx - this is a hack
 	RPLogLine*	currentLine;
@@ -23,14 +23,11 @@
 
 @property (readwrite,assign) NSInteger	logLineNumber;
 @property (readwrite,retain) NSData*	data;
-@property (readwrite,assign) NSMutableArray*	lines;
 @property (readwrite,assign) BOOL eof;
 @property (readwrite,assign) RPLogLine*	currentLine;
 
 
 - (id) initWithData:(NSData*)data;
-
-- (BOOL) moveNextLine; // return false if eof is met
 
 - (void) readData;
 - (RPLogLine*) parseLine:(NSString*)line;

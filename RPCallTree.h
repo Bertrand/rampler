@@ -8,8 +8,6 @@
 
 #import <Foundation/Foundation.h>
 
-@class RPDTraceLogReader;
-
 @interface RPCallTree : NSObject {
 	double		totalTime;
 	double		selfTime;
@@ -20,6 +18,7 @@
 	SInt64	thread;
 	NSInteger	stackDepth;
 	NSInteger	startLine;
+	NSString*	file;
 	
 	RPCallTree* parent;
 	RPCallTree* root;
@@ -27,20 +26,21 @@
 	NSMutableDictionary* subTrees;
 }
 
-@property (readwrite, retain)	NSString* symbol;
-@property (readwrite, assign)	SInt64 thread;
-@property (readwrite, assign)	NSInteger stackDepth;
+@property (nonatomic, retain)	NSString* symbolId;
+@property (nonatomic, retain)	NSString* symbol;
+@property (nonatomic, retain)	NSString* file;
+@property (nonatomic, assign)	SInt64 thread;
+@property (nonatomic, assign)	NSInteger stackDepth;
 @property (readonly,  assign)	RPCallTree* parent;
-@property (readwrite, assign)	double totalTime;
-@property (readwrite, assign)	double selfTime;
-@property (readwrite, retain)	NSMutableDictionary* subTrees;
-@property (readwrite, retain)	NSArray* children;
-@property (readwrite, assign)	NSInteger startLine;
-@property (readwrite, assign)	NSInteger callCount;
+@property (nonatomic, assign)	double totalTime;
+@property (nonatomic, assign)	double selfTime;
+@property (nonatomic, retain)	NSMutableDictionary* subTrees;
+@property (nonatomic, retain)	NSArray* children;
+@property (nonatomic, assign)	NSInteger startLine;
+@property (nonatomic, assign)	NSInteger callCount;
 
 
-- (void) feedFromLogReader:(RPDTraceLogReader*)reader;
-- (RPCallTree*) subTreeForSymbol:(NSString*)symbol;
+- (RPCallTree*) subTreeForSymbolId:(NSString*)sym;
 
 
 - (void)freeze;

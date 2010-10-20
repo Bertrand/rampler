@@ -9,6 +9,7 @@
 #import "RPTraceDocument.h"
 #import "RPCallTree.h"
 #import "RPDTraceLogReader.h"
+#import "RPRubyTraceLogReader.h"
 
 
 
@@ -61,15 +62,14 @@
 
 - (BOOL)readFromData:(NSData *)data ofType:(NSString *)typeName error:(NSError **)outError
 {
-	RPDTraceLogReader* reader = nil;
+	id<RPLogReader> reader = nil;
 	
 	if ([typeName isEqualToString:@"Dtrace files"]) {
 		reader = [[RPDTraceLogReader alloc] initWithData:data];
 	} else if ([typeName isEqualToString:@"Ruby trace"]) {
+		reader = [[RPRubyTraceLogReader alloc] initWithData:data];
 	}
-	root = [[RPCallTree alloc] init];
-	[root feedFromLogReader:reader];
-	[root freeze];
+	self.root = [reader callTree];
 	[reader release];
 	
 	self.displayTimeUnitAsPercentOfTotal = YES;

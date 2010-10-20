@@ -9,7 +9,9 @@
 #import <Foundation/Foundation.h>
 #import "RPLogLine.h"
 
-@interface RPDTraceLogReader : NSObject {
+@protocol RPLogReader;
+
+@interface RPDTraceLogReader : NSObject<RPLogReader> {
 	NSInteger	logLineNumber; 
 	NSData*		data;
 	NSMutableArray* lines;
@@ -26,7 +28,6 @@
 @property (readwrite,assign) NSMutableArray*	lines;
 @property (readwrite,assign) BOOL eof;
 @property (readwrite,assign) RPLogLine*	currentLine;
-
 
 - (id) initWithData:(NSData*)data;
 

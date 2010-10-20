@@ -7,6 +7,11 @@
 //
 
 #import "RPRubyTraceLogReader.h"
+#import "RPCallTree.h"
+
+@interface RPRubyTraceLogReader ()
+@property(nonatomic, retain)NSMutableArray *stacks;
+@end
 
 
 @implementation RPRubyTraceLogReader
@@ -15,14 +20,14 @@
 @synthesize eof;
 @synthesize currentLine;
 @synthesize data;
-@synthesize lines;
+@synthesize stacks;
 
 - (id) initWithData:(NSData*)d
 {
 	self = [super init]; 
 	self.data = d;
 
-	self.lines = [NSMutableArray new];
+	self.stacks = [[[NSMutableArray alloc] init] autorelease];
 	[self readData];
 	
 	return self;
@@ -32,10 +37,13 @@
 {
 	NSInteger currentPos = 0;
 	NSInteger eolPos = currentPos;
-
+	NSMutableArray *lines;
+	
+	lines = [[NSMutableArray alloc] init];
 	do {
 		eolPos = currentPos;
 		const UInt8* bytes = [data bytes];
+		
 		while ((eolPos < [data length]) && (bytes[eolPos] != '\n')) ++eolPos;
 
 		logLineNumber++; 
@@ -44,24 +52,21 @@
 		//NSLog(@"%@", line);
 		RPLogLine* parsedLine  = [self parseLine:line]; 
 		if (!parsedLine) NSLog(@"Unable to parse log line %d. Ignoring it. (\"%@\")", logLineNumber, line);
-		if (parsedLine) [lines addObject:parsedLine];
+		if (parsedLine) {
+			parsedLine.time = 1;
+			parsedLine.stackDepth = [lines count];
+			[lines addObject:parsedLine];
+		} else if ([lines count] > 0) {
+			[self.stacks addObject:lines];
+			[lines release];
+			lines = [[NSMutableArray alloc] init];
+		}
 		[line release];
 		
 		currentPos = eolPos + 1;
 		
 	} while (eolPos < [data length]);
-	
-	// now sort the lines so that they have increasing time
-	[lines sortUsingComparator: (NSComparator)^(RPLogLine* line1, RPLogLine* line2) { 
-		 if (line1.time > line2.time) {
-			  return (NSComparisonResult)NSOrderedDescending;
-		 }
-		 if (line1.time < line2.time) {
-			  return (NSComparisonResult)NSOrderedAscending;
-		 }
-		 return (NSComparisonResult)NSOrderedSame;
-	}];
-	
+	[lines release];
 }
 
 
@@ -79,27 +84,43 @@
 	parsedLine.threadId = [[components objectAtIndex:0] integerValue];
 	parsedLine.time = [[components objectAtIndex:1] integerValue];
 	//NSLog(@"time : %ld", parsedLine.time);
-	parsedLine.file = [components objectAtIndex:2];
-	parsedLine.stackDepth = [[components objectAtIndex:3] integerValue];
+	parsedLine.fileName = [components objectAtIndex:2];
+	parsedLine.fileLine = [[components objectAtIndex:3] integerValue];
+	parsedLine.file = [NSString stringWithFormat:@"%@:%d", parsedLine.fileName, parsedLine.fileLine];
 	parsedLine.type = [components objectAtIndex:4];
-	parsedLine.ns = [components objectAtIndex:5];
+	parsedLine.ns = @"";
 	parsedLine.function = [components objectAtIndex:6];
-	parsedLine.symbol = nil; // computed lazily
+	parsedLine.symbol = [NSString stringWithFormat:@"%@ %@", parsedLine.function, [components objectAtIndex:4]];
+	parsedLine.symbolId = [NSString stringWithFormat:@"%@:%d", parsedLine.fileName, parsedLine.fileLine];
 	
 	return [parsedLine autorelease];
 }
 
-- (BOOL) moveNextLine
+- (RPCallTree*)callTree
 {
-	if (self.eof) return NO;
-	currentLine = [lines objectAtIndex:currentLineNumber];
-	currentLineNumber++;
-	return YES;
-}
-
-- (BOOL) eof
-{
-	return (currentLineNumber >= [lines count]);
+	RPCallTree* callTree;
+	
+	callTree = [[RPCallTree alloc] init];
+	callTree.thread = self.currentLine.threadId;
+	for (NSArray *lines in stacks) {
+		RPCallTree *current;
+		RPLogLine *line;
+		
+		current = callTree;
+		for (line in lines) {
+			current = [current subTreeForSymbolId:line.symbolId];
+			current.callCount++;
+			current.thread = line.threadId;
+			current.stackDepth = line.stackDepth;
+			current.startLine = line.logLineNumber;
+			current.symbolId = line.symbolId;
+			current.symbol = line.symbol;
+			current.file = line.file;
+			current.totalTime += line.time;
+		}
+	}
+	[callTree freeze];
+	return callTree;
 }
 
 @end
