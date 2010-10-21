@@ -109,7 +109,7 @@
 		for (line in lines) {
 			current = [current subTreeForSymbolId:line.symbolId];
 			if (current.symbol !=  nil && ![current.symbol isEqualToString:line.symbol]) {
-				NSLog(@"%@ %@", current.symbol, line.symbol);
+				NSLog(@"++ %@ ++ %@ ++ %@", current.symbol, line.symbol, line.symbolId);
 			}
 			current.callCount++;
 			current.thread = line.threadId;
