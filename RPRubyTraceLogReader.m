@@ -51,7 +51,6 @@
 		NSString* line = [[NSString alloc] initWithData:[data subdataWithRange:NSMakeRange(currentPos, eolPos - currentPos)] encoding:NSUTF8StringEncoding];
 		//NSLog(@"%@", line);
 		RPLogLine* parsedLine  = [self parseLine:line]; 
-		if (!parsedLine) NSLog(@"Unable to parse log line %d. Ignoring it. (\"%@\")", logLineNumber, line);
 		if (parsedLine) {
 			parsedLine.time = 1;
 			parsedLine.stackDepth = [lines count];
@@ -90,7 +89,7 @@
 	parsedLine.type = [components objectAtIndex:4];
 	parsedLine.ns = @"";
 	parsedLine.function = [components objectAtIndex:6];
-	parsedLine.symbol = [NSString stringWithFormat:@"%@ %@", parsedLine.function, [components objectAtIndex:4]];
+	parsedLine.symbol = [NSString stringWithFormat:@"%@(%@) %@", parsedLine.function, [components objectAtIndex:5], [components objectAtIndex:4]];
 	parsedLine.symbolId = [NSString stringWithFormat:@"%@:%d", parsedLine.fileName, parsedLine.fileLine];
 	
 	return [parsedLine autorelease];
@@ -109,6 +108,9 @@
 		current = callTree;
 		for (line in lines) {
 			current = [current subTreeForSymbolId:line.symbolId];
+			if (current.symbol !=  nil && ![current.symbol isEqualToString:line.symbol]) {
+				NSLog(@"%@ %@", current.symbol, line.symbol);
+			}
 			current.callCount++;
 			current.thread = line.threadId;
 			current.stackDepth = line.stackDepth;
