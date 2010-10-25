@@ -21,6 +21,7 @@
 @synthesize currentLine;
 @synthesize data;
 @synthesize stacks;
+@synthesize infoDescription;
 
 - (id) initWithData:(NSData*)d
 {
@@ -28,6 +29,7 @@
 	self.data = d;
 
 	self.stacks = [[[NSMutableArray alloc] init] autorelease];
+    self.infoDescription = [[[NSMutableString alloc] init]	autorelease];
 	[self readData];
 	
 	return self;
@@ -38,6 +40,7 @@
 	NSInteger currentPos = 0;
 	NSInteger eolPos = currentPos;
 	NSMutableArray *lines;
+    BOOL stillInfo = YES;
 	
 	lines = [[NSMutableArray alloc] init];
 	do {
@@ -49,17 +52,25 @@
 		logLineNumber++; 
 		
 		NSString* line = [[NSString alloc] initWithData:[data subdataWithRange:NSMakeRange(currentPos, eolPos - currentPos)] encoding:NSUTF8StringEncoding];
-		//NSLog(@"%@", line);
-		RPLogLine* parsedLine  = [self parseLine:line]; 
-		if (parsedLine) {
-			parsedLine.time = 1;
-			parsedLine.stackDepth = [lines count];
-			[lines addObject:parsedLine];
-		} else if ([lines count] > 0) {
-			[self.stacks addObject:lines];
-			[lines release];
-			lines = [[NSMutableArray alloc] init];
-		}
+        if (stillInfo) {
+        	if ([[line stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] isEqualToString:@"--"]) {
+            	stillInfo = NO;
+            } else {
+            	[infoDescription appendString:line];
+            }
+        } else {
+            //NSLog(@"%@", line);
+            RPLogLine* parsedLine  = [self parseLine:line]; 
+            if (parsedLine) {
+                parsedLine.time = 1;
+                parsedLine.stackDepth = [lines count];
+                [lines addObject:parsedLine];
+            } else if ([lines count] > 0) {
+                [self.stacks addObject:lines];
+                [lines release];
+                lines = [[NSMutableArray alloc] init];
+            }
+        }
 		[line release];
 		
 		currentPos = eolPos + 1;
@@ -109,7 +120,7 @@
 		for (line in lines) {
 			current = [current subTreeForSymbolId:line.symbolId];
 			if (current.symbol !=  nil && ![current.symbol isEqualToString:line.symbol]) {
-				NSLog(@"%@ %@", current.symbol, line.symbol);
+				NSLog(@"++ %@ ++ %@ ++ %@", current.symbol, line.symbol, line.symbolId);
 			}
 			current.callCount++;
 			current.thread = line.threadId;

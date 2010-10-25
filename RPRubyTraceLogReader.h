@@ -13,6 +13,7 @@
 	NSInteger	logLineNumber; 
 	NSData*		data;
 	NSMutableArray* stacks;
+    NSMutableString* infoDescription;
 	
 	// xxx - this is a hack
 	RPLogLine*	currentLine;
@@ -25,7 +26,7 @@
 @property (readwrite,retain) NSData*	data;
 @property (readwrite,assign) BOOL eof;
 @property (readwrite,assign) RPLogLine*	currentLine;
-
+@property (readwrite, retain) NSMutableString *infoDescription;
 
 - (id) initWithData:(NSData*)data;
 
