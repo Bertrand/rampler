@@ -223,7 +223,7 @@
 													</object>
 													<object class="NSTextFieldCell" key="NSDataCell" id="503052263">
 														<int key="NSCellFlags">337772096</int>
-														<int key="NSCellFlags2">133120</int>
+														<int key="NSCellFlags2">132608</int>
 														<string key="NSContents">Text Cell</string>
 														<reference key="NSSupport" ref="26"/>
 														<reference key="NSControlView" ref="146707959"/>
@@ -908,9 +908,9 @@
 					<bytes key="NSTransformStruct">P4AAAL+AAABBiAAAwtQAAA</bytes>
 				</object>
 				<string key="100109.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
-				<string key="5.IBEditorWindowLastContentRect">{{85, 512}, {919, 577}}</string>
+				<string key="5.IBEditorWindowLastContentRect">{{152, 239}, {919, 577}}</string>
 				<string key="5.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
-				<string key="5.IBWindowTemplateEditedContentRect">{{85, 512}, {919, 577}}</string>
+				<string key="5.IBWindowTemplateEditedContentRect">{{152, 239}, {919, 577}}</string>
 				<integer value="1" key="5.ImportedFromIB2"/>
 				<string key="5.editorWindowContentRectSynchronizationRect">{{201, 387}, {507, 413}}</string>
 				<integer value="1" key="5.windowTemplate.hasMinSize"/>
