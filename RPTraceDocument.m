@@ -129,13 +129,28 @@
             if ([result count] == 0) {
             	break;
             } else if ([result count] == 1) {
-            	callTree = [result objectAtIndex:0];
+                callTree = [result objectAtIndex:0];
                 if (callTree.totalTime * 5 / 100 < callTree.selfTime) {
                 	break;
                 }
             } else {
-            	break;
-            }
+            	NSMutableArray *significantChildren;
+                NSInteger ii, count;
+                
+                significantChildren = [result mutableCopy];
+                count = [significantChildren count];
+                for (ii = 0; ii < count; ii++) {
+                	RPCallTree *current = [significantChildren objectAtIndex:ii];
+                    
+                    if (callTree.totalTime * 5 / 100 > current.totalTime) {
+                    	[significantChildren removeObjectAtIndex:ii];
+                        count--;
+                        ii--;
+                    }
+                }
+                result = [significantChildren autorelease];
+                break;
+        	}
         }
     }
     return result;
