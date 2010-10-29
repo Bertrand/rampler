@@ -100,7 +100,7 @@
 	parsedLine.type = [components objectAtIndex:4];
 	parsedLine.ns = @"";
 	parsedLine.function = [components objectAtIndex:6];
-	parsedLine.symbol = [NSString stringWithFormat:@"%@(%@) %@", parsedLine.function, [components objectAtIndex:5], [components objectAtIndex:4]];
+	parsedLine.symbol = [NSString stringWithFormat:@"%@(%@)", parsedLine.function, [components objectAtIndex:5]];
 	parsedLine.symbolId = [NSString stringWithFormat:@"%@:%d", parsedLine.fileName, parsedLine.fileLine];
 	
 	return [parsedLine autorelease];
