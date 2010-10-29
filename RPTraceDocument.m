@@ -21,7 +21,6 @@
 @synthesize mainOutlineView;
 
 
-
 - (id)init
 {
     self = [super init];
@@ -70,6 +69,7 @@
 		reader = [[RPRubyTraceLogReader alloc] initWithData:data];
 	}
 	self.root = [reader callTree];
+    displayRoot = root;
 	[reader release];
 	
 	self.displayTimeUnitAsPercentOfTotal = YES;
@@ -83,6 +83,8 @@
     if ( outError != NULL ) {
 		*outError = [NSError errorWithDomain:NSOSStatusErrorDomain code:unimpErr userInfo:NULL];
 	}
+    
+    [mainOutlineView reloadData];
     return YES;
 }
 
@@ -91,7 +93,8 @@
 {
 	displayTimeUnitAsPercentOfTotal = percentEnabled;
 	[self updateTimeFormatter];
-	
+	[self.mainOutlineView reloadData];
+	[self.mainOutlineView setNeedsDisplay];
 }
 
 - (void)awakeFromNib
@@ -102,7 +105,7 @@
 - (void)updateTimeFormatter
 {
 	if (displayTimeUnitAsPercentOfTotal) {
-		self.percentFormatter.multiplier = [NSNumber numberWithDouble:100.0 / root.totalTime];
+		self.percentFormatter.multiplier = [NSNumber numberWithDouble:100.0 / displayRoot.totalTime];
 		self.percentFormatter.positiveSuffix = @"%";
 		self.percentFormatter.maximumFractionDigits = 2;
 
@@ -112,23 +115,162 @@
 		self.percentFormatter.maximumFractionDigits = 2;
 	}
 	
-	[self.mainOutlineView reloadData];
-	[self.mainOutlineView setNeedsDisplay];
 }
 
-
-- (IBAction) followHottestSubpath:(id)sender
+- (NSArray *)childrenForCallTree:(RPCallTree *)callTree
 {
-	NSInteger selelectedRow = [self.mainOutlineView selectedRow];
-	NSTreeNode* selectedNode = [self.mainOutlineView itemAtRow:selelectedRow];
-	//NSLog(@"selected item : %@", selectedNode);
+	NSArray *result;
+    
+	if (!hideInsignificantCalls) {
+    	result = [callTree children];
+    } else {
+    	while (YES) {
+        	result = [callTree children];
+            if ([result count] == 0) {
+            	break;
+            } else if ([result count] == 1) {
+            	callTree = [result objectAtIndex:0];
+                if (callTree.totalTime * 5 / 100 < callTree.selfTime) {
+                	break;
+                }
+            } else {
+            	break;
+            }
+        }
+    }
+    return result;
+}
+
+- (void)expandAndSelectCallTree:(RPCallTree *)node
+{
+    NSMutableArray *parents;
+    NSInteger selectedRow;
+    
+    selectedRow = -1;
+    parents = [[NSMutableArray alloc] init];
+    while (node) {
+        [parents insertObject:node atIndex:0];
+        node = node.parent;
+    }
+    for (RPCallTree *node in parents) {
+        NSInteger row;
+        
+        [mainOutlineView expandItem:node];
+        row = [mainOutlineView rowForItem:node];
+        if (row != -1) {
+            selectedRow = row;
+        }
+    }
+    if (selectedRow != -1) {
+        [mainOutlineView selectRowIndexes:[NSIndexSet indexSetWithIndex:selectedRow] byExtendingSelection:NO];
+    } else {
+        [mainOutlineView selectRowIndexes:[NSIndexSet indexSet] byExtendingSelection:NO];
+    }
+    [parents release];
+}
+
+- (IBAction)followHottestSubpath:(id)sender
+{
+	NSInteger selectedRow = [self.mainOutlineView selectedRow];
+	RPCallTree* selectedNode = [self.mainOutlineView itemAtRow:selectedRow];
 	
-	NSTreeNode* hottestNode = selectedNode;
-	while ([hottestNode.childNodes count] > 0) {
+	RPCallTree* hottestNode = selectedNode;
+	while ([[self childrenForCallTree:hottestNode] count] > 0) {
 		[self.mainOutlineView expandItem:hottestNode];
-		hottestNode = [hottestNode.childNodes objectAtIndex:0];
+		hottestNode = [[self childrenForCallTree:hottestNode] objectAtIndex:0];
 	}
 
+}
+
+- (IBAction)focusButtonAction:(id)sender
+{
+	NSInteger selectedRow;
+    RPCallTree *callTreeToSelect = nil;
+    
+    selectedRow = [mainOutlineView selectedRow];
+    if (selectedRow != -1) {
+    	displayRoot = [mainOutlineView itemAtRow:selectedRow];
+    } else {
+        callTreeToSelect = displayRoot;
+    	displayRoot = root;
+    }
+	[self updateTimeFormatter];
+    [mainOutlineView reloadData];
+    [self expandAndSelectCallTree:callTreeToSelect];
+}
+
+- (id)outlineView:(NSOutlineView *)outlineView child:(NSInteger)index ofItem:(id)item
+{
+    if (!item) {
+    	item = displayRoot;
+    }
+    return [[self childrenForCallTree:item] objectAtIndex:index];
+}
+
+- (BOOL)outlineView:(NSOutlineView *)outlineView isItemExpandable:(id)item
+{
+	return [[self childrenForCallTree:item] count];
+}
+
+- (NSInteger)outlineView:(NSOutlineView *)outlineView numberOfChildrenOfItem:(id)item
+{
+    if (!item) {
+    	item = displayRoot;
+    }
+	return [[self childrenForCallTree:item] count];
+}
+
+- (id)outlineView:(NSOutlineView *)outlineView objectValueForTableColumn:(NSTableColumn *)tableColumn byItem:(id)item
+{
+	id result = nil;
+    
+	if ([[tableColumn identifier] isEqualToString:@"thread"]) {
+    	result = [NSNumber numberWithLongLong:[item thread]];
+	} else if ([[tableColumn identifier] isEqualToString:@"totalTime"]) {
+    	result = [NSNumber numberWithFloat:[item totalTime]];
+	} else if ([[tableColumn identifier] isEqualToString:@"selfTime"]) {
+    	result = [NSNumber numberWithFloat:[item selfTime]];
+	} else if ([[tableColumn identifier] isEqualToString:@"callCount"]) {
+    	result = [NSNumber numberWithInteger:[item callCount]];
+	} else if ([[tableColumn identifier] isEqualToString:@"file"]) {
+    	result = [item file];
+	} else if ([[tableColumn identifier] isEqualToString:@"symbol"]) {
+    	result = [item symbol];
+    }
+    return result;
+}
+
+- (void)outlineViewSelectionDidChange:(NSNotification *)notification;
+{
+	if ([mainOutlineView selectedRow] == -1) {
+		[focusButton setTitle:@"Unfocus"];
+        [focusButton setEnabled:root != displayRoot];
+        [hottestSubpathButton setEnabled:NO];
+    } else {
+		[focusButton setTitle:@"Focus"];
+        [focusButton setEnabled:YES];
+        [hottestSubpathButton setEnabled:YES];
+    }
+}
+
+- (void)setHideInsignificantCalls:(BOOL)value
+{
+	NSInteger selectedRow = [self.mainOutlineView selectedRow];
+	RPCallTree* selectedNode = nil;
+    
+    if (selectedRow != -1) {
+	    selectedNode = [self.mainOutlineView itemAtRow:selectedRow];
+    }
+	hideInsignificantCalls = value;
+    [mainOutlineView reloadData];
+    if (selectedNode) {
+    	[self expandAndSelectCallTree:selectedNode];
+    }
+}
+
+- (BOOL)hideInsignificantCalls
+{
+	return hideInsignificantCalls;
 }
 
 @end
