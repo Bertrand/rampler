@@ -13,6 +13,10 @@
 			</array>
 			<key>CFBundleTypeName</key>
 			<string>Ruby trace</string>
+			<key>CFBundleTypeOSTypes</key>
+			<array>
+				<string>????</string>
+			</array>
 			<key>CFBundleTypeRole</key>
 			<string>Viewer</string>
 			<key>LSTypeIsPackage</key>
