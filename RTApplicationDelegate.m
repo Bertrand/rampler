@@ -36,17 +36,10 @@
 
 - (IBAction)validURLOpenerAction:(id)sender
 {
-	NSModalSession session;
-	
 	[[NSApplication sharedApplication] endModalSession:_urlOpenerSession];
 	[_openURLDialog orderOut:nil];
 	
-	session = [[NSApplication sharedApplication] beginModalSessionForWindow:_loadingWindow];
-	[_loadingIndicator startAnimation:nil];
 	[self openURL:[NSURL URLWithString:[_urlTextField stringValue]]];
-	[[NSApplication sharedApplication] endModalSession:session];
-	[_loadingIndicator stopAnimation:nil];
-	[_loadingWindow orderOut:nil];
 }
 
 - (void)urlLoaderControllerDidFinish:(RPURLLoaderController *)urlLoaderController

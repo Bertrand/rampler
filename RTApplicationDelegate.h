@@ -16,9 +16,6 @@
 	IBOutlet NSTextField *_urlTextField;
 	IBOutlet NSTextField *_intervalTextField;
 	
-	IBOutlet NSWindow *_loadingWindow;
-	IBOutlet NSProgressIndicator *_loadingIndicator;
-	
 	NSModalSession _urlOpenerSession;
 }
 
