@@ -23,6 +23,7 @@
 @synthesize stackDepth;
 @synthesize startLine;
 @synthesize callCount;
+@synthesize callDetails;
 
 
 
@@ -83,6 +84,17 @@
 	for (RPCallTree* child in self.children) {
 		[child freeze];
 	}
+}
+
+- (void)addCallDetailsForFile:(NSString *)fileNameNumber time:(double)valueToAdd
+{
+	double time;
+	NSNumber *number;
+	
+	time = [[callDetails objectForKey:fileNameNumber] doubleValue] + valueToAdd;
+	number = [[NSNumber alloc] initWithDouble:time];
+	[callDetails setObject:number forKey:fileNameNumber];
+	[number release];
 }
 
 @end

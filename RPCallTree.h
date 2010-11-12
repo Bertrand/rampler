@@ -24,6 +24,8 @@
 	RPCallTree* root;
 	
 	NSMutableDictionary* subTrees;
+	
+	NSMutableDictionary* callDetails;
 }
 
 @property (nonatomic, retain)	NSString* symbolId;
@@ -38,11 +40,14 @@
 @property (nonatomic, retain)	NSArray* children;
 @property (nonatomic, assign)	NSInteger startLine;
 @property (nonatomic, assign)	NSInteger callCount;
+@property (nonatomic, assign)	NSMutableDictionary* callDetails;
 
 
 - (RPCallTree*) subTreeForSymbolId:(NSString*)sym;
 
 
 - (void)freeze;
+
+- (void)addCallDetailsForFile:(NSString *)file time:(double)valueToAdd;
 
 @end
