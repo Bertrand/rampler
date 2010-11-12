@@ -20,12 +20,14 @@
 	IBOutlet NSNumberFormatter* percentFormatter;
 	IBOutlet NSOutlineView* mainOutlineView;
     IBOutlet NSButton* focusButton;
+    IBOutlet NSButton* focusFunctionButton;
     IBOutlet NSButton* hottestSubpathButton;
 	BOOL displayTimeUnitAsPercentOfTotal;
     BOOL hideInsignificantCalls;
 }
 
-@property (nonatomic, assign) RPCallTree* root;
+@property (nonatomic, retain) RPCallTree* root;
+@property (nonatomic, retain) RPCallTree* displayRoot;
 @property (nonatomic, assign) NSNumberFormatter* percentFormatter;
 @property (nonatomic, assign) NSOutlineView* mainOutlineView;;
 @property (nonatomic, assign) BOOL displayTimeUnitAsPercentOfTotal;
@@ -33,6 +35,7 @@
 
 - (IBAction)focusButtonAction:(id)sender;
 - (IBAction)followHottestSubpath:(id)sender;
+- (IBAction)focusFunctionButtonAction:(id)sender;
 - (void)updateTimeFormatter;
 
 @end

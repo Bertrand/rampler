@@ -15,7 +15,7 @@
 
 @implementation RPTraceDocument
 
-@synthesize root;
+@synthesize root, displayRoot;
 @synthesize percentFormatter;
 @synthesize displayTimeUnitAsPercentOfTotal;
 @synthesize mainOutlineView;
@@ -25,12 +25,16 @@
 {
     self = [super init];
     if (self) {
-    
+		self.displayTimeUnitAsPercentOfTotal = YES;
     }
     return self;
 }
 
-
+- (void)dealloc
+{
+	self.root = nil;
+	[super dealloc];
+}
 
 - (NSString *)windowNibName
 {
@@ -59,6 +63,16 @@
 	return nil;
 }
 
+- (void)setRoot:(RPCallTree *)newRoot
+{
+	if (newRoot != root) {
+		[root release];
+		root = [newRoot retain];
+		self.displayRoot = root;
+    	[mainOutlineView reloadData];
+	}
+}
+
 - (BOOL)readFromData:(NSData *)data ofType:(NSString *)typeName error:(NSError **)outError
 {
 	id<RPLogReader> reader = nil;
@@ -69,11 +83,8 @@
 		reader = [[RPRubyTraceLogReader alloc] initWithData:data];
 	}
 	self.root = [reader callTree];
-    displayRoot = root;
 	[reader release];
 	
-	self.displayTimeUnitAsPercentOfTotal = YES;
-
     // Insert code here to read your document from the given data of the specified type.  If the given outError != NULL, ensure that you set *outError when returning NO.
 
     // You can also choose to override -readFromFileWrapper:ofType:error: or -readFromURL:ofType:error: instead. 
@@ -84,7 +95,6 @@
 		*outError = [NSError errorWithDomain:NSOSStatusErrorDomain code:unimpErr userInfo:NULL];
 	}
     
-    [mainOutlineView reloadData];
     return YES;
 }
 
@@ -204,14 +214,33 @@
     
     selectedRow = [mainOutlineView selectedRow];
     if (selectedRow != -1) {
-    	displayRoot = [mainOutlineView itemAtRow:selectedRow];
+    	self.displayRoot = [mainOutlineView itemAtRow:selectedRow];
     } else {
         callTreeToSelect = displayRoot;
-    	displayRoot = root;
+    	self.displayRoot = root;
     }
 	[self updateTimeFormatter];
     [mainOutlineView reloadData];
     [self expandAndSelectCallTree:callTreeToSelect];
+}
+
+- (IBAction)focusFunctionButtonAction:(id)sender
+{
+	NSInteger selectedRow;
+	
+    selectedRow = [mainOutlineView selectedRow];
+    if (selectedRow != -1) {
+		RPTraceDocument *newDocument;
+		RPCallTree *selectedCallTree;
+		
+    	selectedCallTree = [mainOutlineView itemAtRow:selectedRow];
+		newDocument = [[RPTraceDocument alloc] initWithType:@"Ruby trace" error:nil];
+		newDocument.root = [root topDownCallTreeForSymbolId:selectedCallTree.symbolId];
+		[[NSDocumentController sharedDocumentController] addDocument:newDocument];
+		[newDocument makeWindowControllers];
+		[newDocument showWindows];
+		[newDocument release];
+	}
 }
 
 - (id)outlineView:(NSOutlineView *)outlineView child:(NSInteger)index ofItem:(id)item
@@ -260,10 +289,12 @@
 	if ([mainOutlineView selectedRow] == -1) {
 		[focusButton setTitle:@"Unfocus"];
         [focusButton setEnabled:root != displayRoot];
+        [focusFunctionButton setEnabled:NO];
         [hottestSubpathButton setEnabled:NO];
     } else {
 		[focusButton setTitle:@"Focus"];
         [focusButton setEnabled:YES];
+        [focusFunctionButton setEnabled:YES];
         [hottestSubpathButton setEnabled:YES];
     }
 }

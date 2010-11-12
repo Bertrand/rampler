@@ -49,5 +49,6 @@
 - (void)freeze;
 
 - (void)addCallDetailsForFile:(NSString *)file time:(double)valueToAdd;
+- (RPCallTree *)topDownCallTreeForSymbolId:(NSString *)symbolId;
 
 @end
