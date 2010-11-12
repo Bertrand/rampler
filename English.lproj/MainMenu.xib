@@ -1222,7 +1222,7 @@
 				<string key="NSClassName">NSFontManager</string>
 			</object>
 			<object class="NSCustomObject" id="967768383">
-				<string key="NSClassName">RTApplicationDelegate</string>
+				<string key="NSClassName">RPApplicationDelegate</string>
 			</object>
 			<object class="NSWindowTemplate" id="297377922">
 				<int key="NSWindowStyleMask">1</int>
@@ -3631,7 +3631,7 @@
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
 				<bool key="EncodedWithXMLCoder">YES</bool>
 				<object class="IBPartialClassDescription">
-					<string key="className">RTApplicationDelegate</string>
+					<string key="className">RPApplicationDelegate</string>
 					<string key="superclassName">NSObject</string>
 					<object class="NSMutableDictionary" key="actions">
 						<bool key="EncodedWithXMLCoder">YES</bool>
@@ -3677,16 +3677,12 @@
 						<object class="NSArray" key="dict.sortedKeys">
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<string>_intervalTextField</string>
-							<string>_loadingIndicator</string>
-							<string>_loadingWindow</string>
 							<string>_openURLDialog</string>
 							<string>_urlTextField</string>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<string>NSTextField</string>
-							<string>NSProgressIndicator</string>
-							<string>NSWindow</string>
 							<string>NSWindow</string>
 							<string>NSTextField</string>
 						</object>
@@ -3696,8 +3692,6 @@
 						<object class="NSArray" key="dict.sortedKeys">
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<string>_intervalTextField</string>
-							<string>_loadingIndicator</string>
-							<string>_loadingWindow</string>
 							<string>_openURLDialog</string>
 							<string>_urlTextField</string>
 						</object>
@@ -3706,14 +3700,6 @@
 							<object class="IBToOneOutletInfo">
 								<string key="name">_intervalTextField</string>
 								<string key="candidateClassName">NSTextField</string>
-							</object>
-							<object class="IBToOneOutletInfo">
-								<string key="name">_loadingIndicator</string>
-								<string key="candidateClassName">NSProgressIndicator</string>
-							</object>
-							<object class="IBToOneOutletInfo">
-								<string key="name">_loadingWindow</string>
-								<string key="candidateClassName">NSWindow</string>
 							</object>
 							<object class="IBToOneOutletInfo">
 								<string key="name">_openURLDialog</string>
@@ -3727,7 +3713,7 @@
 					</object>
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
 						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">RTApplicationDelegate.h</string>
+						<string key="minorKey">RPApplicationDelegate.h</string>
 					</object>
 				</object>
 			</object>
@@ -4111,14 +4097,6 @@
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
 						<string key="majorKey">IBFrameworkSource</string>
 						<string key="minorKey">Foundation.framework/Headers/NSURLDownload.h</string>
-					</object>
-				</object>
-				<object class="IBPartialClassDescription">
-					<string key="className">NSProgressIndicator</string>
-					<string key="superclassName">NSView</string>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier">
-						<string key="majorKey">IBFrameworkSource</string>
-						<string key="minorKey">AppKit.framework/Headers/NSProgressIndicator.h</string>
 					</object>
 				</object>
 				<object class="IBPartialClassDescription">
