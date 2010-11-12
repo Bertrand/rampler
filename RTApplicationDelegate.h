@@ -8,6 +8,7 @@
 
 #import <Cocoa/Cocoa.h>
 
+@class RPURLLoaderController;
 
 @interface RTApplicationDelegate : NSObject
 {
@@ -26,5 +27,8 @@
 - (IBAction)openURLAction:(id)sender;
 - (IBAction)closeURLOpenerAction:(id)sender;
 - (IBAction)validURLOpenerAction:(id)sender;
+
+- (void)urlLoaderControllerDidFinish:(RPURLLoaderController *)urlLoaderController;
+- (void)urlLoaderController:(RPURLLoaderController *)urlLoaderController didFailWithError:error;
 
 @end

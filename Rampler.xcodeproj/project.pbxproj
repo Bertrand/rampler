@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0227EC08128ACDAE0053012B /* RPURLLoaderController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0227EC07128ACDAE0053012B /* RPURLLoaderController.m */; };
+		0227EC13128AF3A40053012B /* RPURLLoaderController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0227EC12128AF3A40053012B /* RPURLLoaderController.xib */; };
 		025680F312831AF5000BF1DF /* RTApplicationDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 025680F212831AF5000BF1DF /* RTApplicationDelegate.m */; };
 		026DF5F3126EDB4E005466CF /* RPRubyTraceLogReader.m in Sources */ = {isa = PBXBuildFile; fileRef = 026DF5F2126EDB4E005466CF /* RPRubyTraceLogReader.m */; };
 		0628E06A1253952A00B9255B /* RPCallTree.m in Sources */ = {isa = PBXBuildFile; fileRef = 0628E0691253952A00B9255B /* RPCallTree.m */; };
@@ -22,6 +24,9 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		0227EC06128ACDAE0053012B /* RPURLLoaderController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RPURLLoaderController.h; sourceTree = "<group>"; };
+		0227EC07128ACDAE0053012B /* RPURLLoaderController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RPURLLoaderController.m; sourceTree = "<group>"; };
+		0227EC10128AF3A00053012B /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = English.lproj/RPURLLoaderController.xib; sourceTree = "<group>"; };
 		025680F112831AF5000BF1DF /* RTApplicationDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RTApplicationDelegate.h; sourceTree = "<group>"; };
 		025680F212831AF5000BF1DF /* RTApplicationDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RTApplicationDelegate.m; sourceTree = "<group>"; };
 		026DF5F1126EDB4E005466CF /* RPRubyTraceLogReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RPRubyTraceLogReader.h; sourceTree = "<group>"; };
@@ -113,6 +118,8 @@
 				026DF5F2126EDB4E005466CF /* RPRubyTraceLogReader.m */,
 				025680F112831AF5000BF1DF /* RTApplicationDelegate.h */,
 				025680F212831AF5000BF1DF /* RTApplicationDelegate.m */,
+				0227EC06128ACDAE0053012B /* RPURLLoaderController.h */,
+				0227EC07128ACDAE0053012B /* RPURLLoaderController.m */,
 			);
 			name = Classes;
 			sourceTree = "<group>";
@@ -134,6 +141,7 @@
 				089C165FFE840EACC02AAC07 /* InfoPlist.strings */,
 				1DDD58280DA1D0D100B32029 /* MyDocument.xib */,
 				1DDD582A0DA1D0D100B32029 /* MainMenu.xib */,
+				0227EC12128AF3A40053012B /* RPURLLoaderController.xib */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -201,6 +209,7 @@
 				8D15AC2F0486D014006FF6A4 /* InfoPlist.strings in Resources */,
 				1DDD582C0DA1D0D100B32029 /* MyDocument.xib in Resources */,
 				1DDD582D0DA1D0D100B32029 /* MainMenu.xib in Resources */,
+				0227EC13128AF3A40053012B /* RPURLLoaderController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -218,12 +227,21 @@
 				0628E4BA125A361E00B9255B /* RPLogLine.m in Sources */,
 				026DF5F3126EDB4E005466CF /* RPRubyTraceLogReader.m in Sources */,
 				025680F312831AF5000BF1DF /* RTApplicationDelegate.m in Sources */,
+				0227EC08128ACDAE0053012B /* RPURLLoaderController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
+		0227EC12128AF3A40053012B /* RPURLLoaderController.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				0227EC10128AF3A00053012B /* English */,
+			);
+			name = RPURLLoaderController.xib;
+			sourceTree = "<group>";
+		};
 		089C165FFE840EACC02AAC07 /* InfoPlist.strings */ = {
 			isa = PBXVariantGroup;
 			children = (

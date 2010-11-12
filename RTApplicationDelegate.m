@@ -7,62 +7,19 @@
 //
 
 #import "RTApplicationDelegate.h"
-
-NSURL *addParameter(NSURL *url, int interval)
-{
-	NSURL *result = url;
-	NSArray *parts;
-	NSString *query = nil;
-	NSRange range = { NSNotFound, 0 };
-	
-	if (interval < 1) {
-		interval = 1;
-	}
-	// the time is received in ms, but the server receives it in micro seconds
-	interval = interval * 1000;
-	parts = [[url absoluteString] componentsSeparatedByString:@"?"];
-	if ([parts count] > 1) {
-		query = [parts objectAtIndex:1];
-		range = [query rangeOfString:@"ruby_sanspleur=true"];
-	}
-	
-	if (range.location == NSNotFound) {
-		NSString *parameters = [NSString stringWithFormat:@"ruby_sanspleur=true&interval=%d", interval];
-		NSString *urlString;
-		
-		if (query) {
-			query = [query stringByAppendingFormat:@"&%@", parameters];
-		} else {
-			query = parameters;
-		}
-		urlString = [NSString stringWithFormat:@"%@?%@", [parts objectAtIndex:0], query];
-		if (![url scheme] || [[url scheme] isEqualToString:@""]) {
-			urlString = [@"http://" stringByAppendingString:urlString];
-		}
-		result = [NSURL URLWithString:urlString];
-	}
-	return result;
-}
+#import "RPURLLoaderController.h"
 
 @implementation RTApplicationDelegate
 
 - (BOOL)openURL:(NSURL *)url
 {
-	NSData *data;
-	BOOL result = NO;
+	RPURLLoaderController *urlLoader;
 	
-	data = [NSData dataWithContentsOfURL:addParameter(url, [[_intervalTextField stringValue] intValue])];
-	if (data) {
-		CFUUIDRef theUUID = CFUUIDCreate(NULL);
-		CFStringRef string = CFUUIDCreateString(NULL, theUUID);
-		NSString *filename;
-		
-		filename = [@"/tmp/" stringByAppendingPathComponent:[(NSString *)string stringByAppendingPathExtension:@"rubytrace"]];
-		[data writeToFile:[filename stringByAppendingPathExtension:@"gz"] atomically:NO];
-		system([[NSString stringWithFormat:@"gunzip %@", [filename stringByAppendingPathExtension:@"gz"]] UTF8String]);
-		result = [[NSWorkspace sharedWorkspace] openFile:filename];
-	}
-	return result;
+	urlLoader = [[RPURLLoaderController alloc] init];
+	urlLoader.url = url;
+	urlLoader.interval = [[_intervalTextField stringValue] intValue];
+	[urlLoader start];
+	return YES;
 }
 
 - (IBAction)openURLAction:(id)sender
@@ -90,6 +47,18 @@ NSURL *addParameter(NSURL *url, int interval)
 	[[NSApplication sharedApplication] endModalSession:session];
 	[_loadingIndicator stopAnimation:nil];
 	[_loadingWindow orderOut:nil];
+}
+
+- (void)urlLoaderControllerDidFinish:(RPURLLoaderController *)urlLoaderController
+{
+	[[NSWorkspace sharedWorkspace] openFile:urlLoaderController.fileName];
+	[urlLoaderController release];
+}
+
+- (void)urlLoaderController:(RPURLLoaderController *)urlLoaderController didFailWithError:error
+{
+	NSLog(@"error %@ %@", urlLoaderController.url, error);
+	[urlLoaderController release];
 }
 
 @end
