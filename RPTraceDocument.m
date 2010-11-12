@@ -33,6 +33,7 @@
 - (void)dealloc
 {
 	self.root = nil;
+	self.displayRoot = nil;
 	[super dealloc];
 }
 
@@ -69,7 +70,9 @@
 		[root release];
 		root = [newRoot retain];
 		self.displayRoot = root;
-    	[mainOutlineView reloadData];
+		if (root) {
+	    	[mainOutlineView reloadData];
+		}
 	}
 }
 
