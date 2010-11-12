@@ -417,13 +417,13 @@
 						<object class="NSButton" id="393000875">
 							<reference key="NSNextResponder" ref="568628114"/>
 							<int key="NSvFlags">268</int>
-							<string key="NSFrame">{{17, 449}, {142, 18}}</string>
+							<string key="NSFrame">{{17, 449}, {143, 18}}</string>
 							<reference key="NSSuperview" ref="568628114"/>
 							<bool key="NSEnabled">YES</bool>
 							<object class="NSButtonCell" key="NSCell" id="79160803">
 								<int key="NSCellFlags">-2080244224</int>
 								<int key="NSCellFlags2">131072</int>
-								<string key="NSContents">Hide insignificat calls</string>
+								<string key="NSContents">Hide insignificant calls</string>
 								<reference key="NSSupport" ref="26"/>
 								<reference key="NSControlView" ref="393000875"/>
 								<int key="NSButtonFlags">1211912703</int>
