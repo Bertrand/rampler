@@ -1,5 +1,5 @@
 //
-//  RTApplicationDelegate.h
+//  RPApplicationDelegate.h
 //  Rampler
 //
 //  Created by Jérôme Lebel on 04/11/10.
@@ -10,7 +10,7 @@
 
 @class RPURLLoaderController;
 
-@interface RTApplicationDelegate : NSObject
+@interface RPApplicationDelegate : NSObject
 {
 	IBOutlet NSWindow *_openURLDialog;
 	IBOutlet NSTextField *_urlTextField;

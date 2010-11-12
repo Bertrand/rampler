@@ -7,7 +7,7 @@
 //
 
 #import "RPURLLoaderController.h"
-#import "RTApplicationDelegate.h"
+#import "RPApplicationDelegate.h"
 
 NSURL *addParameter(NSURL *url, int interval)
 {

@@ -1,15 +1,15 @@
 //
-//  RTApplicationDelegate.m
+//  RPApplicationDelegate.m
 //  Rampler
 //
 //  Created by Jérôme Lebel on 04/11/10.
 //  Copyright 2010 Fotonauts. All rights reserved.
 //
 
-#import "RTApplicationDelegate.h"
+#import "RPApplicationDelegate.h"
 #import "RPURLLoaderController.h"
 
-@implementation RTApplicationDelegate
+@implementation RPApplicationDelegate
 
 - (BOOL)openURL:(NSURL *)url
 {

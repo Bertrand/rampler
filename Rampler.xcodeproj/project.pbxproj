@@ -9,7 +9,7 @@
 /* Begin PBXBuildFile section */
 		0227EC08128ACDAE0053012B /* RPURLLoaderController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0227EC07128ACDAE0053012B /* RPURLLoaderController.m */; };
 		0227EC13128AF3A40053012B /* RPURLLoaderController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0227EC12128AF3A40053012B /* RPURLLoaderController.xib */; };
-		025680F312831AF5000BF1DF /* RTApplicationDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 025680F212831AF5000BF1DF /* RTApplicationDelegate.m */; };
+		025680F312831AF5000BF1DF /* RPApplicationDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 025680F212831AF5000BF1DF /* RPApplicationDelegate.m */; };
 		026DF5F3126EDB4E005466CF /* RPRubyTraceLogReader.m in Sources */ = {isa = PBXBuildFile; fileRef = 026DF5F2126EDB4E005466CF /* RPRubyTraceLogReader.m */; };
 		0628E06A1253952A00B9255B /* RPCallTree.m in Sources */ = {isa = PBXBuildFile; fileRef = 0628E0691253952A00B9255B /* RPCallTree.m */; };
 		0628E06D125396DB00B9255B /* RPDTraceLogReader.m in Sources */ = {isa = PBXBuildFile; fileRef = 0628E06C125396DB00B9255B /* RPDTraceLogReader.m */; };
@@ -27,8 +27,8 @@
 		0227EC06128ACDAE0053012B /* RPURLLoaderController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RPURLLoaderController.h; sourceTree = "<group>"; };
 		0227EC07128ACDAE0053012B /* RPURLLoaderController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RPURLLoaderController.m; sourceTree = "<group>"; };
 		0227EC10128AF3A00053012B /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = English.lproj/RPURLLoaderController.xib; sourceTree = "<group>"; };
-		025680F112831AF5000BF1DF /* RTApplicationDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RTApplicationDelegate.h; sourceTree = "<group>"; };
-		025680F212831AF5000BF1DF /* RTApplicationDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RTApplicationDelegate.m; sourceTree = "<group>"; };
+		025680F112831AF5000BF1DF /* RPApplicationDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RPApplicationDelegate.h; sourceTree = "<group>"; };
+		025680F212831AF5000BF1DF /* RPApplicationDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RPApplicationDelegate.m; sourceTree = "<group>"; };
 		026DF5F1126EDB4E005466CF /* RPRubyTraceLogReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RPRubyTraceLogReader.h; sourceTree = "<group>"; };
 		026DF5F2126EDB4E005466CF /* RPRubyTraceLogReader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RPRubyTraceLogReader.m; sourceTree = "<group>"; };
 		0628E0681253952900B9255B /* RPCallTree.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RPCallTree.h; sourceTree = "<group>"; };
@@ -116,8 +116,8 @@
 				0628E4B9125A361E00B9255B /* RPLogLine.m */,
 				026DF5F1126EDB4E005466CF /* RPRubyTraceLogReader.h */,
 				026DF5F2126EDB4E005466CF /* RPRubyTraceLogReader.m */,
-				025680F112831AF5000BF1DF /* RTApplicationDelegate.h */,
-				025680F212831AF5000BF1DF /* RTApplicationDelegate.m */,
+				025680F112831AF5000BF1DF /* RPApplicationDelegate.h */,
+				025680F212831AF5000BF1DF /* RPApplicationDelegate.m */,
 				0227EC06128ACDAE0053012B /* RPURLLoaderController.h */,
 				0227EC07128ACDAE0053012B /* RPURLLoaderController.m */,
 			);
@@ -226,7 +226,7 @@
 				0628E06D125396DB00B9255B /* RPDTraceLogReader.m in Sources */,
 				0628E4BA125A361E00B9255B /* RPLogLine.m in Sources */,
 				026DF5F3126EDB4E005466CF /* RPRubyTraceLogReader.m in Sources */,
-				025680F312831AF5000BF1DF /* RTApplicationDelegate.m in Sources */,
+				025680F312831AF5000BF1DF /* RPApplicationDelegate.m in Sources */,
 				0227EC08128ACDAE0053012B /* RPURLLoaderController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
