@@ -62,7 +62,6 @@
             //NSLog(@"%@", line);
             RPLogLine* parsedLine  = [self parseLine:line]; 
             if (parsedLine) {
-                parsedLine.time = 1;
                 parsedLine.stackDepth = [lines count];
                 [lines addObject:parsedLine];
             } else if ([lines count] > 0) {
@@ -93,7 +92,6 @@
 	parsedLine.logLine = line;
 	parsedLine.threadId = [[components objectAtIndex:0] integerValue];
 	parsedLine.time = [[components objectAtIndex:1] integerValue];
-	//NSLog(@"time : %ld", parsedLine.time);
 	parsedLine.fileName = [components objectAtIndex:2];
 	parsedLine.fileLine = [[components objectAtIndex:3] integerValue];
 	parsedLine.file = [NSString stringWithFormat:@"%@:%d", parsedLine.fileName, parsedLine.fileLine];
