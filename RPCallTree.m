@@ -135,7 +135,7 @@ NSLog(@"test");
 		[self addCallDetailsForFile:fileNameNumber time:[[callTreeToAdd.callDetails objectForKey:fileNameNumber] doubleValue]];
 	}
     if (bottomUp) {
-    	if (callTreeToAdd.parent) {
+    	if (callTreeToAdd.parent.symbolId) {
 			[[self subTreeForSymbolId:callTreeToAdd.parent.symbolId] addCallTreeInfo:callTreeToAdd.parent bottomUp:bottomUp time:time];
         }
     } else {
