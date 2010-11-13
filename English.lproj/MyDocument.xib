@@ -11,7 +11,7 @@
 			<string key="NS.object.0">804</string>
 		</object>
 		<array class="NSMutableArray" key="IBDocument.EditedObjectIDs">
-			<integer value="6"/>
+			<integer value="100021"/>
 		</array>
 		<array key="IBDocument.PluginDependencies">
 			<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
@@ -103,7 +103,7 @@
 														</object>
 													</object>
 													<object class="NSTextFieldCell" key="NSDataCell" id="370969556">
-														<int key="NSCellFlags">337772096</int>
+														<int key="NSCellFlags">67239488</int>
 														<int key="NSCellFlags2">133120</int>
 														<string key="NSContents">Text Cell</string>
 														<reference key="NSSupport" ref="26"/>
@@ -126,7 +126,6 @@
 													</object>
 													<int key="NSResizingMask">2</int>
 													<bool key="NSIsResizeable">YES</bool>
-													<bool key="NSIsEditable">YES</bool>
 													<reference key="NSTableView" ref="146707959"/>
 												</object>
 												<object class="NSTableColumn" id="294406837">
@@ -146,7 +145,7 @@
 														<reference key="NSTextColor" ref="775235104"/>
 													</object>
 													<object class="NSTextFieldCell" key="NSDataCell" id="472070789">
-														<int key="NSCellFlags">337772096</int>
+														<int key="NSCellFlags">67239488</int>
 														<int key="NSCellFlags2">133120</int>
 														<string key="NSContents">Text Cell</string>
 														<reference key="NSSupport" ref="26"/>
@@ -156,7 +155,6 @@
 													</object>
 													<int key="NSResizingMask">2</int>
 													<bool key="NSIsResizeable">YES</bool>
-													<bool key="NSIsEditable">YES</bool>
 													<reference key="NSTableView" ref="146707959"/>
 												</object>
 												<object class="NSTableColumn" id="840989371">
@@ -173,7 +171,7 @@
 														<reference key="NSTextColor" ref="775235104"/>
 													</object>
 													<object class="NSTextFieldCell" key="NSDataCell" id="692412151">
-														<int key="NSCellFlags">337772096</int>
+														<int key="NSCellFlags">67239488</int>
 														<int key="NSCellFlags2">133120</int>
 														<string key="NSContents">Text Cell</string>
 														<reference key="NSSupport" ref="26"/>
@@ -183,7 +181,6 @@
 													</object>
 													<int key="NSResizingMask">2</int>
 													<bool key="NSIsResizeable">YES</bool>
-													<bool key="NSIsEditable">YES</bool>
 													<reference key="NSTableView" ref="146707959"/>
 												</object>
 												<object class="NSTableColumn" id="533589809">
@@ -210,7 +207,6 @@
 													</object>
 													<int key="NSResizingMask">2</int>
 													<bool key="NSIsResizeable">YES</bool>
-													<bool key="NSIsEditable">YES</bool>
 													<reference key="NSTableView" ref="146707959"/>
 												</object>
 												<object class="NSTableColumn" id="703242563">
@@ -227,7 +223,7 @@
 														<reference key="NSTextColor" ref="775235104"/>
 													</object>
 													<object class="NSTextFieldCell" key="NSDataCell" id="503052263">
-														<int key="NSCellFlags">337772096</int>
+														<int key="NSCellFlags">69336641</int>
 														<int key="NSCellFlags2">132608</int>
 														<string key="NSContents">Text Cell</string>
 														<reference key="NSSupport" ref="26"/>
@@ -237,7 +233,6 @@
 													</object>
 													<int key="NSResizingMask">2</int>
 													<bool key="NSIsResizeable">YES</bool>
-													<bool key="NSIsEditable">YES</bool>
 													<reference key="NSTableView" ref="146707959"/>
 												</object>
 												<object class="NSTableColumn" id="630900500">
@@ -254,7 +249,7 @@
 														<reference key="NSTextColor" ref="775235104"/>
 													</object>
 													<object class="NSTextFieldCell" key="NSDataCell" id="669478275">
-														<int key="NSCellFlags">337772096</int>
+														<int key="NSCellFlags">69336641</int>
 														<int key="NSCellFlags2">133120</int>
 														<string key="NSContents">Text Cell</string>
 														<reference key="NSSupport" ref="26"/>
@@ -264,7 +259,6 @@
 													</object>
 													<int key="NSResizingMask">3</int>
 													<bool key="NSIsResizeable">YES</bool>
-													<bool key="NSIsEditable">YES</bool>
 													<reference key="NSTableView" ref="146707959"/>
 												</object>
 											</array>
@@ -729,6 +723,70 @@
 					</object>
 					<int key="connectionID">100151</int>
 				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">initialFirstResponder</string>
+						<reference key="source" ref="275939982"/>
+						<reference key="destination" ref="146707959"/>
+					</object>
+					<int key="connectionID">100152</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">nextKeyView</string>
+						<reference key="source" ref="568628114"/>
+						<reference key="destination" ref="487248742"/>
+					</object>
+					<int key="connectionID">100153</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">nextKeyView</string>
+						<reference key="source" ref="487248742"/>
+						<reference key="destination" ref="402746024"/>
+					</object>
+					<int key="connectionID">100154</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">nextKeyView</string>
+						<reference key="source" ref="402746024"/>
+						<reference key="destination" ref="441967953"/>
+					</object>
+					<int key="connectionID">100155</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">nextKeyView</string>
+						<reference key="source" ref="441967953"/>
+						<reference key="destination" ref="393000875"/>
+					</object>
+					<int key="connectionID">100156</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">nextKeyView</string>
+						<reference key="source" ref="393000875"/>
+						<reference key="destination" ref="604121045"/>
+					</object>
+					<int key="connectionID">100157</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">nextKeyView</string>
+						<reference key="source" ref="604121045"/>
+						<reference key="destination" ref="740399430"/>
+					</object>
+					<int key="connectionID">100158</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">nextKeyView</string>
+						<reference key="source" ref="740399430"/>
+						<reference key="destination" ref="146707959"/>
+					</object>
+					<int key="connectionID">100159</int>
+				</object>
 			</array>
 			<object class="IBMutableOrderedSet" key="objectRecords">
 				<array key="orderedObjects">
@@ -1003,6 +1061,7 @@
 				</object>
 				<string key="100022.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="100023.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
+				<string key="100024.CustomClassName">RPOutlineView</string>
 				<string key="100024.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="100025.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="100026.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
@@ -1049,10 +1108,18 @@
 			<nil key="activeLocalization"/>
 			<dictionary class="NSMutableDictionary" key="localizations"/>
 			<nil key="sourceID"/>
-			<int key="maxID">100151</int>
+			<int key="maxID">100159</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
+				<object class="IBPartialClassDescription">
+					<string key="className">RPOutlineView</string>
+					<string key="superclassName">NSOutlineView</string>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">RPOutlineView.h</string>
+					</object>
+				</object>
 				<object class="IBPartialClassDescription">
 					<string key="className">RPTraceDocument</string>
 					<string key="superclassName">NSDocument</string>

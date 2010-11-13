@@ -11,6 +11,7 @@
 		0227EC13128AF3A40053012B /* RPURLLoaderController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0227EC12128AF3A40053012B /* RPURLLoaderController.xib */; };
 		025680F312831AF5000BF1DF /* RPApplicationDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 025680F212831AF5000BF1DF /* RPApplicationDelegate.m */; };
 		026DF5F3126EDB4E005466CF /* RPRubyTraceLogReader.m in Sources */ = {isa = PBXBuildFile; fileRef = 026DF5F2126EDB4E005466CF /* RPRubyTraceLogReader.m */; };
+		02883BE4128F507F008E0AA4 /* RPOutlineView.m in Sources */ = {isa = PBXBuildFile; fileRef = 02883BE3128F507F008E0AA4 /* RPOutlineView.m */; };
 		0628E06A1253952A00B9255B /* RPCallTree.m in Sources */ = {isa = PBXBuildFile; fileRef = 0628E0691253952A00B9255B /* RPCallTree.m */; };
 		0628E06D125396DB00B9255B /* RPDTraceLogReader.m in Sources */ = {isa = PBXBuildFile; fileRef = 0628E06C125396DB00B9255B /* RPDTraceLogReader.m */; };
 		0628E4BA125A361E00B9255B /* RPLogLine.m in Sources */ = {isa = PBXBuildFile; fileRef = 0628E4B9125A361E00B9255B /* RPLogLine.m */; };
@@ -31,6 +32,8 @@
 		025680F212831AF5000BF1DF /* RPApplicationDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RPApplicationDelegate.m; sourceTree = "<group>"; };
 		026DF5F1126EDB4E005466CF /* RPRubyTraceLogReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RPRubyTraceLogReader.h; sourceTree = "<group>"; };
 		026DF5F2126EDB4E005466CF /* RPRubyTraceLogReader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RPRubyTraceLogReader.m; sourceTree = "<group>"; };
+		02883BE2128F507F008E0AA4 /* RPOutlineView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RPOutlineView.h; sourceTree = "<group>"; };
+		02883BE3128F507F008E0AA4 /* RPOutlineView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RPOutlineView.m; sourceTree = "<group>"; };
 		0628E0681253952900B9255B /* RPCallTree.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RPCallTree.h; sourceTree = "<group>"; };
 		0628E0691253952A00B9255B /* RPCallTree.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RPCallTree.m; sourceTree = "<group>"; };
 		0628E06B125396DB00B9255B /* RPDTraceLogReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RPDTraceLogReader.h; sourceTree = "<group>"; };
@@ -120,6 +123,8 @@
 				025680F212831AF5000BF1DF /* RPApplicationDelegate.m */,
 				0227EC06128ACDAE0053012B /* RPURLLoaderController.h */,
 				0227EC07128ACDAE0053012B /* RPURLLoaderController.m */,
+				02883BE2128F507F008E0AA4 /* RPOutlineView.h */,
+				02883BE3128F507F008E0AA4 /* RPOutlineView.m */,
 			);
 			name = Classes;
 			sourceTree = "<group>";
@@ -228,6 +233,7 @@
 				026DF5F3126EDB4E005466CF /* RPRubyTraceLogReader.m in Sources */,
 				025680F312831AF5000BF1DF /* RPApplicationDelegate.m in Sources */,
 				0227EC08128ACDAE0053012B /* RPURLLoaderController.m in Sources */,
+				02883BE4128F507F008E0AA4 /* RPOutlineView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

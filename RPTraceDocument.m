@@ -10,7 +10,7 @@
 #import "RPCallTree.h"
 #import "RPDTraceLogReader.h"
 #import "RPRubyTraceLogReader.h"
-
+#import "RPOutlineView.h"
 
 
 @implementation RPTraceDocument
@@ -121,6 +121,7 @@
     	[focusUpFunctionButton setHidden:YES];
     }
     [infoTextField setStringValue:[NSString stringWithFormat:@"%d stacks", self.stackCount]];
+    mainOutlineView.columnIdentifierForCopy = @"file";
 }
 
 - (void)updateTimeFormatter
@@ -325,6 +326,11 @@
     	result = [item symbol];
     }
     return result;
+}
+
+- (void)copy:(id)sender
+{
+	NSLog(@"test");
 }
 
 - (void)outlineViewSelectionDidChange:(NSNotification *)notification;

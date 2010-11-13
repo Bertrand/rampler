@@ -9,7 +9,7 @@
 
 #import <Cocoa/Cocoa.h>
 
-@class RPCallTree;
+@class RPCallTree, RPOutlineView;
 
 
 @interface RPTraceDocument : NSDocument
@@ -19,7 +19,7 @@
 	RPCallTree* displayRoot;
 	
 	IBOutlet NSNumberFormatter* percentFormatter;
-	IBOutlet NSOutlineView* mainOutlineView;
+	IBOutlet RPOutlineView* mainOutlineView;
     IBOutlet NSButton* focusButton;
     IBOutlet NSButton* focusDownFunctionButton;
     IBOutlet NSButton* focusUpFunctionButton;
@@ -34,7 +34,7 @@
 @property (nonatomic, retain) RPCallTree* root;
 @property (nonatomic, retain) RPCallTree* displayRoot;
 @property (nonatomic, assign) NSNumberFormatter* percentFormatter;
-@property (nonatomic, assign) NSOutlineView* mainOutlineView;;
+@property (nonatomic, assign) RPOutlineView* mainOutlineView;;
 @property (nonatomic, assign) BOOL displayTimeUnitAsPercentOfTotal;
 @property (nonatomic, assign) BOOL hideInsignificantCalls;
 @property (nonatomic, retain) RPTraceDocument *mainDocument;
