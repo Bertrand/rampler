@@ -19,7 +19,7 @@
 @synthesize percentFormatter;
 @synthesize displayTimeUnitAsPercentOfTotal;
 @synthesize mainOutlineView;
-
+@synthesize mainDocument;
 
 - (id)init
 {
@@ -34,6 +34,7 @@
 {
 	self.root = nil;
 	self.displayRoot = nil;
+    self.mainDocument = nil;
 	[super dealloc];
 }
 
@@ -113,6 +114,10 @@
 - (void)awakeFromNib
 {
 	[self updateTimeFormatter];
+    if (self.mainDocument) {
+    	[focusDownFunctionButton setHidden:YES];
+    	[focusUpFunctionButton setHidden:YES];
+    }
 }
 
 - (void)updateTimeFormatter
@@ -239,6 +244,11 @@
     	selectedCallTree = [mainOutlineView itemAtRow:selectedRow];
 		newDocument = [[RPTraceDocument alloc] initWithType:@"Ruby trace" error:nil];
 		newDocument.root = [root topDownCallTreeForSymbolId:selectedCallTree.symbolId];
+        if (self.mainDocument) {
+	        newDocument.mainDocument = self.mainDocument;
+        } else {
+        	newDocument.mainDocument = self;
+        }
 		[[NSDocumentController sharedDocumentController] addDocument:newDocument];
 		[newDocument makeWindowControllers];
 		[newDocument showWindows];
@@ -258,6 +268,11 @@
     	selectedCallTree = [mainOutlineView itemAtRow:selectedRow];
 		newDocument = [[RPTraceDocument alloc] initWithType:@"Ruby trace" error:nil];
 		newDocument.root = [root bottomUpCallTreeForSymbolId:selectedCallTree.symbolId];
+        if (self.mainDocument) {
+	        newDocument.mainDocument = self.mainDocument;
+        } else {
+        	newDocument.mainDocument = self;
+        }
 		[[NSDocumentController sharedDocumentController] addDocument:newDocument];
 		[newDocument makeWindowControllers];
 		[newDocument showWindows];

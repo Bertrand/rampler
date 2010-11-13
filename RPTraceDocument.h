@@ -23,8 +23,11 @@
     IBOutlet NSButton* focusDownFunctionButton;
     IBOutlet NSButton* focusUpFunctionButton;
     IBOutlet NSButton* hottestSubpathButton;
+    IBOutlet NSTextField* infoTextField;
 	BOOL displayTimeUnitAsPercentOfTotal;
     BOOL hideInsignificantCalls;
+    
+    RPTraceDocument *mainDocument;
 }
 
 @property (nonatomic, retain) RPCallTree* root;
@@ -33,6 +36,7 @@
 @property (nonatomic, assign) NSOutlineView* mainOutlineView;;
 @property (nonatomic, assign) BOOL displayTimeUnitAsPercentOfTotal;
 @property (nonatomic, assign) BOOL hideInsignificantCalls;
+@property (nonatomic, retain) RPTraceDocument *mainDocument;
 
 - (IBAction)focusButtonAction:(id)sender;
 - (IBAction)followHottestSubpath:(id)sender;
