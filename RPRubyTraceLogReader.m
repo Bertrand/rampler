@@ -35,6 +35,13 @@
 	return self;
 }
 
+- (void)dealloc
+{
+	self.stacks = nil;
+    self.infoDescription = nil;
+	[super dealloc];
+}
+
 - (void) readData
 {
 	NSInteger currentPos = 0;
