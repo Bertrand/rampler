@@ -166,6 +166,11 @@
 	return [root autorelease];
 }
 
+- (NSInteger)stackCount
+{
+	NSAssert(NO, @"not implemented");
+	return 0;
+}
 
 
 @end

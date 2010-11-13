@@ -14,6 +14,7 @@
 
 @interface RPTraceDocument : NSDocument
 {
+	NSInteger stackCount;
 	RPCallTree* root;
 	RPCallTree* displayRoot;
 	
@@ -37,6 +38,7 @@
 @property (nonatomic, assign) BOOL displayTimeUnitAsPercentOfTotal;
 @property (nonatomic, assign) BOOL hideInsignificantCalls;
 @property (nonatomic, retain) RPTraceDocument *mainDocument;
+@property (nonatomic, assign) NSInteger stackCount;
 
 - (IBAction)focusButtonAction:(id)sender;
 - (IBAction)followHottestSubpath:(id)sender;

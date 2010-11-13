@@ -146,4 +146,9 @@
 	return callTree;
 }
 
+- (NSInteger)stackCount
+{
+	return [stacks count];
+}
+
 @end

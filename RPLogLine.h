@@ -12,12 +12,14 @@
 @class RPLogLine;
 
 @protocol RPLogReader <NSObject>
+
 - (NSInteger)logLineNumber;
 - (void)setLogLineNumber:(NSInteger)logLineNumber;
 - (NSData*)data;
 - (void)setData:(NSData*)data;
 - (BOOL)eof;
 - (void)setEof:(BOOL)eof;
+- (NSInteger)stackCount;
 
 - (RPCallTree*)callTree;
 @end

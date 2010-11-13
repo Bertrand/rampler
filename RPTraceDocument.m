@@ -20,6 +20,7 @@
 @synthesize displayTimeUnitAsPercentOfTotal;
 @synthesize mainOutlineView;
 @synthesize mainDocument;
+@synthesize stackCount;
 
 - (id)init
 {
@@ -87,6 +88,7 @@
 		reader = [[RPRubyTraceLogReader alloc] initWithData:data];
 	}
 	self.root = [reader callTree];
+    self.stackCount = [reader stackCount];
 	[reader release];
 	
     // Insert code here to read your document from the given data of the specified type.  If the given outError != NULL, ensure that you set *outError when returning NO.
@@ -118,6 +120,7 @@
     	[focusDownFunctionButton setHidden:YES];
     	[focusUpFunctionButton setHidden:YES];
     }
+    [infoTextField setStringValue:[NSString stringWithFormat:@"%d stacks", self.stackCount]];
 }
 
 - (void)updateTimeFormatter
@@ -249,6 +252,7 @@
         } else {
         	newDocument.mainDocument = self;
         }
+        newDocument.stackCount = self.stackCount;
 		[[NSDocumentController sharedDocumentController] addDocument:newDocument];
 		[newDocument makeWindowControllers];
 		[newDocument showWindows];
@@ -273,6 +277,7 @@
         } else {
         	newDocument.mainDocument = self;
         }
+        newDocument.stackCount = self.stackCount;
 		[[NSDocumentController sharedDocumentController] addDocument:newDocument];
 		[newDocument makeWindowControllers];
 		[newDocument showWindows];
