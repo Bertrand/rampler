@@ -19,7 +19,7 @@
 	NSModalSession _urlOpenerSession;
 }
 
-- (BOOL)openURL:(NSURL *)url;
+- (BOOL)openURL:(NSURL *)url withInterval:(UInt32)interval;
 
 - (IBAction)openURLAction:(id)sender;
 - (IBAction)closeURLOpenerAction:(id)sender;
