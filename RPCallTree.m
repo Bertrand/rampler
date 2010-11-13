@@ -67,6 +67,9 @@
 		subTree.symbolId = symId;
 
 
+if (!symId) {
+NSLog(@"test");
+}
 		[self.subTrees setObject:subTree forKey:symId];
 		[subTree release];
 	} else {
@@ -110,7 +113,7 @@
 	[number release];
 }
 
-- (void)addCallTreeInfo:(RPCallTree *)callTreeToAdd
+- (void)addCallTreeInfo:(RPCallTree *)callTreeToAdd bottomUp:(BOOL)bottomUp time:(float)time
 {
 	NSAssert([self.symbolId isEqualToString:callTreeToAdd.symbolId], @"symbol id are not identical %@ %@", self.symbolId, callTreeToAdd.symbolId);
 	self.callCount += callTreeToAdd.callCount;
@@ -120,16 +123,26 @@
 	if (!self.file) {
 		self.file = callTreeToAdd.file;
 	}
-	self.totalTime += callTreeToAdd.totalTime;
+    if (bottomUp) {
+		self.totalTime += time;
+    } else {
+		self.totalTime += callTreeToAdd.totalTime;
+    }
 	if (self.startLine == 0) {
 		self.startLine = callTreeToAdd.startLine;
 	}
 	for (NSString *fileNameNumber in [callTreeToAdd.callDetails allKeys]) {
 		[self addCallDetailsForFile:fileNameNumber time:[[callTreeToAdd.callDetails objectForKey:fileNameNumber] doubleValue]];
 	}
-	for (RPCallTree *child in callTreeToAdd.children) {
-		[[self subTreeForSymbolId:child.symbolId] addCallTreeInfo:child];
-	}
+    if (bottomUp) {
+    	if (callTreeToAdd.parent) {
+			[[self subTreeForSymbolId:callTreeToAdd.parent.symbolId] addCallTreeInfo:callTreeToAdd.parent bottomUp:bottomUp time:time];
+        }
+    } else {
+		for (RPCallTree *child in callTreeToAdd.children) {
+			[[self subTreeForSymbolId:child.symbolId] addCallTreeInfo:child bottomUp:bottomUp time:time];
+		}
+    }
 }
 
 - (NSArray *)allCallTreeForSymbolId:(NSString *)searchSymbolId withRecursiveCall:(BOOL)recursive
@@ -173,7 +186,26 @@
 		RPCallTree *mergedCallTree;
 		
 		mergedCallTree = [result subTreeForSymbolId:current.symbolId];
-		[mergedCallTree addCallTreeInfo:current];
+		[mergedCallTree addCallTreeInfo:current bottomUp:NO time:0];
+	}
+	[result freeze];
+	return [result autorelease];
+}
+
+- (RPCallTree *)bottomUpCallTreeForSymbolId:(NSString *)functionSymbolId
+{
+	RPCallTree *result;
+	NSArray *allCallTrees;
+	
+	result = [[RPCallTree alloc] init];
+	result.symbolId = functionSymbolId;
+	result.file = @"-";
+	allCallTrees = [self allCallTreeForSymbolId:functionSymbolId withRecursiveCall:NO];
+	for (RPCallTree *current in allCallTrees) {
+		RPCallTree *mergedCallTree;
+		
+		mergedCallTree = [result subTreeForSymbolId:current.symbolId];
+		[mergedCallTree addCallTreeInfo:current bottomUp:YES time:current.totalTime];
 	}
 	[result freeze];
 	return [result autorelease];

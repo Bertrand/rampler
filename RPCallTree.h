@@ -50,5 +50,6 @@
 
 - (void)addCallDetailsForFile:(NSString *)file time:(double)valueToAdd;
 - (RPCallTree *)topDownCallTreeForSymbolId:(NSString *)symbolId;
+- (RPCallTree *)bottomUpCallTreeForSymbolId:(NSString *)functionSymbolId;
 
 @end

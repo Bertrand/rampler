@@ -445,9 +445,29 @@
 							<object class="NSButtonCell" key="NSCell" id="26221491">
 								<int key="NSCellFlags">-1543373312</int>
 								<int key="NSCellFlags2">134348800</int>
-								<string key="NSContents">Focus on function</string>
+								<string key="NSContents">Focus down on function</string>
 								<reference key="NSSupport" ref="26"/>
 								<reference key="NSControlView" ref="604121045"/>
+								<int key="NSButtonFlags">-2038152961</int>
+								<int key="NSButtonFlags2">164</int>
+								<string key="NSAlternateContents"/>
+								<string key="NSKeyEquivalent"/>
+								<int key="NSPeriodicDelay">400</int>
+								<int key="NSPeriodicInterval">75</int>
+							</object>
+						</object>
+						<object class="NSButton" id="740399430">
+							<reference key="NSNextResponder" ref="568628114"/>
+							<int key="NSvFlags">268</int>
+							<string key="NSFrame">{{20, 377}, {154, 17}}</string>
+							<reference key="NSSuperview" ref="568628114"/>
+							<bool key="NSEnabled">YES</bool>
+							<object class="NSButtonCell" key="NSCell" id="328670107">
+								<int key="NSCellFlags">-1543373312</int>
+								<int key="NSCellFlags2">134348800</int>
+								<string key="NSContents">Focus up on function</string>
+								<reference key="NSSupport" ref="26"/>
+								<reference key="NSControlView" ref="740399430"/>
 								<int key="NSButtonFlags">-2038152961</int>
 								<int key="NSButtonFlags2">164</int>
 								<string key="NSAlternateContents"/>
@@ -649,20 +669,36 @@
 					<int key="connectionID">100138</int>
 				</object>
 				<object class="IBConnectionRecord">
-					<object class="IBActionConnection" key="connection">
-						<string key="label">focusFunctionButtonAction:</string>
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">focusDownFunctionButton</string>
 						<reference key="source" ref="512844837"/>
 						<reference key="destination" ref="604121045"/>
 					</object>
-					<int key="connectionID">100141</int>
+					<int key="connectionID">100145</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBOutletConnection" key="connection">
-						<string key="label">focusFunctionButton</string>
+						<string key="label">focusUpFunctionButton</string>
+						<reference key="source" ref="512844837"/>
+						<reference key="destination" ref="740399430"/>
+					</object>
+					<int key="connectionID">100146</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBActionConnection" key="connection">
+						<string key="label">focusDownFunctionButtonAction:</string>
 						<reference key="source" ref="512844837"/>
 						<reference key="destination" ref="604121045"/>
 					</object>
-					<int key="connectionID">100142</int>
+					<int key="connectionID">100147</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBActionConnection" key="connection">
+						<string key="label">focusUpFunctionButtonAction:</string>
+						<reference key="source" ref="512844837"/>
+						<reference key="destination" ref="740399430"/>
+					</object>
+					<int key="connectionID">100148</int>
 				</object>
 			</array>
 			<object class="IBMutableOrderedSet" key="objectRecords">
@@ -704,6 +740,7 @@
 							<reference ref="441967953"/>
 							<reference ref="393000875"/>
 							<reference ref="604121045"/>
+							<reference ref="740399430"/>
 						</array>
 						<reference key="parent" ref="275939982"/>
 					</object>
@@ -900,6 +937,19 @@
 						<reference key="object" ref="26221491"/>
 						<reference key="parent" ref="604121045"/>
 					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">100143</int>
+						<reference key="object" ref="740399430"/>
+						<array class="NSMutableArray" key="children">
+							<reference ref="328670107"/>
+						</array>
+						<reference key="parent" ref="568628114"/>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">100144</int>
+						<reference key="object" ref="328670107"/>
+						<reference key="parent" ref="740399430"/>
+					</object>
 				</array>
 			</object>
 			<dictionary class="NSMutableDictionary" key="flattenedProperties">
@@ -938,9 +988,11 @@
 				<string key="100136.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="100139.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="100140.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
-				<string key="5.IBEditorWindowLastContentRect">{{191, 516}, {919, 577}}</string>
+				<string key="100143.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
+				<string key="100144.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
+				<string key="5.IBEditorWindowLastContentRect">{{191, 279}, {919, 577}}</string>
 				<string key="5.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
-				<string key="5.IBWindowTemplateEditedContentRect">{{191, 516}, {919, 577}}</string>
+				<string key="5.IBWindowTemplateEditedContentRect">{{191, 279}, {919, 577}}</string>
 				<integer value="1" key="5.ImportedFromIB2"/>
 				<string key="5.editorWindowContentRectSynchronizationRect">{{201, 387}, {507, 413}}</string>
 				<integer value="1" key="5.windowTemplate.hasMinSize"/>
@@ -952,7 +1004,7 @@
 			<nil key="activeLocalization"/>
 			<dictionary class="NSMutableDictionary" key="localizations"/>
 			<nil key="sourceID"/>
-			<int key="maxID">100142</int>
+			<int key="maxID">100148</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -961,7 +1013,8 @@
 					<string key="superclassName">NSDocument</string>
 					<dictionary class="NSMutableDictionary" key="actions">
 						<string key="focusButtonAction:">id</string>
-						<string key="focusFunctionButtonAction:">id</string>
+						<string key="focusDownFunctionButtonAction:">id</string>
+						<string key="focusUpFunctionButtonAction:">id</string>
 						<string key="followHottestSubpath:">id</string>
 					</dictionary>
 					<dictionary class="NSMutableDictionary" key="actionInfosByName">
@@ -969,8 +1022,12 @@
 							<string key="name">focusButtonAction:</string>
 							<string key="candidateClassName">id</string>
 						</object>
-						<object class="IBActionInfo" key="focusFunctionButtonAction:">
-							<string key="name">focusFunctionButtonAction:</string>
+						<object class="IBActionInfo" key="focusDownFunctionButtonAction:">
+							<string key="name">focusDownFunctionButtonAction:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="focusUpFunctionButtonAction:">
+							<string key="name">focusUpFunctionButtonAction:</string>
 							<string key="candidateClassName">id</string>
 						</object>
 						<object class="IBActionInfo" key="followHottestSubpath:">
@@ -980,7 +1037,8 @@
 					</dictionary>
 					<dictionary class="NSMutableDictionary" key="outlets">
 						<string key="focusButton">NSButton</string>
-						<string key="focusFunctionButton">NSButton</string>
+						<string key="focusDownFunctionButton">NSButton</string>
+						<string key="focusUpFunctionButton">NSButton</string>
 						<string key="hottestSubpathButton">NSButton</string>
 						<string key="mainOutlineView">NSOutlineView</string>
 						<string key="percentFormatter">NSNumberFormatter</string>
@@ -990,8 +1048,12 @@
 							<string key="name">focusButton</string>
 							<string key="candidateClassName">NSButton</string>
 						</object>
-						<object class="IBToOneOutletInfo" key="focusFunctionButton">
-							<string key="name">focusFunctionButton</string>
+						<object class="IBToOneOutletInfo" key="focusDownFunctionButton">
+							<string key="name">focusDownFunctionButton</string>
+							<string key="candidateClassName">NSButton</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="focusUpFunctionButton">
+							<string key="name">focusUpFunctionButton</string>
 							<string key="candidateClassName">NSButton</string>
 						</object>
 						<object class="IBToOneOutletInfo" key="hottestSubpathButton">

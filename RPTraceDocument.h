@@ -20,7 +20,8 @@
 	IBOutlet NSNumberFormatter* percentFormatter;
 	IBOutlet NSOutlineView* mainOutlineView;
     IBOutlet NSButton* focusButton;
-    IBOutlet NSButton* focusFunctionButton;
+    IBOutlet NSButton* focusDownFunctionButton;
+    IBOutlet NSButton* focusUpFunctionButton;
     IBOutlet NSButton* hottestSubpathButton;
 	BOOL displayTimeUnitAsPercentOfTotal;
     BOOL hideInsignificantCalls;
@@ -35,7 +36,8 @@
 
 - (IBAction)focusButtonAction:(id)sender;
 - (IBAction)followHottestSubpath:(id)sender;
-- (IBAction)focusFunctionButtonAction:(id)sender;
+- (IBAction)focusDownFunctionButtonAction:(id)sender;
+- (IBAction)focusUpFunctionButtonAction:(id)sender;
 - (void)updateTimeFormatter;
 
 @end

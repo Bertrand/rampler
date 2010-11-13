@@ -227,7 +227,7 @@
     [self expandAndSelectCallTree:callTreeToSelect];
 }
 
-- (IBAction)focusFunctionButtonAction:(id)sender
+- (IBAction)focusDownFunctionButtonAction:(id)sender;
 {
 	NSInteger selectedRow;
 	
@@ -245,6 +245,26 @@
 		[newDocument release];
 	}
 }
+
+- (IBAction)focusUpFunctionButtonAction:(id)sender
+{
+	NSInteger selectedRow;
+	
+    selectedRow = [mainOutlineView selectedRow];
+    if (selectedRow != -1) {
+		RPTraceDocument *newDocument;
+		RPCallTree *selectedCallTree;
+		
+    	selectedCallTree = [mainOutlineView itemAtRow:selectedRow];
+		newDocument = [[RPTraceDocument alloc] initWithType:@"Ruby trace" error:nil];
+		newDocument.root = [root bottomUpCallTreeForSymbolId:selectedCallTree.symbolId];
+		[[NSDocumentController sharedDocumentController] addDocument:newDocument];
+		[newDocument makeWindowControllers];
+		[newDocument showWindows];
+		[newDocument release];
+	}
+}
+
 
 - (id)outlineView:(NSOutlineView *)outlineView child:(NSInteger)index ofItem:(id)item
 {
@@ -292,12 +312,14 @@
 	if ([mainOutlineView selectedRow] == -1) {
 		[focusButton setTitle:@"Unfocus"];
         [focusButton setEnabled:root != displayRoot];
-        [focusFunctionButton setEnabled:NO];
+        [focusDownFunctionButton setEnabled:NO];
+        [focusUpFunctionButton setEnabled:NO];
         [hottestSubpathButton setEnabled:NO];
     } else {
 		[focusButton setTitle:@"Focus"];
         [focusButton setEnabled:YES];
-        [focusFunctionButton setEnabled:YES];
+        [focusDownFunctionButton setEnabled:YES];
+        [focusUpFunctionButton setEnabled:YES];
         [hottestSubpathButton setEnabled:YES];
     }
 }
