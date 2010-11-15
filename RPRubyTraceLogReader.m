@@ -149,15 +149,17 @@
 	for (NSArray *lines in stacks) {
 		RPCallTree *current;
 		RPLogLine *line;
+		NSInteger sampleCount;
 		
-		callTree.sampleCount++;
+		sampleCount = [[lines objectAtIndex:0] time] / self.interval / 1000000.0;
+		callTree.sampleCount += sampleCount;
 		current = callTree;
 		for (line in lines) {
 			current = [current subTreeForSymbolId:line.symbolId];
 			if (current.symbol !=  nil && ![current.symbol isEqualToString:line.symbol]) {
 				NSLog(@"++ %@ ++ %@ ++ %@", current.symbol, line.symbol, line.symbolId);
 			}
-			current.sampleCount++;
+			current.sampleCount += sampleCount;
 			current.thread = line.threadId;
 			current.stackDepth = line.stackDepth;
 			current.startLine = line.logLineNumber;
