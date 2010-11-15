@@ -147,7 +147,11 @@
     	[focusDownFunctionButton setHidden:YES];
     	[focusUpFunctionButton setHidden:YES];
     }
-    [infoTextField setStringValue:[NSString stringWithFormat:@"%d stacks / %.2fms", root.stackTraceCount, self.interval * 1000.0]];
+	if (self.mainDocument) {
+	    [infoTextField setStringValue:[NSString stringWithFormat:@"%d stacks (%.2f%%) / %.2fms", root.stackTraceCount, (double)(self.root.totalTime / self.mainDocument.root.totalTime * 100.0), self.interval * 1000.0]];
+	} else {
+	    [infoTextField setStringValue:[NSString stringWithFormat:@"%d stacks / %.2fms", root.stackTraceCount, self.interval * 1000.0]];
+	}
 	[infoTextField setToolTip:self.version];
 	[urlTextField setStringValue:[self.url absoluteString]];
 	[urlTextField setToolTip:[self.url absoluteString]];
