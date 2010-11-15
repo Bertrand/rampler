@@ -76,6 +76,19 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0278E017129132A000EB8C68 /* Log Reader */ = {
+			isa = PBXGroup;
+			children = (
+				0628E4B8125A361E00B9255B /* RPLogLine.h */,
+				0628E4B9125A361E00B9255B /* RPLogLine.m */,
+				0628E06B125396DB00B9255B /* RPDTraceLogReader.h */,
+				0628E06C125396DB00B9255B /* RPDTraceLogReader.m */,
+				026DF5F1126EDB4E005466CF /* RPRubyTraceLogReader.h */,
+				026DF5F2126EDB4E005466CF /* RPRubyTraceLogReader.m */,
+			);
+			name = "Log Reader";
+			sourceTree = "<group>";
+		};
 		1058C7A6FEA54F5311CA2CBB /* Linked Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -122,12 +135,7 @@
 				2A37F4ACFDCFA73011CA2CEA /* RPTraceDocument.m */,
 				0628E0681253952900B9255B /* RPCallTree.h */,
 				0628E0691253952A00B9255B /* RPCallTree.m */,
-				0628E06B125396DB00B9255B /* RPDTraceLogReader.h */,
-				0628E06C125396DB00B9255B /* RPDTraceLogReader.m */,
-				0628E4B8125A361E00B9255B /* RPLogLine.h */,
-				0628E4B9125A361E00B9255B /* RPLogLine.m */,
-				026DF5F1126EDB4E005466CF /* RPRubyTraceLogReader.h */,
-				026DF5F2126EDB4E005466CF /* RPRubyTraceLogReader.m */,
+				0278E017129132A000EB8C68 /* Log Reader */,
 				025680F112831AF5000BF1DF /* RPApplicationDelegate.h */,
 				025680F212831AF5000BF1DF /* RPApplicationDelegate.m */,
 				0227EC06128ACDAE0053012B /* RPURLLoaderController.h */,
