@@ -14,7 +14,6 @@
 
 @interface RPTraceDocument()
 @property (nonatomic, retain) RPTraceDocument *mainDocument;
-@property (nonatomic, assign) NSInteger stackCount;
 @property (nonatomic, retain) NSString *version;
 
 @end
@@ -27,7 +26,6 @@
 @synthesize displayTimeUnitAsPercentOfTotal;
 @synthesize mainOutlineView;
 @synthesize mainDocument;
-@synthesize stackCount;
 @synthesize version;
 
 - (id)init
@@ -48,11 +46,10 @@
 	[super dealloc];
 }
 
-- (void)loadWithMainDocument:(RPTraceDocument *)document root:(RPCallTree *)newRoot stackCount:(NSInteger)newStackCount version:(NSString *)newVersion
+- (void)loadWithMainDocument:(RPTraceDocument *)document root:(RPCallTree *)newRoot version:(NSString *)newVersion
 {
 	self.mainDocument = document;
 	self.root = newRoot;
-	self.stackCount = newStackCount;
 	self.version = newVersion;
 }
 
@@ -105,7 +102,6 @@
 		reader = [[RPRubyTraceLogReader alloc] initWithData:data];
 	}
 	self.root = [reader callTree];
-    self.stackCount = [reader stackCount];
 	self.version = [reader version];
 	[reader release];
 	
@@ -138,7 +134,7 @@
     	[focusDownFunctionButton setHidden:YES];
     	[focusUpFunctionButton setHidden:YES];
     }
-    [infoTextField setStringValue:[NSString stringWithFormat:@"%d stacks / %@", self.stackCount, self.version]];
+    [infoTextField setStringValue:[NSString stringWithFormat:@"%d stacks / %@", root.stackTraceCount, self.version]];
     mainOutlineView.columnIdentifierForCopy = @"file";
 }
 
@@ -254,32 +250,7 @@
     [self expandAndSelectCallTree:callTreeToSelect];
 }
 
-- (IBAction)focusDownFunctionButtonAction:(id)sender;
-{
-	NSInteger selectedRow;
-	
-    selectedRow = [mainOutlineView selectedRow];
-    if (selectedRow != -1) {
-		RPTraceDocument *newDocument;
-		RPCallTree *selectedCallTree;
-		
-    	selectedCallTree = [mainOutlineView itemAtRow:selectedRow];
-		newDocument = [[RPTraceDocument alloc] initWithType:@"Ruby trace" error:nil];
-		newDocument.root = [root topDownCallTreeForSymbolId:selectedCallTree.symbolId];
-        if (self.mainDocument) {
-	        newDocument.mainDocument = self.mainDocument;
-        } else {
-        	newDocument.mainDocument = self;
-        }
-        newDocument.stackCount = self.stackCount;
-		[[NSDocumentController sharedDocumentController] addDocument:newDocument];
-		[newDocument makeWindowControllers];
-		[newDocument showWindows];
-		[newDocument release];
-	}
-}
-
-- (IBAction)focusUpFunctionButtonAction:(id)sender
+- (void)openFocusOnSelectionWithTopDown:(BOOL)topDown
 {
 	NSInteger selectedRow;
 	
@@ -291,17 +262,31 @@
 		
     	selectedCallTree = [mainOutlineView itemAtRow:selectedRow];
 		newDocument = [[RPTraceDocument alloc] initWithType:@"Ruby trace" error:nil];
-		newRoot = [root bottomUpCallTreeForSymbolId:selectedCallTree.symbolId];
+		if (topDown) {
+			newRoot = [root topDownCallTreeForSymbolId:selectedCallTree.symbolId];
+		} else {
+			newRoot = [root bottomUpCallTreeForSymbolId:selectedCallTree.symbolId];
+		}
         if (self.mainDocument) {
-			[newDocument loadWithMainDocument:self.mainDocument root:newRoot stackCount:self.stackCount version:self.version];
+			[newDocument loadWithMainDocument:self.mainDocument root:newRoot version:self.version];
         } else {
-			[newDocument loadWithMainDocument:self root:newRoot stackCount:self.stackCount version:self.version];
+			[newDocument loadWithMainDocument:self root:newRoot version:self.version];
         }
 		[[NSDocumentController sharedDocumentController] addDocument:newDocument];
 		[newDocument makeWindowControllers];
 		[newDocument showWindows];
 		[newDocument release];
 	}
+}
+
+- (IBAction)focusDownFunctionButtonAction:(id)sender;
+{
+	[self openFocusOnSelectionWithTopDown:YES];
+}
+
+- (IBAction)focusUpFunctionButtonAction:(id)sender
+{
+	[self openFocusOnSelectionWithTopDown:NO];
 }
 
 
@@ -337,7 +322,7 @@
 	} else if ([[tableColumn identifier] isEqualToString:@"selfTime"]) {
     	result = [NSNumber numberWithFloat:[item selfTime]];
 	} else if ([[tableColumn identifier] isEqualToString:@"callCount"]) {
-    	result = [NSNumber numberWithInteger:[item callCount]];
+    	result = [NSNumber numberWithInteger:[item sampleCount]];
 	} else if ([[tableColumn identifier] isEqualToString:@"file"]) {
     	result = [item file];
 	} else if ([[tableColumn identifier] isEqualToString:@"symbol"]) {

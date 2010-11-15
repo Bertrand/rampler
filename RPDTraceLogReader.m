@@ -114,7 +114,7 @@
 	callTree.stackDepth = self.currentLine.stackDepth;
 	callTree.startLine = self.currentLine.logLineNumber;
 	callTree.symbol = self.currentLine.symbol;
-	callTree.callCount++;
+	callTree.sampleCount++;
 	
 	[self moveNextLine];
 
@@ -164,12 +164,6 @@
 	[self feedCallTree:root];
 	[root freeze];
 	return [root autorelease];
-}
-
-- (NSInteger)stackCount
-{
-	NSAssert(NO, @"not implemented");
-	return 0;
 }
 
 - (NSString *)version

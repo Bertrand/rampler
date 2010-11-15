@@ -11,7 +11,8 @@
 @interface RPCallTree : NSObject {
 	double		totalTime;
 	double		selfTime;
-	NSInteger	callCount;
+	NSInteger	sampleCount;
+	NSInteger   stackTraceCount;
 	
 	NSString*	symbol;
 	NSArray*	children;
@@ -39,7 +40,8 @@
 @property (nonatomic, retain)	NSMutableDictionary* subTrees;
 @property (nonatomic, retain)	NSArray* children;
 @property (nonatomic, assign)	NSInteger startLine;
-@property (nonatomic, assign)	NSInteger callCount;
+@property (nonatomic, assign)	NSInteger sampleCount;
+@property (nonatomic, assign)	NSInteger stackTraceCount;
 @property (nonatomic, assign)	NSMutableDictionary* callDetails;
 
 

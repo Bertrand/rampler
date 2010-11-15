@@ -20,7 +20,6 @@
 - (void)setData:(NSData*)data;
 - (BOOL)eof;
 - (void)setEof:(BOOL)eof;
-- (NSInteger)stackCount;
 
 - (RPCallTree*)callTree;
 @end

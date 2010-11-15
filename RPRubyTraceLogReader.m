@@ -141,13 +141,14 @@
 		RPCallTree *current;
 		RPLogLine *line;
 		
+		callTree.sampleCount++;
 		current = callTree;
 		for (line in lines) {
 			current = [current subTreeForSymbolId:line.symbolId];
 			if (current.symbol !=  nil && ![current.symbol isEqualToString:line.symbol]) {
 				NSLog(@"++ %@ ++ %@ ++ %@", current.symbol, line.symbol, line.symbolId);
 			}
-			current.callCount++;
+			current.sampleCount++;
 			current.thread = line.threadId;
 			current.stackDepth = line.stackDepth;
 			current.startLine = line.logLineNumber;
@@ -160,11 +161,6 @@
 	}
 	[callTree freeze];
 	return callTree;
-}
-
-- (NSInteger)stackCount
-{
-	return [stacks count];
 }
 
 @end

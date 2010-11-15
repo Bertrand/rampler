@@ -22,7 +22,8 @@
 @synthesize thread;
 @synthesize stackDepth;
 @synthesize startLine;
-@synthesize callCount;
+@synthesize sampleCount;
+@synthesize stackTraceCount;
 @synthesize callDetails;
 
 
@@ -66,10 +67,6 @@
 		subTree->parent = self;
 		subTree.symbolId = symId;
 
-
-if (!symId) {
-NSLog(@"test");
-}
 		[self.subTrees setObject:subTree forKey:symId];
 		[subTree release];
 	} else {
@@ -81,7 +78,9 @@ NSLog(@"test");
 
 - (void)freeze
 {
-	SInt64 subTreesTime = 0; 
+	double subTreesTime = 0; 
+	NSInteger sampleCountTest = 0;
+	
 	for (RPCallTree* subtree in [subTrees objectEnumerator])
 		subTreesTime += subtree.totalTime;
 
@@ -97,8 +96,19 @@ NSLog(@"test");
 	}
 	
 	self.children = [[self.subTrees allValues] sortedArrayUsingDescriptors:[self.class defaultSortDescriptor]];
+	self.stackTraceCount = 0;
 	for (RPCallTree* child in self.children) {
 		[child freeze];
+		self.stackTraceCount += child.stackTraceCount;
+		sampleCountTest += child.sampleCount;
+	}
+	if (self.stackTraceCount == 0) {
+		self.stackTraceCount = 1;
+	}
+	if (self.sampleCount == 0 && self.parent == nil) {
+		self.sampleCount = sampleCountTest;
+	} else if (self.sampleCount < sampleCountTest) {
+		NSLog(@"self.sampleCount %d sampleCountTest %d", self.sampleCount, sampleCountTest);
 	}
 }
 
@@ -116,7 +126,7 @@ NSLog(@"test");
 - (void)addCallTreeInfo:(RPCallTree *)callTreeToAdd bottomUp:(BOOL)bottomUp time:(float)time
 {
 	NSAssert([self.symbolId isEqualToString:callTreeToAdd.symbolId], @"symbol id are not identical %@ %@", self.symbolId, callTreeToAdd.symbolId);
-	self.callCount += callTreeToAdd.callCount;
+	self.sampleCount += callTreeToAdd.sampleCount;
 	if (!self.symbol) {
 		self.symbol = callTreeToAdd.symbol;
 	}
