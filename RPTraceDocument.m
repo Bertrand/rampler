@@ -136,6 +136,7 @@
     }
     [infoTextField setStringValue:[NSString stringWithFormat:@"%d stacks / %@", root.stackTraceCount, self.version]];
     mainOutlineView.columnIdentifierForCopy = @"file";
+	[mainOutlineView setDoubleAction:@selector(outlineDoubleAction:)];
 }
 
 - (void)updateTimeFormatter
@@ -220,6 +221,21 @@
     [parents release];
 }
 
+- (IBAction)outlineDoubleAction:(id)sender
+{
+	NSInteger selectedRow = [self.mainOutlineView selectedRow];
+	
+	if (selectedRow != -1) {
+		RPCallTree* selectedNode = [self.mainOutlineView itemAtRow:selectedRow];
+		
+		if ([mainOutlineView isItemExpanded:selectedNode]) {
+			[mainOutlineView collapseItem:selectedNode];
+		} else {
+			[self followHottestSubpath:nil];
+		}
+	}
+}
+
 - (IBAction)followHottestSubpath:(id)sender
 {
 	NSInteger selectedRow = [self.mainOutlineView selectedRow];
@@ -230,7 +246,6 @@
 		[self.mainOutlineView expandItem:hottestNode];
 		hottestNode = [[self childrenForCallTree:hottestNode] objectAtIndex:0];
 	}
-
 }
 
 - (IBAction)focusButtonAction:(id)sender
