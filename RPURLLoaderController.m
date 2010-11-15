@@ -9,18 +9,19 @@
 #import "RPURLLoaderController.h"
 #import "RPApplicationDelegate.h"
 
-NSURL *addParameter(NSURL *url, int interval)
+NSURL *addParameter(NSURL *url, double interval)
 {
 	NSURL *result = url;
 	NSArray *parts;
 	NSString *query = nil;
 	NSRange range = { NSNotFound, 0 };
+	NSInteger intervalInMicrosecond;
 	
-	if (interval < 1) {
-		interval = 1;
+	if (interval < MINI_INTERVAL) {
+		interval = MINI_INTERVAL;
 	}
 	// the time is received in ms, but the server receives it in micro seconds
-	interval = interval * 1000;
+	intervalInMicrosecond = interval * 1000000;
 	parts = [[url absoluteString] componentsSeparatedByString:@"?"];
 	if ([parts count] > 1) {
 		query = [parts objectAtIndex:1];
@@ -28,7 +29,7 @@ NSURL *addParameter(NSURL *url, int interval)
 	}
 	
 	if (range.location == NSNotFound) {
-		NSString *parameters = [NSString stringWithFormat:@"ruby_sanspleur=true&interval=%d", interval];
+		NSString *parameters = [NSString stringWithFormat:@"ruby_sanspleur=true&interval=%d", intervalInMicrosecond];
 		NSString *urlString;
 		
 		if (query) {

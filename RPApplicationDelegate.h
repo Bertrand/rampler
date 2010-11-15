@@ -21,7 +21,7 @@
 	RPWebViewController *webViewController;
 }
 
-- (BOOL)openURL:(NSURL *)url withInterval:(UInt32)interval;
+- (BOOL)openURL:(NSURL *)url withInterval:(double)interval;
 
 - (IBAction)openURLAction:(id)sender;
 - (IBAction)closeURLOpenerAction:(id)sender;

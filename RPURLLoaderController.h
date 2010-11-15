@@ -8,6 +8,7 @@
 
 #import <Cocoa/Cocoa.h>
 
+#define MINI_INTERVAL 0.00001
 
 @interface RPURLLoaderController : NSObject
 {
@@ -17,14 +18,14 @@
 	IBOutlet NSButton *_button;
 	
 	NSURL *_url;
-	UInt32 _interval;
+	double _interval;
 	NSURLConnection *_connection;
 	NSString *_fileName;
 	NSFileHandle *_fileHandle;
 }
 
 @property(nonatomic, retain) NSURL *url;
-@property(nonatomic, assign) UInt32 interval;
+@property(nonatomic, assign) double interval;
 @property(nonatomic, readonly) NSString *fileName;
 
 - (BOOL)start;

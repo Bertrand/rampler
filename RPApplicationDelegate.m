@@ -28,22 +28,23 @@
 	[[NSUserDefaults standardUserDefaults] setURL:url forKey:@"urlopen"];
 }
 
-- (UInt32)defaultIntervalValue
+- (double)defaultIntervalValue
 {
-	UInt32 result;
-    result = [[NSUserDefaults standardUserDefaults] integerForKey:@"interval"];
-    if (result <= 0) {
-    	result = 1;
+	double result;
+	
+    result = [[NSUserDefaults standardUserDefaults] doubleForKey:@"interval"];
+    if (result < MINI_INTERVAL) {
+    	result = MINI_INTERVAL;
     }
     return result;
 }
 
-- (void)setDefaultIntervalValue:(UInt32)interval
+- (void)setDefaultIntervalValue:(double)interval
 {
-	[[NSUserDefaults standardUserDefaults] setInteger:interval forKey:@"interval"];
+	[[NSUserDefaults standardUserDefaults] setDouble:interval forKey:@"interval"];
 }
 
-- (BOOL)openURL:(NSURL *)url withInterval:(UInt32)interval
+- (BOOL)openURL:(NSURL *)url withInterval:(double)interval
 {
 	RPURLLoaderController *urlLoader;
 	
@@ -57,7 +58,7 @@
 - (IBAction)openURLAction:(id)sender
 {
     [_urlTextField setStringValue:[[self defaultURLValue] absoluteString]];
-    [_intervalTextField setStringValue:[NSString stringWithFormat:@"%d", [self defaultIntervalValue]]];
+    [_intervalTextField setStringValue:[NSString stringWithFormat:@"%.2f", [self defaultIntervalValue] * 1000]];
 	_urlOpenerSession = [[NSApplication sharedApplication] beginModalSessionForWindow:_openURLDialog];
 	[[NSApplication sharedApplication] runModalSession:_urlOpenerSession];
 }
@@ -71,13 +72,13 @@
 - (IBAction)validURLOpenerAction:(id)sender
 {
 	NSURL *url;
-    UInt32 interval;
+    double interval;
     
 	[[NSApplication sharedApplication] endModalSession:_urlOpenerSession];
 	[_openURLDialog orderOut:nil];
 	
     url = [NSURL URLWithString:[_urlTextField stringValue]];
-    interval = [[_intervalTextField stringValue] intValue];
+    interval = [[_intervalTextField stringValue] doubleValue] / 1000.0;
 	[self openURL:url withInterval:interval];
     [self setDefaultURLValue:url];
     [self setDefaultIntervalValue:interval];
