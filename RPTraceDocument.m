@@ -328,11 +328,6 @@
     return result;
 }
 
-- (void)copy:(id)sender
-{
-	NSLog(@"test");
-}
-
 - (void)outlineViewSelectionDidChange:(NSNotification *)notification;
 {
 	if ([mainOutlineView selectedRow] == -1) {
