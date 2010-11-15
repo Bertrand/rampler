@@ -86,7 +86,7 @@
 									<string>public.url-name</string>
 								</object>
 							</object>
-							<string key="NSFrameSize">{601, 518}</string>
+							<string key="NSFrame">{{0, 13}, {601, 505}}</string>
 							<reference key="NSSuperview" ref="155316692"/>
 							<reference key="NSNextKeyView"/>
 							<string key="FrameName"/>
@@ -182,10 +182,42 @@
 									<int key="NSColorSpace">6</int>
 									<string key="NSCatalogName">System</string>
 									<string key="NSColorName">textColor</string>
-									<object class="NSColor" key="NSColor">
+									<object class="NSColor" key="NSColor" id="959491786">
 										<int key="NSColorSpace">3</int>
 										<bytes key="NSWhite">MAA</bytes>
 									</object>
+								</object>
+							</object>
+						</object>
+						<object class="NSTextField" id="533448329">
+							<reference key="NSNextResponder" ref="155316692"/>
+							<int key="NSvFlags">290</int>
+							<string key="NSFrame">{{-3, 0}, {607, 13}}</string>
+							<reference key="NSSuperview" ref="155316692"/>
+							<bool key="NSEnabled">YES</bool>
+							<object class="NSTextFieldCell" key="NSCell" id="84931619">
+								<int key="NSCellFlags">68288064</int>
+								<int key="NSCellFlags2">272630784</int>
+								<string key="NSContents"/>
+								<object class="NSFont" key="NSSupport">
+									<string key="NSName">LucidaGrande</string>
+									<double key="NSSize">10</double>
+									<int key="NSfFlags">16</int>
+								</object>
+								<reference key="NSControlView" ref="533448329"/>
+								<bool key="NSDrawsBackground">YES</bool>
+								<object class="NSColor" key="NSBackgroundColor">
+									<int key="NSColorSpace">3</int>
+									<bytes key="NSWhite">MQA</bytes>
+									<object class="NSColorSpace" key="NSCustomColorSpace">
+										<int key="NSID">2</int>
+									</object>
+								</object>
+								<object class="NSColor" key="NSTextColor">
+									<int key="NSColorSpace">6</int>
+									<string key="NSCatalogName">System</string>
+									<string key="NSColorName">controlTextColor</string>
+									<reference key="NSColor" ref="959491786"/>
 								</object>
 							</object>
 						</object>
@@ -264,6 +296,14 @@
 					</object>
 					<int key="connectionID">27</int>
 				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">statusBar</string>
+						<reference key="source" ref="1001"/>
+						<reference key="destination" ref="533448329"/>
+					</object>
+					<int key="connectionID">30</int>
+				</object>
 			</object>
 			<object class="IBMutableOrderedSet" key="objectRecords">
 				<object class="NSArray" key="orderedObjects">
@@ -308,8 +348,9 @@
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<reference ref="45195175"/>
 							<reference ref="142284724"/>
-							<reference ref="940762028"/>
 							<reference ref="2402076"/>
+							<reference ref="533448329"/>
+							<reference ref="940762028"/>
 						</object>
 						<reference key="parent" ref="601695698"/>
 					</object>
@@ -360,6 +401,20 @@
 						<reference key="object" ref="720866153"/>
 						<reference key="parent" ref="2402076"/>
 					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">28</int>
+						<reference key="object" ref="533448329"/>
+						<object class="NSMutableArray" key="children">
+							<bool key="EncodedWithXMLCoder">YES</bool>
+							<reference ref="84931619"/>
+						</object>
+						<reference key="parent" ref="155316692"/>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">29</int>
+						<reference key="object" ref="84931619"/>
+						<reference key="parent" ref="533448329"/>
+					</object>
 				</object>
 			</object>
 			<object class="NSMutableDictionary" key="flattenedProperties">
@@ -379,14 +434,16 @@
 					<string>18.IBPluginDependency</string>
 					<string>19.IBPluginDependency</string>
 					<string>2.IBPluginDependency</string>
+					<string>28.IBPluginDependency</string>
+					<string>29.IBPluginDependency</string>
 					<string>3.IBPluginDependency</string>
 					<string>3.IBViewBoundsToFrameTransform</string>
 				</object>
 				<object class="NSMutableArray" key="dict.values">
 					<bool key="EncodedWithXMLCoder">YES</bool>
-					<string>{{639, 179}, {601, 556}}</string>
+					<string>{{546, 179}, {601, 556}}</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
-					<string>{{639, 179}, {601, 556}}</string>
+					<string>{{546, 179}, {601, 556}}</string>
 					<boolean value="NO"/>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<object class="NSAffineTransform">
@@ -401,9 +458,11 @@
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
+					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
+					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.WebKitIBPlugin</string>
 					<object class="NSAffineTransform">
-						<bytes key="NSTransformStruct">AUDAAADC0AAAA</bytes>
+						<bytes key="NSTransformStruct">AQAAAABBYAAAA</bytes>
 					</object>
 				</object>
 			</object>
@@ -423,7 +482,7 @@
 				</object>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">27</int>
+			<int key="maxID">30</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -477,6 +536,7 @@
 							<string>addressTextField</string>
 							<string>backButton</string>
 							<string>forwardButton</string>
+							<string>statusBar</string>
 							<string>webView</string>
 							<string>window</string>
 						</object>
@@ -485,6 +545,7 @@
 							<string>NSTextField</string>
 							<string>NSButton</string>
 							<string>NSButton</string>
+							<string>NSTextField</string>
 							<string>WebView</string>
 							<string>NSWindow</string>
 						</object>
@@ -496,6 +557,7 @@
 							<string>addressTextField</string>
 							<string>backButton</string>
 							<string>forwardButton</string>
+							<string>statusBar</string>
 							<string>webView</string>
 							<string>window</string>
 						</object>
@@ -512,6 +574,10 @@
 							<object class="IBToOneOutletInfo">
 								<string key="name">forwardButton</string>
 								<string key="candidateClassName">NSButton</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">statusBar</string>
+								<string key="candidateClassName">NSTextField</string>
 							</object>
 							<object class="IBToOneOutletInfo">
 								<string key="name">webView</string>

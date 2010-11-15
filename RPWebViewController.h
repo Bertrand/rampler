@@ -16,7 +16,12 @@
     IBOutlet NSButton *forwardButton;
     IBOutlet NSTextField *addressTextField;
     IBOutlet WebView *webView;
+	IBOutlet NSTextField *statusBar;
+	
+	NSString *statusBarValue;
 }
+
+@property (nonatomic, retain, readonly) NSString *statusBarValue;
 
 - (IBAction)backButtonAction:(id)sender;
 - (IBAction)forwardButtonAction:(id)sender;
