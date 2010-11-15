@@ -34,10 +34,10 @@
     RPTraceDocument *mainDocument;
 }
 
-@property (nonatomic, retain) RPCallTree* root;
-@property (nonatomic, retain) RPCallTree* displayRoot;
+@property (nonatomic, readonly, retain) RPCallTree* root;
+@property (nonatomic, readonly, retain) RPCallTree* displayRoot;
 @property (nonatomic, assign) NSNumberFormatter* percentFormatter;
-@property (nonatomic, assign) RPOutlineView* mainOutlineView;;
+@property (nonatomic, readonly, assign) RPOutlineView* mainOutlineView;;
 @property (nonatomic, assign) BOOL displayTimeUnitAsPercentOfTotal;
 @property (nonatomic, assign) BOOL hideInsignificantCalls;
 @property (nonatomic, readonly, retain) RPTraceDocument *mainDocument;

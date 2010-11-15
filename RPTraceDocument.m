@@ -13,6 +13,10 @@
 #import "RPOutlineView.h"
 
 @interface RPTraceDocument()
+
+@property (nonatomic, retain) RPCallTree* root;
+@property (nonatomic, retain) RPCallTree* displayRoot;
+@property (nonatomic, assign) RPOutlineView* mainOutlineView;;
 @property (nonatomic, retain) RPTraceDocument *mainDocument;
 @property (nonatomic, retain) NSString *version;
 @property (nonatomic, retain) NSURL* url;
