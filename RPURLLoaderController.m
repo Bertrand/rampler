@@ -69,6 +69,7 @@ NSURL *addParameter(NSURL *url, int interval)
 	[NSBundle loadNibNamed:@"RPURLLoaderController" owner:self];
 	[_progressIndicator startAnimation:nil];
 	[_textField setStringValue:[_url absoluteString]];
+	[_window makeKeyAndOrderFront:nil];
 	
 	CFRelease(string);
 	CFRelease(theUUID);
