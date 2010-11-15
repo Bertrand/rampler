@@ -11,6 +11,7 @@
 
 @interface RPRubyTraceLogReader ()
 @property(nonatomic, retain)NSMutableArray *stacks;
+@property(nonatomic, retain)NSString *version;
 @end
 
 
@@ -22,6 +23,7 @@
 @synthesize data;
 @synthesize stacks;
 @synthesize infoDescription;
+@synthesize version;
 
 - (id) initWithData:(NSData*)d
 {
@@ -39,6 +41,7 @@
 {
 	self.stacks = nil;
     self.infoDescription = nil;
+	self.version = nil;
 	[super dealloc];
 }
 
@@ -48,6 +51,8 @@
 	NSInteger eolPos = currentPos;
 	NSMutableArray *lines;
     BOOL stillInfo = YES;
+	NSInteger infoLineCount = 0;
+	NSInteger stackLineCount = 0;
 	
 	lines = [[NSMutableArray alloc] init];
 	do {
@@ -60,14 +65,18 @@
 		
 		NSString* line = [[NSString alloc] initWithData:[data subdataWithRange:NSMakeRange(currentPos, eolPos - currentPos)] encoding:NSUTF8StringEncoding];
         if (stillInfo) {
-        	if ([[line stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] isEqualToString:@"--"]) {
+			infoLineCount++;
+			if (logLineNumber == 1) {
+				self.version = line;
+			} else if ([[line stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] isEqualToString:@"--"]) {
             	stillInfo = NO;
             } else {
             	[infoDescription appendString:line];
             }
         } else {
-            //NSLog(@"%@", line);
-            RPLogLine* parsedLine  = [self parseLine:line]; 
+            RPLogLine* parsedLine  = [self parseLine:line];
+			
+			stackLineCount++;
             if (parsedLine) {
                 parsedLine.stackDepth = [lines count];
                 [lines addObject:parsedLine];
@@ -82,6 +91,8 @@
 		currentPos = eolPos + 1;
 		
 	} while (eolPos < [data length]);
+	NSLog(@"total %d info %d lines %d", logLineNumber, infoLineCount, stackLineCount);
+	NSLog(@"stacks %d", [self.stacks count]);
 	[lines release];
 }
 
@@ -91,7 +102,12 @@
 	if (line == nil || [line length] < 5) return NULL;
 	
 	NSArray* components = [line componentsSeparatedByString:@"\t"];
-	if ([components count] != 7) return NULL; 
+	if ([components count] < 7) {
+		if ([components count] > 0) {
+			NSLog(@"problem with lines %@", line);
+		}
+		return NULL;
+	}
 	
 	RPLogLine* parsedLine = [[RPLogLine alloc] init];
 	

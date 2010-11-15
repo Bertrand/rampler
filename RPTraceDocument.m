@@ -12,6 +12,13 @@
 #import "RPRubyTraceLogReader.h"
 #import "RPOutlineView.h"
 
+@interface RPTraceDocument()
+@property (nonatomic, retain) RPTraceDocument *mainDocument;
+@property (nonatomic, assign) NSInteger stackCount;
+@property (nonatomic, retain) NSString *version;
+
+@end
+
 
 @implementation RPTraceDocument
 
@@ -21,6 +28,7 @@
 @synthesize mainOutlineView;
 @synthesize mainDocument;
 @synthesize stackCount;
+@synthesize version;
 
 - (id)init
 {
@@ -36,7 +44,16 @@
 	self.root = nil;
 	self.displayRoot = nil;
     self.mainDocument = nil;
+	self.version = nil;
 	[super dealloc];
+}
+
+- (void)loadWithMainDocument:(RPTraceDocument *)document root:(RPCallTree *)newRoot stackCount:(NSInteger)newStackCount version:(NSString *)newVersion
+{
+	self.mainDocument = document;
+	self.root = newRoot;
+	self.stackCount = newStackCount;
+	self.version = newVersion;
 }
 
 - (NSString *)windowNibName
@@ -89,6 +106,7 @@
 	}
 	self.root = [reader callTree];
     self.stackCount = [reader stackCount];
+	self.version = [reader version];
 	[reader release];
 	
     // Insert code here to read your document from the given data of the specified type.  If the given outError != NULL, ensure that you set *outError when returning NO.
@@ -120,7 +138,7 @@
     	[focusDownFunctionButton setHidden:YES];
     	[focusUpFunctionButton setHidden:YES];
     }
-    [infoTextField setStringValue:[NSString stringWithFormat:@"%d stacks", self.stackCount]];
+    [infoTextField setStringValue:[NSString stringWithFormat:@"%d stacks / %@", self.stackCount, self.version]];
     mainOutlineView.columnIdentifierForCopy = @"file";
 }
 
@@ -269,16 +287,16 @@
     if (selectedRow != -1) {
 		RPTraceDocument *newDocument;
 		RPCallTree *selectedCallTree;
+		RPCallTree *newRoot;
 		
     	selectedCallTree = [mainOutlineView itemAtRow:selectedRow];
 		newDocument = [[RPTraceDocument alloc] initWithType:@"Ruby trace" error:nil];
-		newDocument.root = [root bottomUpCallTreeForSymbolId:selectedCallTree.symbolId];
+		newRoot = [root bottomUpCallTreeForSymbolId:selectedCallTree.symbolId];
         if (self.mainDocument) {
-	        newDocument.mainDocument = self.mainDocument;
+			[newDocument loadWithMainDocument:self.mainDocument root:newRoot stackCount:self.stackCount version:self.version];
         } else {
-        	newDocument.mainDocument = self;
+			[newDocument loadWithMainDocument:self root:newRoot stackCount:self.stackCount version:self.version];
         }
-        newDocument.stackCount = self.stackCount;
 		[[NSDocumentController sharedDocumentController] addDocument:newDocument];
 		[newDocument makeWindowControllers];
 		[newDocument showWindows];

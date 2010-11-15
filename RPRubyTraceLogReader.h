@@ -14,13 +14,13 @@
 	NSData*		data;
 	NSMutableArray* stacks;
     NSMutableString* infoDescription;
+	NSString*	version;
 	
 	// xxx - this is a hack
 	RPLogLine*	currentLine;
 	NSInteger	currentLineNumber;
 	BOOL		eof;
 }
-
 
 @property (readwrite,assign) NSInteger	logLineNumber;
 @property (readwrite,retain) NSData*	data;

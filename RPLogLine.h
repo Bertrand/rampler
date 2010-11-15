@@ -13,6 +13,7 @@
 
 @protocol RPLogReader <NSObject>
 
+- (NSString *)version;
 - (NSInteger)logLineNumber;
 - (void)setLogLineNumber:(NSInteger)logLineNumber;
 - (NSData*)data;

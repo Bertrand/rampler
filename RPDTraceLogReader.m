@@ -172,5 +172,11 @@
 	return 0;
 }
 
+- (NSString *)version
+{
+	NSAssert(NO, @"not implemented");
+	return nil;
+}
+
 
 @end
