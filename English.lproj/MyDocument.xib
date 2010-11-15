@@ -11,7 +11,7 @@
 			<string key="NS.object.0">804</string>
 		</object>
 		<array class="NSMutableArray" key="IBDocument.EditedObjectIDs">
-			<integer value="6"/>
+			<integer value="100025"/>
 		</array>
 		<array key="IBDocument.PluginDependencies">
 			<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
@@ -211,7 +211,7 @@
 												</object>
 												<object class="NSTableColumn" id="703242563">
 													<string key="NSIdentifier">file</string>
-													<double key="NSWidth">52</double>
+													<double key="NSWidth">232</double>
 													<double key="NSMinWidth">16</double>
 													<double key="NSMaxWidth">3.4028234663852886e+38</double>
 													<object class="NSTableHeaderCell" key="NSHeaderCell">
@@ -237,7 +237,7 @@
 												</object>
 												<object class="NSTableColumn" id="630900500">
 													<string key="NSIdentifier">symbol</string>
-													<double key="NSWidth">344</double>
+													<double key="NSWidth">164</double>
 													<double key="NSMinWidth">10</double>
 													<double key="NSMaxWidth">3.4028234663852886e+38</double>
 													<object class="NSTableHeaderCell" key="NSHeaderCell">
