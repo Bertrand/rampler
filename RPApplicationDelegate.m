@@ -8,6 +8,7 @@
 
 #import "RPApplicationDelegate.h"
 #import "RPURLLoaderController.h"
+#import "RPWebViewController.h"
 
 @implementation RPApplicationDelegate
 
@@ -92,6 +93,14 @@
 {
 	NSLog(@"error %@ %@", urlLoaderController.url, error);
 	[urlLoaderController release];
+}
+
+- (IBAction)openWebView:(id)sender
+{
+	if (!webViewController) {
+	    webViewController = [[RPWebViewController alloc] init];
+    }
+    [webViewController open];
 }
 
 @end
