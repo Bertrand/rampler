@@ -10,8 +10,10 @@
 #import "RPCallTree.h"
 
 @interface RPRubyTraceLogReader ()
-@property(nonatomic, retain)NSMutableArray *stacks;
-@property(nonatomic, retain)NSString *version;
+@property(nonatomic, retain)NSMutableArray* stacks;
+@property(nonatomic, retain)NSString* version;
+@property(nonatomic, retain)NSURL* url;
+@property(nonatomic, assign)double interval;
 @end
 
 
@@ -24,6 +26,8 @@
 @synthesize stacks;
 @synthesize infoDescription;
 @synthesize version;
+@synthesize interval;
+@synthesize url;
 
 - (id) initWithData:(NSData*)d
 {
@@ -42,6 +46,7 @@
 	self.stacks = nil;
     self.infoDescription = nil;
 	self.version = nil;
+	self.url = nil;
 	[super dealloc];
 }
 
@@ -68,6 +73,10 @@
 			infoLineCount++;
 			if (logLineNumber == 1) {
 				self.version = line;
+			} else if (logLineNumber == 2) {
+				self.url = [NSURL URLWithString:line];
+			} else if (logLineNumber == 3) {
+				self.interval = [line doubleValue] / 1000000.0;
 			} else if ([[line stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] isEqualToString:@"--"]) {
             	stillInfo = NO;
             } else {

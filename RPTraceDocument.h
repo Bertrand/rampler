@@ -15,6 +15,8 @@
 @interface RPTraceDocument : NSDocument
 {
 	NSString *version;
+	double interval;
+	NSURL *url;
 	RPCallTree* root;
 	RPCallTree* displayRoot;
 	
@@ -25,6 +27,7 @@
     IBOutlet NSButton* focusUpFunctionButton;
     IBOutlet NSButton* hottestSubpathButton;
     IBOutlet NSTextField* infoTextField;
+	IBOutlet NSTextField* urlTextField;
 	BOOL displayTimeUnitAsPercentOfTotal;
     BOOL hideInsignificantCalls;
     
@@ -39,6 +42,8 @@
 @property (nonatomic, assign) BOOL hideInsignificantCalls;
 @property (nonatomic, readonly, retain) RPTraceDocument *mainDocument;
 @property (nonatomic, readonly, retain) NSString *version;
+@property (nonatomic, readonly, retain) NSURL* url;
+@property (nonatomic, readonly, assign) double interval;
 
 - (IBAction)focusButtonAction:(id)sender;
 - (IBAction)followHottestSubpath:(id)sender;

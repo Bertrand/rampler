@@ -15,6 +15,8 @@
 @interface RPTraceDocument()
 @property (nonatomic, retain) RPTraceDocument *mainDocument;
 @property (nonatomic, retain) NSString *version;
+@property (nonatomic, retain) NSURL* url;
+@property (nonatomic, assign) double interval;
 
 @end
 
@@ -27,6 +29,8 @@
 @synthesize mainOutlineView;
 @synthesize mainDocument;
 @synthesize version;
+@synthesize url;
+@synthesize interval;
 
 - (id)init
 {
@@ -43,6 +47,7 @@
 	self.displayRoot = nil;
     self.mainDocument = nil;
 	self.version = nil;
+	self.url = nil;
 	[super dealloc];
 }
 
@@ -51,6 +56,8 @@
 	self.mainDocument = document;
 	self.root = newRoot;
 	self.version = newVersion;
+	self.interval = document.interval;
+	self.url = document.url;
 }
 
 - (NSString *)windowNibName
@@ -103,6 +110,8 @@
 	}
 	self.root = [reader callTree];
 	self.version = [reader version];
+	self.url = [reader url];
+	self.interval = [reader interval];
 	[reader release];
 	
     // Insert code here to read your document from the given data of the specified type.  If the given outError != NULL, ensure that you set *outError when returning NO.
@@ -134,7 +143,10 @@
     	[focusDownFunctionButton setHidden:YES];
     	[focusUpFunctionButton setHidden:YES];
     }
-    [infoTextField setStringValue:[NSString stringWithFormat:@"%d stacks / %@", root.stackTraceCount, self.version]];
+    [infoTextField setStringValue:[NSString stringWithFormat:@"%d stacks / %.2fms", root.stackTraceCount, self.interval * 1000.0]];
+	[infoTextField setToolTip:self.version];
+	[urlTextField setStringValue:[self.url absoluteString]];
+	[urlTextField setToolTip:[self.url absoluteString]];
     mainOutlineView.columnIdentifierForCopy = @"file";
 	[mainOutlineView setDoubleAction:@selector(outlineDoubleAction:)];
 }

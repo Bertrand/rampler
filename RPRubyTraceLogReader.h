@@ -10,11 +10,13 @@
 #import "RPLogLine.h"
 
 @interface RPRubyTraceLogReader : NSObject<RPLogReader> {
-	NSInteger	logLineNumber; 
+	NSInteger	logLineNumber;
 	NSData*		data;
 	NSMutableArray* stacks;
     NSMutableString* infoDescription;
 	NSString*	version;
+	double interval;
+	NSURL* url;
 	
 	// xxx - this is a hack
 	RPLogLine*	currentLine;
@@ -22,11 +24,13 @@
 	BOOL		eof;
 }
 
-@property (readwrite,assign) NSInteger	logLineNumber;
-@property (readwrite,retain) NSData*	data;
-@property (readwrite,assign) BOOL eof;
-@property (readwrite,assign) RPLogLine*	currentLine;
-@property (readwrite, retain) NSMutableString *infoDescription;
+@property (nonatomic, readwrite, assign) NSInteger	logLineNumber;
+@property (nonatomic, readwrite, retain) NSData*	data;
+@property (nonatomic, readwrite, assign) BOOL eof;
+@property (nonatomic, readwrite, assign) RPLogLine*	currentLine;
+@property (nonatomic, readwrite, retain) NSMutableString *infoDescription;
+@property (nonatomic, readonly, assign) double interval;
+@property (nonatomic, readonly, retain) NSURL* url;
 
 - (id) initWithData:(NSData*)data;
 

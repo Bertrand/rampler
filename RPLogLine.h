@@ -13,7 +13,9 @@
 
 @protocol RPLogReader <NSObject>
 
+- (double)interval;
 - (NSString *)version;
+- (NSURL *)url;
 - (NSInteger)logLineNumber;
 - (void)setLogLineNumber:(NSInteger)logLineNumber;
 - (NSData*)data;

@@ -172,5 +172,15 @@
 	return nil;
 }
 
+- (double)interval
+{
+	NSAssert(NO, @"not implemented");
+	return 0;
+}
+
+- (NSURL *)url
+{
+	return nil;
+}
 
 @end
