@@ -477,7 +477,7 @@
 							<reference key="NSSuperview" ref="568628114"/>
 							<bool key="NSEnabled">YES</bool>
 							<object class="NSTextFieldCell" key="NSCell" id="491402594">
-								<int key="NSCellFlags">68288064</int>
+								<int key="NSCellFlags">70385217</int>
 								<int key="NSCellFlags2">138544128</int>
 								<string key="NSContents">STACKS</string>
 								<reference key="NSSupport" ref="26"/>
@@ -498,7 +498,7 @@
 							<reference key="NSSuperview" ref="568628114"/>
 							<bool key="NSEnabled">YES</bool>
 							<object class="NSTextFieldCell" key="NSCell" id="400423380">
-								<int key="NSCellFlags">68288064</int>
+								<int key="NSCellFlags">70385217</int>
 								<int key="NSCellFlags2">138544128</int>
 								<string key="NSContents">URL</string>
 								<reference key="NSSupport" ref="26"/>
