@@ -113,7 +113,6 @@ NSURL *addParameter(NSURL *url, double interval)
 
 - (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error
 {
-	
 	NSAlert *alert = [[[NSAlert alloc] init] autorelease];
 	[alert addButtonWithTitle:@"OK"];
 	[alert setMessageText:@"Error while loading the stack trace"];
