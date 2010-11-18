@@ -97,7 +97,7 @@ NSURL *addParameter(NSURL *url, double interval)
 
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection
 {
-	if ([[[NSFileManager defaultManager] attributesOfItemAtPath:[_fileName stringByAppendingPathExtension:@"gz"] error:nil] objectForKey:NSFileSystemSize] == 0) {
+	if ([[[[NSFileManager defaultManager] attributesOfItemAtPath:[_fileName stringByAppendingPathExtension:@"gz"] error:nil] objectForKey:NSFileSize] longLongValue] < 512) {
 		NSAlert *alert = [[[NSAlert alloc] init] autorelease];
 		[alert addButtonWithTitle:@"OK"];
 		[alert setMessageText:@"No data"];
