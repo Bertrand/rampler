@@ -180,7 +180,20 @@
 
 - (NSURL *)url
 {
+	NSAssert(NO, @"not implemented");
 	return nil;
+}
+
+- (NSDate *)startDate
+{
+	NSAssert(NO, @"not implemented");
+	return nil;
+}
+
+- (double)duration
+{
+	NSAssert(NO, @"not implemented");
+	return 0;
 }
 
 @end

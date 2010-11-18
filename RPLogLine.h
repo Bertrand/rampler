@@ -22,6 +22,8 @@
 - (void)setData:(NSData*)data;
 - (BOOL)eof;
 - (void)setEof:(BOOL)eof;
+- (NSDate *)startDate;
+- (double)duration;
 
 - (RPCallTree*)callTree;
 @end

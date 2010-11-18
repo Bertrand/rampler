@@ -19,6 +19,7 @@
 	NSURL *url;
 	RPCallTree* root;
 	RPCallTree* displayRoot;
+	double duration;
 	
 	IBOutlet NSNumberFormatter* percentFormatter;
 	IBOutlet RPOutlineView* mainOutlineView;
@@ -44,6 +45,7 @@
 @property (nonatomic, readonly, retain) NSString *version;
 @property (nonatomic, readonly, retain) NSURL* url;
 @property (nonatomic, readonly, assign) double interval;
+@property (nonatomic, readonly, assign) double duration;
 
 - (IBAction)focusButtonAction:(id)sender;
 - (IBAction)followHottestSubpath:(id)sender;

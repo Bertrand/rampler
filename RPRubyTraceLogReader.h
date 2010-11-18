@@ -13,10 +13,13 @@
 	NSInteger	logLineNumber;
 	NSData*		data;
 	NSMutableArray* stacks;
-    NSMutableString* infoDescription;
+    NSMutableString* beginningInfoDescription;
+	NSMutableString* endingInfoDescription;
 	NSString*	version;
 	double interval;
 	NSURL* url;
+	NSDate* startDate;
+	double duration;
 	
 	// xxx - this is a hack
 	RPLogLine*	currentLine;
@@ -28,9 +31,12 @@
 @property (nonatomic, readwrite, retain) NSData*	data;
 @property (nonatomic, readwrite, assign) BOOL eof;
 @property (nonatomic, readwrite, assign) RPLogLine*	currentLine;
-@property (nonatomic, readwrite, retain) NSMutableString *infoDescription;
+@property (nonatomic, readonly, retain) NSString *beginningInfoDescription;
+@property (nonatomic, readonly, retain) NSString *endingInfoDescription;
 @property (nonatomic, readonly, assign) double interval;
 @property (nonatomic, readonly, retain) NSURL* url;
+@property (nonatomic, readonly, retain) NSDate* startDate;
+@property (nonatomic, readonly, assign) double duration;
 
 - (id) initWithData:(NSData*)data;
 

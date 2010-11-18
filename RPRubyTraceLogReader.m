@@ -14,6 +14,10 @@
 @property(nonatomic, retain)NSString* version;
 @property(nonatomic, retain)NSURL* url;
 @property(nonatomic, assign)double interval;
+@property (nonatomic, retain) NSString *beginningInfoDescription;
+@property (nonatomic, retain) NSString *endingInfoDescription;
+@property (nonatomic, retain) NSDate* startDate;
+@property (nonatomic, assign) double duration;
 @end
 
 
@@ -24,10 +28,13 @@
 @synthesize currentLine;
 @synthesize data;
 @synthesize stacks;
-@synthesize infoDescription;
+@synthesize beginningInfoDescription;
+@synthesize endingInfoDescription;
 @synthesize version;
 @synthesize interval;
 @synthesize url;
+@synthesize startDate;
+@synthesize duration;
 
 - (id) initWithData:(NSData*)d
 {
@@ -35,7 +42,8 @@
 	self.data = d;
 
 	self.stacks = [[[NSMutableArray alloc] init] autorelease];
-    self.infoDescription = [[[NSMutableString alloc] init]	autorelease];
+    self.beginningInfoDescription = [[[NSMutableString alloc] init]	autorelease];
+	self.endingInfoDescription = [[[NSMutableString alloc] init] autorelease];
 	[self readData];
 	
 	return self;
@@ -44,7 +52,8 @@
 - (void)dealloc
 {
 	self.stacks = nil;
-    self.infoDescription = nil;
+    self.beginningInfoDescription = nil;
+	self.endingInfoDescription = nil;
 	self.version = nil;
 	self.url = nil;
 	[super dealloc];
@@ -55,7 +64,9 @@
 	NSInteger currentPos = 0;
 	NSInteger eolPos = currentPos;
 	NSMutableArray *lines;
-    BOOL stillInfo = YES;
+    BOOL beginningInfo = YES;
+	BOOL endingInfo = NO;
+	NSInteger endingInfoCount = 0;
 	NSInteger infoLineCount = 0;
 	NSInteger stackLineCount = 0;
 	
@@ -69,19 +80,39 @@
 		logLineNumber++; 
 		
 		NSString* line = [[NSString alloc] initWithData:[data subdataWithRange:NSMakeRange(currentPos, eolPos - currentPos)] encoding:NSUTF8StringEncoding];
-        if (stillInfo) {
+        if (beginningInfo) {
 			infoLineCount++;
-			if (logLineNumber == 1) {
-				self.version = line;
-			} else if (logLineNumber == 2) {
-				self.url = [NSURL URLWithString:line];
-			} else if (logLineNumber == 3) {
-				self.interval = [line doubleValue] / 1000000.0;
-			} else if ([[line stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] isEqualToString:@"--"]) {
-            	stillInfo = NO;
-            } else {
-            	[infoDescription appendString:line];
-            }
+			switch (logLineNumber) {
+				case 1:
+					self.version = line;
+					break;
+				case 2:
+					self.url = [NSURL URLWithString:line];
+				case 3:
+					self.interval = [line doubleValue] / 1000000.0;
+					break;
+				case 4:
+					self.startDate = [NSDate dateWithString:line];
+				default:
+					if ([[line stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] isEqualToString:@"--"]) {
+		            	beginningInfo = NO;
+        		    } else {
+            			[beginningInfoDescription appendString:line];
+		            }
+					break;
+			}
+		} else if ([[line stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] isEqualToString:@"--"] || endingInfo) {
+			endingInfo = YES;
+			
+			switch (endingInfoCount) {
+				case 1:
+					self.duration = [line doubleValue];
+					break;
+				default:
+					[endingInfoDescription appendString:line];
+					break;
+			}
+			endingInfoCount++;
         } else {
             RPLogLine* parsedLine  = [self parseLine:line];
 			

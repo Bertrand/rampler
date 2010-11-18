@@ -21,6 +21,7 @@
 @property (nonatomic, retain) NSString *version;
 @property (nonatomic, retain) NSURL* url;
 @property (nonatomic, assign) double interval;
+@property (nonatomic, assign) double duration;
 
 @end
 
@@ -35,6 +36,7 @@
 @synthesize version;
 @synthesize url;
 @synthesize interval;
+@synthesize duration;
 
 - (id)init
 {
@@ -62,6 +64,7 @@
 	self.version = newVersion;
 	self.interval = document.interval;
 	self.url = document.url;
+	self.duration = document.duration;
 }
 
 - (NSString *)windowNibName
@@ -116,6 +119,7 @@
 	self.version = [reader version];
 	self.url = [reader url];
 	self.interval = [reader interval];
+	self.duration = [reader duration];
 	[reader release];
 	
     // Insert code here to read your document from the given data of the specified type.  If the given outError != NULL, ensure that you set *outError when returning NO.
@@ -150,7 +154,7 @@
 	if (self.mainDocument) {
 	    [infoTextField setStringValue:[NSString stringWithFormat:@"%d stacks (%.2f%%) / %.2fms", root.stackTraceCount, (double)(self.root.totalTime / self.mainDocument.root.totalTime * 100.0), self.interval * 1000.0]];
 	} else {
-	    [infoTextField setStringValue:[NSString stringWithFormat:@"%d stacks / %.2fms", root.stackTraceCount, self.interval * 1000.0]];
+	    [infoTextField setStringValue:[NSString stringWithFormat:@"%d stacks / %.2fms / %.2fs", root.stackTraceCount, self.interval * 1000.0, self.duration]];
 	}
 	[infoTextField setToolTip:self.version];
 	[urlTextField setStringValue:[self.url absoluteString]];
