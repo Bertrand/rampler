@@ -97,16 +97,37 @@ NSURL *addParameter(NSURL *url, double interval)
 
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection
 {
-	NSLog(@"%@", _fileName);
-	[self _close];
-	system([[NSString stringWithFormat:@"gunzip %@", [_fileName stringByAppendingPathExtension:@"gz"]] UTF8String]);
-	[[NSApp delegate] urlLoaderControllerDidFinish:self];
+	if ([[[NSFileManager defaultManager] attributesOfItemAtPath:[_fileName stringByAppendingPathExtension:@"gz"] error:nil] objectForKey:NSFileSystemSize] == 0) {
+		NSAlert *alert = [[[NSAlert alloc] init] autorelease];
+		[alert addButtonWithTitle:@"OK"];
+		[alert setMessageText:@"No data"];
+		[alert setInformativeText:[_url absoluteString]];
+		[alert setAlertStyle:NSWarningAlertStyle];
+		[alert beginSheetModalForWindow:_window modalDelegate:self didEndSelector:@selector(alertDidEnd:returnCode:contextInfo:) contextInfo:nil];
+	} else {
+		[self _close];
+		system([[NSString stringWithFormat:@"gunzip %@", [_fileName stringByAppendingPathExtension:@"gz"]] UTF8String]);
+		[[NSApp delegate] urlLoaderControllerDidFinish:self];
+	}
 }
 
 - (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error
 {
+	
+	NSAlert *alert = [[[NSAlert alloc] init] autorelease];
+	[alert addButtonWithTitle:@"OK"];
+	[alert setMessageText:@"Error while loading the stack trace"];
+	[alert setInformativeText:[NSString stringWithFormat:@"%@ %@", error, [error userInfo]]];
+	[alert setAlertStyle:NSWarningAlertStyle];
+	[error retain];
+	[alert beginSheetModalForWindow:_window modalDelegate:self didEndSelector:@selector(alertDidEnd:returnCode:contextInfo:) contextInfo:error];
+}
+
+- (void)alertDidEnd:(NSAlert *)alert returnCode:(NSInteger)returnCode contextInfo:(void *)error
+{
 	[self _close];
 	[[NSApp delegate] urlLoaderController:self didFailWithError:error];
+	[(id)error release];
 }
 
 @end
