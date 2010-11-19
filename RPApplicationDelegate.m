@@ -59,6 +59,7 @@
 {
     [_urlTextField setStringValue:[[self defaultURLValue] absoluteString]];
     [_intervalTextField setStringValue:[NSString stringWithFormat:@"%.2f", [self defaultIntervalValue] * 1000]];
+	[_openURLDialog makeFirstResponder:_urlTextField];
 	_urlOpenerSession = [[NSApplication sharedApplication] beginModalSessionForWindow:_openURLDialog];
 	[[NSApplication sharedApplication] runModalSession:_urlOpenerSession];
 }
