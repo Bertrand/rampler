@@ -154,7 +154,7 @@
 	parsedLine.logLineNumber = logLineNumber;
 	parsedLine.logLine = line;
 	parsedLine.threadId = [[components objectAtIndex:0] integerValue];
-	parsedLine.time = [[components objectAtIndex:1] integerValue];
+	parsedLine.tickCount = [[components objectAtIndex:1] integerValue];
 	parsedLine.fileName = [components objectAtIndex:2];
 	parsedLine.fileLine = [[components objectAtIndex:3] integerValue];
 	parsedLine.file = [NSString stringWithFormat:@"%@:%d", parsedLine.fileName, parsedLine.fileLine];
@@ -162,6 +162,7 @@
 	parsedLine.ns = @"";
 	parsedLine.function = [components objectAtIndex:6];
 	parsedLine.symbol = [NSString stringWithFormat:@"%@(%@)", parsedLine.function, [components objectAtIndex:5]];
+	parsedLine.duration = [[components objectAtIndex:8] doubleValue];
 	if ([components objectAtIndex:5]) {
 		parsedLine.symbolId = [components objectAtIndex:5];
 	} else {
@@ -182,7 +183,7 @@
 		RPLogLine *line;
 		NSInteger sampleCount;
 		
-		sampleCount = [[lines objectAtIndex:0] time] / self.interval / 1000000.0;
+		sampleCount = [[lines objectAtIndex:0] tickCount];
 		callTree.sampleCount += sampleCount;
 		current = callTree;
 		for (line in lines) {
@@ -197,8 +198,8 @@
 			current.symbolId = line.symbolId;
 			current.symbol = line.symbol;
 			current.file = line.file;
-			current.totalTime += line.time;
-			[current addCallDetailsForFile:line.file time:line.time];
+			current.totalTime += line.duration;
+			[current addCallDetailsForFile:line.file time:line.duration];
 		}
 	}
 	[callTree freeze];

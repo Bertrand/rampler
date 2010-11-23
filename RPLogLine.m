@@ -23,6 +23,8 @@
 @synthesize stackDepth;
 @synthesize logLineNumber;
 @synthesize logLine;
+@synthesize duration;
+@synthesize tickCount;
 
 @synthesize symbol;
 @synthesize symbolId;

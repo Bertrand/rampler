@@ -40,6 +40,8 @@
 	NSString*	function;
 	NSString*	symbol;
 	NSString*	symbolId;
+	NSUInteger	tickCount;
+	double		duration;
 	
 	NSInteger	logLineNumber; 
 	NSString*	logLine;
@@ -56,6 +58,8 @@
 @property (readwrite,retain) NSString*	fileName;
 @property (readwrite,assign) UInt32		fileLine;
 @property (readwrite,assign) NSInteger	stackDepth;
+@property (readwrite,assign) NSUInteger	tickCount;
+@property (readwrite,assign) double		duration;
 
 @property (readwrite,assign) NSString*	symbol;
 @property (readwrite,assign) NSString*	symbolId;

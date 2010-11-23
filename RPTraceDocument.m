@@ -171,7 +171,7 @@
 		self.percentFormatter.maximumFractionDigits = 2;
 
 	} else {
-		self.percentFormatter.multiplier = [NSNumber numberWithDouble:1.0 / 1000.0];
+		self.percentFormatter.multiplier = [NSNumber numberWithDouble:1000.0];
 		self.percentFormatter.positiveSuffix = @"ms";
 		self.percentFormatter.maximumFractionDigits = 2;
 	}
@@ -357,9 +357,9 @@
 	if ([[tableColumn identifier] isEqualToString:@"thread"]) {
     	result = [NSNumber numberWithLongLong:[item thread]];
 	} else if ([[tableColumn identifier] isEqualToString:@"totalTime"]) {
-    	result = [NSNumber numberWithFloat:[item totalTime]];
+    	result = [NSNumber numberWithDouble:[item totalTime]];
 	} else if ([[tableColumn identifier] isEqualToString:@"selfTime"]) {
-    	result = [NSNumber numberWithFloat:[item selfTime]];
+    	result = [NSNumber numberWithDouble:[item selfTime]];
 	} else if ([[tableColumn identifier] isEqualToString:@"callCount"]) {
     	result = [NSNumber numberWithInteger:[item sampleCount]];
 	} else if ([[tableColumn identifier] isEqualToString:@"file"]) {
