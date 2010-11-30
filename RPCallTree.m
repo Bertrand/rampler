@@ -93,6 +93,9 @@
 	} else {
 		root = parent->root ? parent->root : parent;
 		selfTime = totalTime - subTreesTime;
+		if (selfTime < 0) {
+			selfTime = 0;
+		}
 	}
 	
 	self.children = [[self.subTrees allValues] sortedArrayUsingDescriptors:[self.class defaultSortDescriptor]];
