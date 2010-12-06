@@ -16,9 +16,11 @@
 	IBOutlet NSWindow *_openURLDialog;
 	IBOutlet NSTextField *_urlTextField;
 	IBOutlet NSTextField *_intervalTextField;
+	IBOutlet NSPopUpButton *_urlHistoricPopUp;
 	
 	NSModalSession _urlOpenerSession;
 	RPWebViewController *webViewController;
+	NSMutableArray *_urlHistoric;
 }
 
 - (BOOL)openURL:(NSURL *)url withInterval:(double)interval;

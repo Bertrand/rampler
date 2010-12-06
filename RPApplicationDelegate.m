@@ -28,6 +28,35 @@
 	[[NSUserDefaults standardUserDefaults] setURL:url forKey:@"urlopen"];
 }
 
+- (NSArray *)urlHistoricValue
+{
+	NSArray *array;
+	NSMutableArray *result;
+	
+	array = [[NSUserDefaults standardUserDefaults] arrayForKey:@"urlhistoric"];
+	if (!array) {
+		result = [NSArray arrayWithObject:[self defaultURLValue]];
+	} else {
+		result = [NSMutableArray array];
+		for (NSString *string in array) {
+			[result addObject:[NSURL URLWithString:string]];
+		}
+	}
+	return result;
+}
+
+- (void)setURLHistoricValue:(NSArray *)historic
+{
+	NSMutableArray *values;
+	
+	values = [[NSMutableArray alloc] init];
+	for (NSURL *url in historic) {
+		[values addObject:[url absoluteString]];
+	}
+	[[NSUserDefaults standardUserDefaults] setObject:values forKey:@"urlhistoric"];
+	[values release];
+}
+
 - (double)defaultIntervalValue
 {
 	double result;
@@ -42,6 +71,20 @@
 - (void)setDefaultIntervalValue:(double)interval
 {
 	[[NSUserDefaults standardUserDefaults] setDouble:interval forKey:@"interval"];
+}
+
+- (void)updateURLHistoricPopUp
+{
+	[_urlHistoricPopUp removeAllItems];
+	for (NSURL *url in _urlHistoric) {
+		[_urlHistoricPopUp addItemWithTitle:[url absoluteString]];
+	}
+}
+
+- (void)awakeFromNib
+{
+	_urlHistoric = [[self urlHistoricValue] mutableCopy];
+	[self updateURLHistoricPopUp];
 }
 
 - (BOOL)openURL:(NSURL *)url withInterval:(double)interval
@@ -83,6 +126,10 @@
 	[self openURL:url withInterval:interval];
     [self setDefaultURLValue:url];
     [self setDefaultIntervalValue:interval];
+	[_urlHistoric removeObject:url];
+	[_urlHistoric insertObject:url atIndex:0];
+	[self setURLHistoricValue:_urlHistoric];
+	[self updateURLHistoricPopUp];
 }
 
 - (void)urlLoaderControllerDidFinish:(RPURLLoaderController *)urlLoaderController
