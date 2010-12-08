@@ -171,7 +171,7 @@
 		self.percentFormatter.maximumFractionDigits = 2;
 
 	} else {
-		self.percentFormatter.multiplier = [NSNumber numberWithDouble:1000.0];
+		self.percentFormatter.multiplier = [NSNumber numberWithDouble:1 / 1000.0];
 		self.percentFormatter.positiveSuffix = @"ms";
 		self.percentFormatter.maximumFractionDigits = 2;
 	}
