@@ -18,6 +18,7 @@
 @property (nonatomic, retain) NSString *endingInfoDescription;
 @property (nonatomic, retain) NSDate* startDate;
 @property (nonatomic, assign) double duration;
+@property (nonatomic, assign) NSUInteger sampleCount;
 @end
 
 
@@ -35,6 +36,7 @@
 @synthesize url;
 @synthesize startDate;
 @synthesize duration;
+@synthesize sampleCount;
 
 - (id) initWithData:(NSData*)d
 {
@@ -108,6 +110,9 @@
 				case 1:
 					self.duration = [line doubleValue];
 					break;
+				case 3:
+					self.sampleCount = [line integerValue];
+					break;
 				default:
 					[endingInfoDescription appendString:line];
 					break;
@@ -175,34 +180,37 @@
 - (RPCallTree*)callTree
 {
 	RPCallTree* callTree;
+	int count = 0;
 	
 	callTree = [[RPCallTree alloc] init];
 	callTree.thread = self.currentLine.threadId;
 	for (NSArray *lines in stacks) {
 		RPCallTree *current;
 		RPLogLine *line;
-		NSInteger sampleCount;
+		NSInteger lineSampleCount;
 		
-		sampleCount = [[lines objectAtIndex:0] tickCount];
-		callTree.sampleCount += sampleCount;
+		lineSampleCount = [[lines objectAtIndex:0] tickCount];
+		count += lineSampleCount;
+		callTree.sampleCount += lineSampleCount;
 		current = callTree;
 		for (line in lines) {
 			current = [current subTreeForSymbolId:line.symbolId];
 			if (current.symbol !=  nil && ![current.symbol isEqualToString:line.symbol]) {
 				NSLog(@"++ %@ ++ %@ ++ %@", current.symbol, line.symbol, line.symbolId);
 			}
-			current.sampleCount += sampleCount;
+			current.sampleCount += lineSampleCount;
 			current.thread = line.threadId;
 			current.stackDepth = line.stackDepth;
 			current.startLine = line.logLineNumber;
 			current.symbolId = line.symbolId;
 			current.symbol = line.symbol;
 			current.file = line.file;
-			current.totalTime += line.duration;
+			current.totalTime += self.duration * lineSampleCount / self.sampleCount;
 			[current addCallDetailsForFile:line.file time:line.duration];
 		}
 	}
 	[callTree freeze];
+	NSLog(@"count %d", count);
 	return callTree;
 }
 

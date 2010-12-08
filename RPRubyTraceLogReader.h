@@ -20,6 +20,7 @@
 	NSURL* url;
 	NSDate* startDate;
 	double duration;
+	NSUInteger sampleCount;
 	
 	// xxx - this is a hack
 	RPLogLine*	currentLine;
@@ -37,6 +38,7 @@
 @property (nonatomic, readonly, retain) NSURL* url;
 @property (nonatomic, readonly, retain) NSDate* startDate;
 @property (nonatomic, readonly, assign) double duration;
+@property (nonatomic, readonly, assign) NSUInteger sampleCount;
 
 - (id) initWithData:(NSData*)data;
 
