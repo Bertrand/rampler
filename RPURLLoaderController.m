@@ -9,7 +9,11 @@
 #import "RPURLLoaderController.h"
 #import "RPApplicationDelegate.h"
 
-NSURL *addParameter(NSURL *url, double interval)
+@implementation RPURLLoaderController
+
+@synthesize url = _url, compressed = _compressed, fileName = _fileName;
+
++ (NSURL *)addParameters:(NSURL *)url interval:(double)interval
 {
 	NSURL *result = url;
 	NSArray *parts;
@@ -46,10 +50,6 @@ NSURL *addParameter(NSURL *url, double interval)
 	return result;
 }
 
-@implementation RPURLLoaderController
-
-@synthesize url = _url, interval = _interval, fileName = _fileName;
-
 - (void)dealloc
 {
 	[_fileHandle release];
@@ -62,11 +62,17 @@ NSURL *addParameter(NSURL *url, double interval)
 {
 	CFUUIDRef theUUID = CFUUIDCreate(NULL);
 	CFStringRef string = CFUUIDCreateString(NULL, theUUID);
+	NSString *realFilename;
 	NSAssert(_connection == nil, @"Should have no connection");
 		
 	_fileName = [[@"/tmp/" stringByAppendingPathComponent:[(NSString *)string stringByAppendingPathExtension:@"rubytrace"]] retain];
-	_fileHandle = [[NSFileHandle alloc] initWithFileDescriptor:open([[_fileName stringByAppendingPathExtension:@"gz"] UTF8String], O_CREAT | O_WRONLY, S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH) closeOnDealloc:YES];
-	_connection = [[NSURLConnection alloc] initWithRequest:[NSURLRequest requestWithURL:addParameter(_url, _interval)] delegate:self startImmediately:YES];
+	if (_compressed) {
+		realFilename = [_fileName stringByAppendingPathExtension:@"gz"];
+	} else {
+		realFilename = _fileName;
+	}
+	_fileHandle = [[NSFileHandle alloc] initWithFileDescriptor:open([realFilename UTF8String], O_CREAT | O_WRONLY, S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH) closeOnDealloc:YES];
+	_connection = [[NSURLConnection alloc] initWithRequest:[NSURLRequest requestWithURL:_url] delegate:self startImmediately:YES];
 	[NSBundle loadNibNamed:@"RPURLLoaderController" owner:self];
 	[_progressIndicator startAnimation:nil];
 	[_textField setStringValue:[_url absoluteString]];
@@ -95,19 +101,37 @@ NSURL *addParameter(NSURL *url, double interval)
 	_window = nil;
 }
 
+- (void)_downloadFailed
+{
+	NSAlert *alert = [[[NSAlert alloc] init] autorelease];
+	[alert addButtonWithTitle:@"OK"];
+	[alert setMessageText:@"No data"];
+	[alert setInformativeText:[_url absoluteString]];
+	[alert setAlertStyle:NSWarningAlertStyle];
+	[alert beginSheetModalForWindow:_window modalDelegate:self didEndSelector:@selector(alertDidEnd:returnCode:contextInfo:) contextInfo:nil];
+}
+
+- (void)_downloadSucceed
+{
+	[[NSApp delegate] urlLoaderControllerDidFinish:self];
+	[self _close];
+}
+
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection
 {
-	if ([[[[NSFileManager defaultManager] attributesOfItemAtPath:[_fileName stringByAppendingPathExtension:@"gz"] error:nil] objectForKey:NSFileSize] longLongValue] < 100) {
-		NSAlert *alert = [[[NSAlert alloc] init] autorelease];
-		[alert addButtonWithTitle:@"OK"];
-		[alert setMessageText:@"No data"];
-		[alert setInformativeText:[_url absoluteString]];
-		[alert setAlertStyle:NSWarningAlertStyle];
-		[alert beginSheetModalForWindow:_window modalDelegate:self didEndSelector:@selector(alertDidEnd:returnCode:contextInfo:) contextInfo:nil];
+	if (_compressed) {
+		if ([[[[NSFileManager defaultManager] attributesOfItemAtPath:[_fileName stringByAppendingPathExtension:@"gz"] error:nil] objectForKey:NSFileSize] longLongValue] < 100) {
+			[self _downloadFailed];
+		} else {
+			system([[NSString stringWithFormat:@"gunzip %@", [_fileName stringByAppendingPathExtension:@"gz"]] UTF8String]);
+			[self _downloadSucceed];
+		}
 	} else {
-		[self _close];
-		system([[NSString stringWithFormat:@"gunzip %@", [_fileName stringByAppendingPathExtension:@"gz"]] UTF8String]);
-		[[NSApp delegate] urlLoaderControllerDidFinish:self];
+		if ([[[[NSFileManager defaultManager] attributesOfItemAtPath:_fileName error:nil] objectForKey:NSFileSize] longLongValue] < 100) {
+			[self _downloadFailed];
+		} else {
+			[self _downloadSucceed];
+		}
 	}
 }
 

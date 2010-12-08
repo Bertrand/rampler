@@ -18,14 +18,16 @@
 	IBOutlet NSButton *_button;
 	
 	NSURL *_url;
-	double _interval;
+	BOOL compressed;
 	NSURLConnection *_connection;
 	NSString *_fileName;
 	NSFileHandle *_fileHandle;
 }
 
++ (NSURL *)addParameters:(NSURL *)url interval:(double)interval;
+
 @property(nonatomic, retain) NSURL *url;
-@property(nonatomic, assign) double interval;
+@property(nonatomic, assign) BOOL compressed;
 @property(nonatomic, readonly) NSString *fileName;
 
 - (BOOL)start;

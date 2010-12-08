@@ -85,6 +85,7 @@
 {
 	_urlHistoric = [[self urlHistoricValue] mutableCopy];
 	[self updateURLHistoricPopUp];
+	[[NSAppleEventManager sharedAppleEventManager] setEventHandler:self andSelector:@selector(handleEvent:withReplyEvent:) forEventClass:kInternetEventClass andEventID:kAEGetURL];
 }
 
 - (BOOL)openURL:(NSURL *)url withInterval:(double)interval
@@ -92,8 +93,8 @@
 	RPURLLoaderController *urlLoader;
 	
 	urlLoader = [[RPURLLoaderController alloc] init];
-	urlLoader.url = url;
-	urlLoader.interval = interval;
+	urlLoader.url = [RPURLLoaderController addParameters:url interval:interval];
+	urlLoader.compressed = YES;
 	[urlLoader start];
 	return YES;
 }
@@ -151,5 +152,22 @@
     }
     [webViewController open];
 }
+
+- (void)handleEvent:(NSAppleEventDescriptor *)event withReplyEvent:(NSAppleEventDescriptor *)replyEvent
+{
+    NSURL *url;
+	NSURL *httpURL;
+	RPURLLoaderController *urlLoader;
+	
+	url = [NSURL URLWithString:[[event paramDescriptorForKeyword:keyDirectObject] stringValue]];
+	httpURL = [[NSURL alloc] initWithScheme:@"http" host:[url host] path:[url path]];
+	
+	urlLoader = [[RPURLLoaderController alloc] init];
+	urlLoader.url = httpURL;
+	urlLoader.compressed = NO;
+	[urlLoader start];
+	[httpURL release];
+}
+
 
 @end
