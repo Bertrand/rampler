@@ -20,6 +20,7 @@
 	NSInteger	stackDepth;
 	NSInteger	startLine;
 	NSString*	file;
+	NSString*	ns;
 	
 	RPCallTree* parent;
 	RPCallTree* root;
@@ -42,7 +43,8 @@
 @property (nonatomic, assign)	NSInteger startLine;
 @property (nonatomic, assign)	NSInteger sampleCount;
 @property (nonatomic, assign)	NSInteger stackTraceCount;
-@property (nonatomic, assign)	NSMutableDictionary* callDetails;
+@property (nonatomic, retain)	NSMutableDictionary* callDetails;
+@property (nonatomic, retain)	NSString* ns;
 
 
 - (RPCallTree*) subTreeForSymbolId:(NSString*)sym;

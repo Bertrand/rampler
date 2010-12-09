@@ -364,6 +364,8 @@
     	result = [NSNumber numberWithInteger:[item sampleCount]];
 	} else if ([[tableColumn identifier] isEqualToString:@"file"]) {
     	result = [item file];
+	} else if ([[tableColumn identifier] isEqualToString:@"namespace"]) {
+    	result = [item ns];
 	} else if ([[tableColumn identifier] isEqualToString:@"symbol"]) {
     	result = [item symbol];
     }

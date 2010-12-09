@@ -164,7 +164,6 @@
 	parsedLine.fileLine = [[components objectAtIndex:3] integerValue];
 	parsedLine.file = [NSString stringWithFormat:@"%@:%d", parsedLine.fileName, parsedLine.fileLine];
 	parsedLine.type = [components objectAtIndex:4];
-	parsedLine.ns = @"";
 	parsedLine.function = [components objectAtIndex:6];
 	parsedLine.symbol = [NSString stringWithFormat:@"%@(%@)", parsedLine.function, [components objectAtIndex:5]];
 	parsedLine.duration = [[components objectAtIndex:8] doubleValue];
@@ -172,6 +171,9 @@
 		parsedLine.symbolId = [components objectAtIndex:5];
 	} else {
 		parsedLine.symbolId = [NSString stringWithFormat:@"%@:%d", parsedLine.fileName, parsedLine.fileLine];
+	}
+	if ([components count] > 9) {
+		parsedLine.ns = [components objectAtIndex:9];
 	}
 	
 	return [parsedLine autorelease];
@@ -205,6 +207,7 @@
 			current.symbolId = line.symbolId;
 			current.symbol = line.symbol;
 			current.file = line.file;
+			current.ns = line.ns;
 			current.totalTime += self.duration * lineSampleCount / self.sampleCount;
 			[current addCallDetailsForFile:line.file time:line.duration];
 		}

@@ -25,6 +25,7 @@
 @synthesize sampleCount;
 @synthesize stackTraceCount;
 @synthesize callDetails;
+@synthesize ns;
 
 
 
@@ -49,6 +50,13 @@
 
 - (void)dealloc
 {
+	self.symbolId = nil;
+	self.symbol = nil;
+	self.file = nil;
+	self.subTrees = nil;
+	self.children = nil;
+	self.callDetails = nil;
+	self.ns = nil;
 	[callDetails release];
 	[super dealloc];
 }
