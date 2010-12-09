@@ -133,6 +133,11 @@
 	[self updateURLHistoricPopUp];
 }
 
+- (IBAction)urlHistoricPopUpButtonAction:(id)sender
+{
+	[_urlTextField setStringValue:[[_urlHistoricPopUp selectedItem] title]];
+}
+
 - (void)urlLoaderControllerDidFinish:(RPURLLoaderController *)urlLoaderController
 {
 	[[NSWorkspace sharedWorkspace] openFile:urlLoaderController.fileName];

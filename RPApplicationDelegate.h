@@ -29,6 +29,7 @@
 - (IBAction)closeURLOpenerAction:(id)sender;
 - (IBAction)validURLOpenerAction:(id)sender;
 - (IBAction)openWebView:(id)sender;
+- (IBAction)urlHistoricPopUpButtonAction:(id)sender;
 
 - (void)urlLoaderControllerDidFinish:(RPURLLoaderController *)urlLoaderController;
 - (void)urlLoaderController:(RPURLLoaderController *)urlLoaderController didFailWithError:error;
