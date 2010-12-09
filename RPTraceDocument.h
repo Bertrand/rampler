@@ -27,8 +27,14 @@
     IBOutlet NSButton* focusDownFunctionButton;
     IBOutlet NSButton* focusUpFunctionButton;
     IBOutlet NSButton* hottestSubpathButton;
-    IBOutlet NSTextField* infoTextField;
 	IBOutlet NSTextField* urlTextField;
+	
+	IBOutlet NSTextField* totalTimeTextField;
+	IBOutlet NSTextField* intervalTextField;
+	IBOutlet NSTextField* tickCountTextField;
+	IBOutlet NSTextField* stackCountTextField;
+	IBOutlet NSTextField* versionTextField;
+	
 	BOOL displayTimeUnitAsPercentOfTotal;
     BOOL hideInsignificantCalls;
     

@@ -151,12 +151,11 @@
     	[focusDownFunctionButton setHidden:YES];
     	[focusUpFunctionButton setHidden:YES];
     }
-	if (self.mainDocument) {
-	    [infoTextField setStringValue:[NSString stringWithFormat:@"%d stacks (%.2f%%) / %.2fms", root.stackTraceCount, (double)(self.root.totalTime / self.mainDocument.root.totalTime * 100.0), self.interval * 1000.0]];
-	} else {
-	    [infoTextField setStringValue:[NSString stringWithFormat:@"%d stacks / %.2fms / %.2fs", root.stackTraceCount, self.interval * 1000.0, self.duration]];
-	}
-	[infoTextField setToolTip:self.version];
+	[totalTimeTextField setStringValue:[NSString stringWithFormat:@"%.2fs", root.totalTime]];
+	[intervalTextField setStringValue:[NSString stringWithFormat:@"%.2fms", self.interval * 1000]];
+	[tickCountTextField setStringValue:[NSString stringWithFormat:@"%d", root.sampleCount]];
+	[stackCountTextField setStringValue:[NSString stringWithFormat:@"%d", root.stackTraceCount]];
+	[versionTextField setStringValue:self.version];
 	[urlTextField setStringValue:[self.url absoluteString]];
 	[urlTextField setToolTip:[self.url absoluteString]];
     mainOutlineView.columnIdentifierForCopy = @"file";
