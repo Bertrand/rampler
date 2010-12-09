@@ -2166,6 +2166,14 @@
 					</object>
 					<int key="connectionID">572</int>
 				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBActionConnection" key="connection">
+						<string key="label">urlHistoricPopUpButtonAction:</string>
+						<reference key="source" ref="967768383"/>
+						<reference key="destination" ref="546154265"/>
+					</object>
+					<int key="connectionID">573</int>
+				</object>
 			</object>
 			<object class="IBMutableOrderedSet" key="objectRecords">
 				<object class="NSArray" key="orderedObjects">
@@ -3816,7 +3824,7 @@
 				</object>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">572</int>
+			<int key="maxID">573</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -3831,10 +3839,12 @@
 							<string>closeURLOpenerAction:</string>
 							<string>openURLAction:</string>
 							<string>openWebView:</string>
+							<string>urlHistoricPopUpButtonAction:</string>
 							<string>validURLOpenerAction:</string>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>id</string>
 							<string>id</string>
 							<string>id</string>
 							<string>id</string>
@@ -3848,6 +3858,7 @@
 							<string>closeURLOpenerAction:</string>
 							<string>openURLAction:</string>
 							<string>openWebView:</string>
+							<string>urlHistoricPopUpButtonAction:</string>
 							<string>validURLOpenerAction:</string>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
@@ -3862,6 +3873,10 @@
 							</object>
 							<object class="IBActionInfo">
 								<string key="name">openWebView:</string>
+								<string key="candidateClassName">id</string>
+							</object>
+							<object class="IBActionInfo">
+								<string key="name">urlHistoricPopUpButtonAction:</string>
 								<string key="candidateClassName">id</string>
 							</object>
 							<object class="IBActionInfo">
