@@ -209,6 +209,9 @@
 			current.file = line.file;
 			current.ns = line.ns;
 			current.totalTime += self.duration * lineSampleCount / self.sampleCount;
+			if (current.maxTickPerStack < lineSampleCount) {
+				current.maxTickPerStack = lineSampleCount;
+			}
 			[current addCallDetailsForFile:line.file time:line.duration];
 		}
 	}

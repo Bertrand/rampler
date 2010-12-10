@@ -26,6 +26,7 @@
 @synthesize stackTraceCount;
 @synthesize callDetails;
 @synthesize ns;
+@synthesize maxTickPerStack;
 
 
 

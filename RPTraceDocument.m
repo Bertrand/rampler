@@ -13,6 +13,8 @@
 #import "RPOutlineView.h"
 #import "RPTableHeaderView.h"
 
+#define COLUMN_INFO_VERSION 2
+
 @interface RPTraceDocument()
 
 @property (nonatomic, retain) RPCallTree* root;
@@ -42,22 +44,27 @@
 + (NSArray *)defaultOutlineColumnList
 {
 	NSMutableArray *result;
-	
+	NSMutableArray *defaultValue;
+
+	defaultValue = [[NSMutableArray alloc] initWithObjects:
+			[NSMutableDictionary dictionaryWithObjectsAndKeys:@"Thread", @"title", @"thread", @"identifier", [NSNumber numberWithFloat:52], @"width", [NSNumber numberWithBool:NO], @"enabled", nil],
+			[NSMutableDictionary dictionaryWithObjectsAndKeys:@"Total", @"title", @"totalTime", @"identifier", [NSNumber numberWithFloat:101], @"width", [NSNumber numberWithBool:YES], @"enabled", nil],
+			[NSMutableDictionary dictionaryWithObjectsAndKeys:@"Self", @"title", @"selfTime", @"identifier", [NSNumber numberWithFloat:61], @"width", [NSNumber numberWithBool:YES], @"enabled", nil],
+			[NSMutableDictionary dictionaryWithObjectsAndKeys:@"Tick count", @"title", @"tickCount", @"identifier", [NSNumber numberWithFloat:52], @"width", [NSNumber numberWithBool:NO], @"enabled", nil],
+			[NSMutableDictionary dictionaryWithObjectsAndKeys:@"Blocked ticks", @"title", @"blockedTicks", @"identifier", [NSNumber numberWithFloat:52], @"width", [NSNumber numberWithBool:YES], @"enabled", nil],
+			[NSMutableDictionary dictionaryWithObjectsAndKeys:@"File", @"title", @"file", @"identifier", [NSNumber numberWithFloat:232], @"width", [NSNumber numberWithBool:NO], @"enabled", nil],
+			[NSMutableDictionary dictionaryWithObjectsAndKeys:@"Name Space", @"title", @"namespace", @"identifier", [NSNumber numberWithFloat:232], @"width", [NSNumber numberWithBool:YES], @"enabled", nil],
+			[NSMutableDictionary dictionaryWithObjectsAndKeys:@"Symbol", @"title", @"symbol", @"identifier", [NSNumber numberWithFloat:300], @"width", [NSNumber numberWithBool:YES], @"enabled", nil],
+			nil
+		];
 	result = [[[NSUserDefaults standardUserDefaults] arrayForKey:@"columns"] mutableCopy];
-	if (!result) {
-		result = [[NSMutableArray alloc] initWithObjects:
-				[NSMutableDictionary dictionaryWithObjectsAndKeys:@"Thread", @"title", @"thread", @"identifier", [NSNumber numberWithFloat:52], @"width", [NSNumber numberWithBool:NO], @"enabled", nil],
-				[NSMutableDictionary dictionaryWithObjectsAndKeys:@"Total", @"title", @"totalTime", @"identifier", [NSNumber numberWithFloat:101], @"width", [NSNumber numberWithBool:YES], @"enabled", nil],
-				[NSMutableDictionary dictionaryWithObjectsAndKeys:@"Self", @"title", @"selfTime", @"identifier", [NSNumber numberWithFloat:61], @"width", [NSNumber numberWithBool:YES], @"enabled", nil],
-				[NSMutableDictionary dictionaryWithObjectsAndKeys:@"Call #", @"title", @"callCount", @"identifier", [NSNumber numberWithFloat:52], @"width", [NSNumber numberWithBool:NO], @"enabled", nil],
-				[NSMutableDictionary dictionaryWithObjectsAndKeys:@"File", @"title", @"file", @"identifier", [NSNumber numberWithFloat:232], @"width", [NSNumber numberWithBool:NO], @"enabled", nil],
-				[NSMutableDictionary dictionaryWithObjectsAndKeys:@"Name Space", @"title", @"namespace", @"identifier", [NSNumber numberWithFloat:232], @"width", [NSNumber numberWithBool:YES], @"enabled", nil],
-				[NSMutableDictionary dictionaryWithObjectsAndKeys:@"Symbol", @"title", @"symbol", @"identifier", [NSNumber numberWithFloat:300], @"width", [NSNumber numberWithBool:YES], @"enabled", nil],
-				nil
-			];
+	if (!result || ![[result objectAtIndex:0] isKindOfClass:[NSNumber class]] || [[result objectAtIndex:0] intValue] != COLUMN_INFO_VERSION) {
+		[result release];
+		result = [[defaultValue retain] autorelease];
 	} else {
 		int ii, count;
 		
+		[result removeObjectAtIndex:0];
 		count = [result count];
 		for (ii = 0; ii < count; ii++) {
 			NSMutableDictionary *column;
@@ -67,6 +74,7 @@
 			[column release];
 		}
 	}
+	[defaultValue release];
 
 	return result;
 }
@@ -205,7 +213,12 @@
 
 - (void)_saveColumnInfo
 {
-	[[NSUserDefaults standardUserDefaults] setObject:columnInfo forKey:@"columns"];
+	NSMutableArray *copy;
+	
+	copy = [columnInfo mutableCopy];
+	[copy insertObject:[NSNumber numberWithInt:COLUMN_INFO_VERSION] atIndex:0];
+	[[NSUserDefaults standardUserDefaults] setObject:copy forKey:@"columns"];
+	[copy release];
 }
 
 - (void)awakeFromNib
@@ -426,7 +439,7 @@
     	result = [NSNumber numberWithDouble:[item totalTime]];
 	} else if ([[tableColumn identifier] isEqualToString:@"selfTime"]) {
     	result = [NSNumber numberWithDouble:[item selfTime]];
-	} else if ([[tableColumn identifier] isEqualToString:@"callCount"]) {
+	} else if ([[tableColumn identifier] isEqualToString:@"tickCount"]) {
     	result = [NSNumber numberWithInteger:[item sampleCount]];
 	} else if ([[tableColumn identifier] isEqualToString:@"file"]) {
     	result = [item file];
@@ -434,6 +447,8 @@
     	result = [item ns];
 	} else if ([[tableColumn identifier] isEqualToString:@"symbol"]) {
     	result = [item symbol];
+	} else if ([[tableColumn identifier] isEqualToString:@"blockedTicks"]) {
+    	result = [NSNumber numberWithInteger:[item maxTickPerStack]];
     }
     return result;
 }

@@ -11,7 +11,7 @@
 			<string key="NS.object.0">823</string>
 		</object>
 		<array class="NSMutableArray" key="IBDocument.EditedObjectIDs">
-			<integer value="100030"/>
+			<integer value="100024"/>
 		</array>
 		<array key="IBDocument.PluginDependencies">
 			<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
@@ -52,13 +52,13 @@
 										<object class="NSOutlineView" id="146707959">
 											<reference key="NSNextResponder" ref="398006314"/>
 											<int key="NSvFlags">256</int>
-											<string key="NSFrameSize">{761, 496}</string>
+											<string key="NSFrameSize">{773, 496}</string>
 											<reference key="NSSuperview" ref="398006314"/>
 											<bool key="NSEnabled">YES</bool>
 											<object class="NSTableHeaderView" key="NSHeaderView" id="954105687">
 												<reference key="NSNextResponder" ref="902232726"/>
 												<int key="NSvFlags">256</int>
-												<string key="NSFrameSize">{761, 17}</string>
+												<string key="NSFrameSize">{773, 17}</string>
 												<reference key="NSSuperview" ref="902232726"/>
 												<reference key="NSTableView" ref="146707959"/>
 											</object>
@@ -184,14 +184,14 @@
 													<reference key="NSTableView" ref="146707959"/>
 												</object>
 												<object class="NSTableColumn" id="533589809">
-													<string key="NSIdentifier">callCount</string>
-													<double key="NSWidth">52</double>
+													<string key="NSIdentifier">tickCount</string>
+													<double key="NSWidth">64</double>
 													<double key="NSMinWidth">16</double>
 													<double key="NSMaxWidth">3.4028234663852886e+38</double>
 													<object class="NSTableHeaderCell" key="NSHeaderCell">
 														<int key="NSCellFlags">75628096</int>
 														<int key="NSCellFlags2">2048</int>
-														<string key="NSContents">Call #</string>
+														<string key="NSContents">Tick count</string>
 														<reference key="NSSupport" ref="26"/>
 														<reference key="NSBackgroundColor" ref="861898687"/>
 														<reference key="NSTextColor" ref="775235104"/>
@@ -341,8 +341,8 @@
 									<int key="NSsFlags">1</int>
 									<reference key="NSTarget" ref="581930014"/>
 									<string key="NSAction">_doScroller:</string>
-									<double key="NSCurValue">1</double>
-									<double key="NSPercent">0.91984231274638628</double>
+									<double key="NSCurValue">0.83561643835616439</double>
+									<double key="NSPercent">0.90556274256144886</double>
 								</object>
 								<object class="NSClipView" id="902232726">
 									<reference key="NSNextResponder" ref="581930014"/>
