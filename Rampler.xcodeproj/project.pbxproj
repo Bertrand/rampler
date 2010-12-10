@@ -15,6 +15,7 @@
 		02883C51128F7256008E0AA4 /* WebViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 02883C50128F7256008E0AA4 /* WebViewController.xib */; };
 		02883C55128F74FC008E0AA4 /* RPWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 02883C54128F74FC008E0AA4 /* RPWebViewController.m */; };
 		02883C5D128F7601008E0AA4 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 02883C5C128F7601008E0AA4 /* WebKit.framework */; };
+		02E1998612B12EDB00959845 /* RPTableHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 02E1998512B12EDB00959845 /* RPTableHeaderView.m */; };
 		0628E06A1253952A00B9255B /* RPCallTree.m in Sources */ = {isa = PBXBuildFile; fileRef = 0628E0691253952A00B9255B /* RPCallTree.m */; };
 		0628E06D125396DB00B9255B /* RPDTraceLogReader.m in Sources */ = {isa = PBXBuildFile; fileRef = 0628E06C125396DB00B9255B /* RPDTraceLogReader.m */; };
 		0628E4BA125A361E00B9255B /* RPLogLine.m in Sources */ = {isa = PBXBuildFile; fileRef = 0628E4B9125A361E00B9255B /* RPLogLine.m */; };
@@ -41,6 +42,8 @@
 		02883C53128F74FC008E0AA4 /* RPWebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RPWebViewController.h; sourceTree = "<group>"; };
 		02883C54128F74FC008E0AA4 /* RPWebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RPWebViewController.m; sourceTree = "<group>"; };
 		02883C5C128F7601008E0AA4 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
+		02E1998412B12EDB00959845 /* RPTableHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RPTableHeaderView.h; sourceTree = "<group>"; };
+		02E1998512B12EDB00959845 /* RPTableHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RPTableHeaderView.m; sourceTree = "<group>"; };
 		0628E0681253952900B9255B /* RPCallTree.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RPCallTree.h; sourceTree = "<group>"; };
 		0628E0691253952A00B9255B /* RPCallTree.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RPCallTree.m; sourceTree = "<group>"; };
 		0628E06B125396DB00B9255B /* RPDTraceLogReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RPDTraceLogReader.h; sourceTree = "<group>"; };
@@ -87,6 +90,17 @@
 				026DF5F2126EDB4E005466CF /* RPRubyTraceLogReader.m */,
 			);
 			name = "Log Reader";
+			sourceTree = "<group>";
+		};
+		02E1998712B12EEA00959845 /* AppKit */ = {
+			isa = PBXGroup;
+			children = (
+				02883BE2128F507F008E0AA4 /* RPOutlineView.h */,
+				02883BE3128F507F008E0AA4 /* RPOutlineView.m */,
+				02E1998412B12EDB00959845 /* RPTableHeaderView.h */,
+				02E1998512B12EDB00959845 /* RPTableHeaderView.m */,
+			);
+			name = AppKit;
 			sourceTree = "<group>";
 		};
 		1058C7A6FEA54F5311CA2CBB /* Linked Frameworks */ = {
@@ -140,10 +154,9 @@
 				025680F212831AF5000BF1DF /* RPApplicationDelegate.m */,
 				0227EC06128ACDAE0053012B /* RPURLLoaderController.h */,
 				0227EC07128ACDAE0053012B /* RPURLLoaderController.m */,
-				02883BE2128F507F008E0AA4 /* RPOutlineView.h */,
-				02883BE3128F507F008E0AA4 /* RPOutlineView.m */,
 				02883C53128F74FC008E0AA4 /* RPWebViewController.h */,
 				02883C54128F74FC008E0AA4 /* RPWebViewController.m */,
+				02E1998712B12EEA00959845 /* AppKit */,
 			);
 			name = Classes;
 			sourceTree = "<group>";
@@ -256,6 +269,7 @@
 				0227EC08128ACDAE0053012B /* RPURLLoaderController.m in Sources */,
 				02883BE4128F507F008E0AA4 /* RPOutlineView.m in Sources */,
 				02883C55128F74FC008E0AA4 /* RPWebViewController.m in Sources */,
+				02E1998612B12EDB00959845 /* RPTableHeaderView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

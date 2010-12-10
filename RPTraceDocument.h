@@ -12,7 +12,7 @@
 @class RPCallTree, RPOutlineView;
 
 
-@interface RPTraceDocument : NSDocument
+@interface RPTraceDocument : NSDocument <NSMenuDelegate>
 {
 	NSString *version;
 	double interval;
@@ -38,6 +38,8 @@
 	BOOL displayTimeUnitAsPercentOfTotal;
     BOOL hideInsignificantCalls;
     
+	NSMutableArray *columnInfo;
+	BOOL updatingColumns;
     RPTraceDocument *mainDocument;
 }
 

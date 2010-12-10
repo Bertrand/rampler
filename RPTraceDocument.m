@@ -11,6 +11,7 @@
 #import "RPDTraceLogReader.h"
 #import "RPRubyTraceLogReader.h"
 #import "RPOutlineView.h"
+#import "RPTableHeaderView.h"
 
 @interface RPTraceDocument()
 
@@ -37,6 +38,38 @@
 @synthesize url;
 @synthesize interval;
 @synthesize duration;
+
++ (NSArray *)defaultOutlineColumnList
+{
+	NSMutableArray *result;
+	
+	result = [[[NSUserDefaults standardUserDefaults] arrayForKey:@"columns"] mutableCopy];
+	if (!result) {
+		result = [[NSMutableArray alloc] initWithObjects:
+				[NSMutableDictionary dictionaryWithObjectsAndKeys:@"Thread", @"title", @"thread", @"identifier", [NSNumber numberWithFloat:52], @"width", [NSNumber numberWithBool:NO], @"enabled", nil],
+				[NSMutableDictionary dictionaryWithObjectsAndKeys:@"Total", @"title", @"totalTime", @"identifier", [NSNumber numberWithFloat:101], @"width", [NSNumber numberWithBool:YES], @"enabled", nil],
+				[NSMutableDictionary dictionaryWithObjectsAndKeys:@"Self", @"title", @"selfTime", @"identifier", [NSNumber numberWithFloat:61], @"width", [NSNumber numberWithBool:YES], @"enabled", nil],
+				[NSMutableDictionary dictionaryWithObjectsAndKeys:@"Call #", @"title", @"callCount", @"identifier", [NSNumber numberWithFloat:52], @"width", [NSNumber numberWithBool:NO], @"enabled", nil],
+				[NSMutableDictionary dictionaryWithObjectsAndKeys:@"File", @"title", @"file", @"identifier", [NSNumber numberWithFloat:232], @"width", [NSNumber numberWithBool:NO], @"enabled", nil],
+				[NSMutableDictionary dictionaryWithObjectsAndKeys:@"Name Space", @"title", @"namespace", @"identifier", [NSNumber numberWithFloat:232], @"width", [NSNumber numberWithBool:YES], @"enabled", nil],
+				[NSMutableDictionary dictionaryWithObjectsAndKeys:@"Symbol", @"title", @"symbol", @"identifier", [NSNumber numberWithFloat:300], @"width", [NSNumber numberWithBool:YES], @"enabled", nil],
+				nil
+			];
+	} else {
+		int ii, count;
+		
+		count = [result count];
+		for (ii = 0; ii < count; ii++) {
+			NSMutableDictionary *column;
+			
+			column = [[result objectAtIndex:ii] mutableCopy];
+			[result replaceObjectAtIndex:ii withObject:column];
+			[column release];
+		}
+	}
+
+	return result;
+}
 
 - (id)init
 {
@@ -144,6 +177,37 @@
 	[self.mainOutlineView setNeedsDisplay];
 }
 
+- (void)_updateOutlineViewColumn
+{
+	int ii = 0;
+	
+	updatingColumns = YES;
+	for (NSDictionary *info in columnInfo) {
+		NSTableColumn *column;
+		
+		column = [mainOutlineView tableColumnWithIdentifier:[info objectForKey:@"identifier"]];
+		if (!column && [[info objectForKey:@"enabled"] boolValue]) {
+			column = [[NSTableColumn alloc] initWithIdentifier:[info objectForKey:@"identifier"]];
+			[mainOutlineView addTableColumn:column];
+			[column release];
+		}
+		if ([[info objectForKey:@"enabled"] boolValue]) {
+			[mainOutlineView moveColumn:[mainOutlineView columnWithIdentifier:[info objectForKey:@"identifier"]] toColumn:ii];
+			[column setWidth:[[info objectForKey:@"width"] floatValue]];
+			[[column headerCell] setTitle:[info objectForKey:@"title"]];
+			ii++;
+		} else if (column) {
+			[mainOutlineView removeTableColumn:column];
+		}
+	}
+	updatingColumns = NO;
+}
+
+- (void)_saveColumnInfo
+{
+	[[NSUserDefaults standardUserDefaults] setObject:columnInfo forKey:@"columns"];
+}
+
 - (void)awakeFromNib
 {
 	[self updateTimeFormatter];
@@ -160,6 +224,9 @@
 	[urlTextField setToolTip:[self.url absoluteString]];
     mainOutlineView.columnIdentifierForCopy = @"file";
 	[mainOutlineView setDoubleAction:@selector(outlineDoubleAction:)];
+	
+	columnInfo = [[[self class] defaultOutlineColumnList] retain];
+	[self _updateOutlineViewColumn];
 }
 
 - (void)updateTimeFormatter
@@ -401,6 +468,79 @@
     if (selectedNode) {
     	[self expandAndSelectCallTree:selectedNode];
     }
+}
+
+- (NSMenu *)headerMenuForTableView:(NSTableView *)tableView event:(NSEvent *)event
+{
+	NSMenu *result;
+	NSInteger tag = 0;
+	
+	result = [[NSMenu alloc] init];
+	[result setDelegate:self];
+	for (NSDictionary *column in columnInfo) {
+		NSMenuItem *item;
+		
+		item = [result addItemWithTitle:[column objectForKey:@"title"] action:@selector(headerMenuAction:) keyEquivalent:@""];
+		[item setState:[[column objectForKey:@"enabled"] boolValue]?NSOnState:NSOffState];
+		[item setTag:tag];
+		if ([[column objectForKey:@"identifier"] isEqualToString:@"symbol"]) {
+			[item setEnabled:NO];
+		}
+		tag++;
+	}
+	return [result autorelease];
+}
+
+- (void)headerMenuAction:(NSMenuItem *)item
+{
+	NSMutableDictionary *info;
+	
+	info = [columnInfo objectAtIndex:[item tag]];
+	[info setObject:[NSNumber numberWithBool:![[info objectForKey:@"enabled"] boolValue]] forKey:@"enabled"];
+	[self _updateOutlineViewColumn];
+	[self _saveColumnInfo];
+}
+
+- (void)outlineViewColumnDidMove:(NSNotification *)notification
+{
+	if (!updatingColumns) {
+		NSInteger newColumn = [[[notification userInfo] objectForKey:@"NSNewColumn"] intValue];
+		NSInteger oldColumn = [[[notification userInfo] objectForKey:@"NSOldColumn"] intValue];
+		NSDictionary *info;
+		NSInteger ii = 0;
+		
+		for (info in columnInfo) {
+			if (![[info objectForKey:@"enabled"] boolValue]) {
+				if (ii <= newColumn) {
+					newColumn++;
+				}
+				if (ii <= oldColumn) {
+					oldColumn++;
+				}
+			}
+			ii++;
+		}
+		info = [[columnInfo objectAtIndex:oldColumn] retain];
+		[columnInfo removeObjectAtIndex:oldColumn];
+		[columnInfo insertObject:info atIndex:newColumn];
+		[info release];
+		[self _saveColumnInfo];
+	}
+}
+
+- (void)outlineViewColumnDidResize:(NSNotification *)notification
+{
+	if (!updatingColumns) {
+		NSTableColumn *column;
+		
+		column = [[notification userInfo] objectForKey:@"NSTableColumn"];
+		for (NSMutableDictionary *info in columnInfo) {
+			if ([[info objectForKey:@"identifier"] isEqualToString:[column identifier]]) {
+				[info setObject:[NSNumber numberWithFloat:[column width]] forKey:@"width"];
+			}
+		}
+		[self _saveColumnInfo];
+	}
 }
 
 - (BOOL)hideInsignificantCalls
