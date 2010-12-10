@@ -228,13 +228,14 @@
     	[focusDownFunctionButton setHidden:YES];
     	[focusUpFunctionButton setHidden:YES];
     }
+	[urlTextField setAction:@selector(urlTextFieldClicked:)];
 	[totalTimeTextField setStringValue:[NSString stringWithFormat:@"%.2fs", root.totalTime]];
 	[intervalTextField setStringValue:[NSString stringWithFormat:@"%.2fms", self.interval * 1000]];
+	[realIntervalTextField setStringValue:[NSString stringWithFormat:@"%.2fms", (root.totalTime / root.sampleCount) * 1000]];
 	[tickCountTextField setStringValue:[NSString stringWithFormat:@"%d", root.sampleCount]];
 	[stackCountTextField setStringValue:[NSString stringWithFormat:@"%d", root.stackTraceCount]];
 	[versionTextField setStringValue:self.version];
 	[urlTextField setStringValue:[self.url absoluteString]];
-	[urlTextField setToolTip:[self.url absoluteString]];
     mainOutlineView.columnIdentifierForCopy = @"file";
 	[mainOutlineView setDoubleAction:@selector(outlineDoubleAction:)];
 	
@@ -407,6 +408,10 @@
 	[self openFocusOnSelectionWithTopDown:NO];
 }
 
+- (IBAction)urlTextFieldClicked:(id)sender
+{
+	NSLog(@"test");
+}
 
 - (id)outlineView:(NSOutlineView *)outlineView child:(NSInteger)index ofItem:(id)item
 {

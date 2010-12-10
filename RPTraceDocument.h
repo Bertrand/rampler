@@ -31,6 +31,7 @@
 	
 	IBOutlet NSTextField* totalTimeTextField;
 	IBOutlet NSTextField* intervalTextField;
+	IBOutlet NSTextField* realIntervalTextField;
 	IBOutlet NSTextField* tickCountTextField;
 	IBOutlet NSTextField* stackCountTextField;
 	IBOutlet NSTextField* versionTextField;
@@ -59,6 +60,7 @@
 - (IBAction)followHottestSubpath:(id)sender;
 - (IBAction)focusDownFunctionButtonAction:(id)sender;
 - (IBAction)focusUpFunctionButtonAction:(id)sender;
+- (IBAction)urlTextFieldClicked:(id)sender;
 - (void)updateTimeFormatter;
 
 @end
