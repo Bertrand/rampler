@@ -13,7 +13,7 @@
 #import "RPOutlineView.h"
 #import "RPTableHeaderView.h"
 
-#define COLUMN_INFO_VERSION 2
+#define COLUMN_INFO_VERSION 5
 
 @interface RPTraceDocument()
 
@@ -53,7 +53,7 @@
 			[NSMutableDictionary dictionaryWithObjectsAndKeys:@"Tick count", @"title", @"tickCount", @"identifier", [NSNumber numberWithFloat:52], @"width", [NSNumber numberWithBool:NO], @"enabled", nil],
 			[NSMutableDictionary dictionaryWithObjectsAndKeys:@"Blocked ticks", @"title", @"blockedTicks", @"identifier", [NSNumber numberWithFloat:52], @"width", [NSNumber numberWithBool:YES], @"enabled", nil],
 			[NSMutableDictionary dictionaryWithObjectsAndKeys:@"File", @"title", @"file", @"identifier", [NSNumber numberWithFloat:232], @"width", [NSNumber numberWithBool:NO], @"enabled", nil],
-			[NSMutableDictionary dictionaryWithObjectsAndKeys:@"Name Space", @"title", @"namespace", @"identifier", [NSNumber numberWithFloat:232], @"width", [NSNumber numberWithBool:YES], @"enabled", nil],
+//			[NSMutableDictionary dictionaryWithObjectsAndKeys:@"Name Space", @"title", @"namespace", @"identifier", [NSNumber numberWithFloat:232], @"width", [NSNumber numberWithBool:YES], @"enabled", nil],
 			[NSMutableDictionary dictionaryWithObjectsAndKeys:@"Symbol", @"title", @"symbol", @"identifier", [NSNumber numberWithFloat:300], @"width", [NSNumber numberWithBool:YES], @"enabled", nil],
 			nil
 		];
@@ -446,7 +446,7 @@
 	} else if ([[tableColumn identifier] isEqualToString:@"namespace"]) {
     	result = [item ns];
 	} else if ([[tableColumn identifier] isEqualToString:@"symbol"]) {
-    	result = [item symbol];
+    	result = [NSString stringWithFormat:@"%@::%@", [item ns], [item symbol]];
 	} else if ([[tableColumn identifier] isEqualToString:@"blockedTicks"]) {
     	result = [NSNumber numberWithInteger:[item blockedTicks]];
     }

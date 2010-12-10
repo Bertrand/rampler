@@ -165,7 +165,7 @@
 	parsedLine.file = [NSString stringWithFormat:@"%@:%d", parsedLine.fileName, parsedLine.fileLine];
 	parsedLine.type = [components objectAtIndex:4];
 	parsedLine.function = [components objectAtIndex:6];
-	parsedLine.symbol = [NSString stringWithFormat:@"%@(%@)", parsedLine.function, [components objectAtIndex:5]];
+	parsedLine.symbol = [NSString stringWithFormat:@"%@", parsedLine.function];
 	parsedLine.duration = [[components objectAtIndex:8] doubleValue];
 	if ([components objectAtIndex:5]) {
 		parsedLine.symbolId = [components objectAtIndex:5];
