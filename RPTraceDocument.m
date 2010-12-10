@@ -448,7 +448,7 @@
 	} else if ([[tableColumn identifier] isEqualToString:@"symbol"]) {
     	result = [item symbol];
 	} else if ([[tableColumn identifier] isEqualToString:@"blockedTicks"]) {
-    	result = [NSNumber numberWithInteger:[item maxTickPerStack]];
+    	result = [NSNumber numberWithInteger:[item blockedTicks]];
     }
     return result;
 }

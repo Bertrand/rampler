@@ -21,7 +21,7 @@
 	NSInteger	startLine;
 	NSString*	file;
 	NSString*	ns;
-	NSInteger	maxTickPerStack;
+	NSInteger	blockedTicks;
 	
 	RPCallTree* parent;
 	RPCallTree* root;
@@ -46,7 +46,7 @@
 @property (nonatomic, assign)	NSInteger stackTraceCount;
 @property (nonatomic, retain)	NSMutableDictionary* callDetails;
 @property (nonatomic, retain)	NSString* ns;
-@property (nonatomic, assign)	NSInteger maxTickPerStack;
+@property (nonatomic, assign)	NSInteger blockedTicks;
 
 
 - (RPCallTree*) subTreeForSymbolId:(NSString*)sym;
