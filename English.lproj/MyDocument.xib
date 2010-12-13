@@ -440,7 +440,7 @@
 							<object class="NSButtonCell" key="NSCell" id="26221491">
 								<int key="NSCellFlags">-1543373312</int>
 								<int key="NSCellFlags2">134348800</int>
-								<string key="NSContents">Focus down on function</string>
+								<string key="NSContents">Merge down on function</string>
 								<reference key="NSSupport" ref="26"/>
 								<reference key="NSControlView" ref="604121045"/>
 								<int key="NSButtonFlags">-2038152961</int>
@@ -460,7 +460,7 @@
 							<object class="NSButtonCell" key="NSCell" id="328670107">
 								<int key="NSCellFlags">-1543373312</int>
 								<int key="NSCellFlags2">134348800</int>
-								<string key="NSContents">Focus up on function</string>
+								<string key="NSContents">Merge up on function</string>
 								<reference key="NSSupport" ref="26"/>
 								<reference key="NSControlView" ref="740399430"/>
 								<int key="NSButtonFlags">-2038152961</int>
@@ -687,18 +687,18 @@
 								<reference key="NSTextColor" ref="432282764"/>
 							</object>
 						</object>
-						<object class="NSButton" id="656246042">
+						<object class="NSButton" id="605487873">
 							<reference key="NSNextResponder" ref="568628114"/>
 							<int key="NSvFlags">268</int>
 							<string key="NSFrame">{{20, 457}, {154, 17}}</string>
 							<reference key="NSSuperview" ref="568628114"/>
 							<bool key="NSEnabled">YES</bool>
-							<object class="NSButtonCell" key="NSCell" id="403405581">
+							<object class="NSButtonCell" key="NSCell" id="932339951">
 								<int key="NSCellFlags">-1543373312</int>
 								<int key="NSCellFlags2">134348800</int>
 								<string key="NSContents">Unfocus</string>
 								<reference key="NSSupport" ref="26"/>
-								<reference key="NSControlView" ref="656246042"/>
+								<reference key="NSControlView" ref="605487873"/>
 								<int key="NSButtonFlags">-2038152961</int>
 								<int key="NSButtonFlags2">164</int>
 								<string key="NSAlternateContents"/>
@@ -1062,7 +1062,7 @@
 				<object class="IBConnectionRecord">
 					<object class="IBOutletConnection" key="connection">
 						<string key="label">nextKeyView</string>
-						<reference key="source" ref="656246042"/>
+						<reference key="source" ref="605487873"/>
 						<reference key="destination" ref="393000875"/>
 					</object>
 					<int key="connectionID">100211</int>
@@ -1071,7 +1071,7 @@
 					<object class="IBActionConnection" key="connection">
 						<string key="label">unfocusButtonAction:</string>
 						<reference key="source" ref="512844837"/>
-						<reference key="destination" ref="656246042"/>
+						<reference key="destination" ref="605487873"/>
 					</object>
 					<int key="connectionID">100213</int>
 				</object>
@@ -1079,7 +1079,7 @@
 					<object class="IBOutletConnection" key="connection">
 						<string key="label">unfocusButton</string>
 						<reference key="source" ref="512844837"/>
-						<reference key="destination" ref="656246042"/>
+						<reference key="destination" ref="605487873"/>
 					</object>
 					<int key="connectionID">100214</int>
 				</object>
@@ -1137,7 +1137,7 @@
 							<reference ref="1018851587"/>
 							<reference ref="615412139"/>
 							<reference ref="278033872"/>
-							<reference ref="656246042"/>
+							<reference ref="605487873"/>
 						</array>
 						<reference key="parent" ref="275939982"/>
 					</object>
@@ -1518,16 +1518,16 @@
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">100209</int>
-						<reference key="object" ref="656246042"/>
+						<reference key="object" ref="605487873"/>
 						<array class="NSMutableArray" key="children">
-							<reference ref="403405581"/>
+							<reference ref="932339951"/>
 						</array>
 						<reference key="parent" ref="568628114"/>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">100210</int>
-						<reference key="object" ref="403405581"/>
-						<reference key="parent" ref="656246042"/>
+						<reference key="object" ref="932339951"/>
+						<reference key="parent" ref="605487873"/>
 					</object>
 				</array>
 			</object>
