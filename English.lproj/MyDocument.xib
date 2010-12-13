@@ -392,13 +392,13 @@
 						<object class="NSButton" id="441967953">
 							<reference key="NSNextResponder" ref="568628114"/>
 							<int key="NSvFlags">268</int>
-							<string key="NSFrame">{{20, 471}, {154, 17}}</string>
+							<string key="NSFrame">{{20, 434}, {154, 17}}</string>
 							<reference key="NSSuperview" ref="568628114"/>
 							<bool key="NSEnabled">YES</bool>
 							<object class="NSButtonCell" key="NSCell" id="467471079">
 								<int key="NSCellFlags">-1543373312</int>
 								<int key="NSCellFlags2">134348800</int>
-								<string key="NSContents">Unfocus</string>
+								<string key="NSContents">Focus</string>
 								<reference key="NSSupport" ref="26"/>
 								<reference key="NSControlView" ref="441967953"/>
 								<int key="NSButtonFlags">-2038152961</int>
@@ -412,7 +412,7 @@
 						<object class="NSButton" id="393000875">
 							<reference key="NSNextResponder" ref="568628114"/>
 							<int key="NSvFlags">268</int>
-							<string key="NSFrame">{{17, 449}, {143, 18}}</string>
+							<string key="NSFrame">{{17, 412}, {143, 18}}</string>
 							<reference key="NSSuperview" ref="568628114"/>
 							<bool key="NSEnabled">YES</bool>
 							<object class="NSButtonCell" key="NSCell" id="79160803">
@@ -434,7 +434,7 @@
 						<object class="NSButton" id="604121045">
 							<reference key="NSNextResponder" ref="568628114"/>
 							<int key="NSvFlags">268</int>
-							<string key="NSFrame">{{20, 400}, {154, 17}}</string>
+							<string key="NSFrame">{{20, 363}, {154, 17}}</string>
 							<reference key="NSSuperview" ref="568628114"/>
 							<bool key="NSEnabled">YES</bool>
 							<object class="NSButtonCell" key="NSCell" id="26221491">
@@ -454,7 +454,7 @@
 						<object class="NSButton" id="740399430">
 							<reference key="NSNextResponder" ref="568628114"/>
 							<int key="NSvFlags">268</int>
-							<string key="NSFrame">{{20, 377}, {154, 17}}</string>
+							<string key="NSFrame">{{20, 340}, {154, 17}}</string>
 							<reference key="NSSuperview" ref="568628114"/>
 							<bool key="NSEnabled">YES</bool>
 							<object class="NSButtonCell" key="NSCell" id="328670107">
@@ -685,6 +685,26 @@
 								<reference key="NSControlView" ref="1023914905"/>
 								<reference key="NSBackgroundColor" ref="739919951"/>
 								<reference key="NSTextColor" ref="432282764"/>
+							</object>
+						</object>
+						<object class="NSButton" id="656246042">
+							<reference key="NSNextResponder" ref="568628114"/>
+							<int key="NSvFlags">268</int>
+							<string key="NSFrame">{{20, 457}, {154, 17}}</string>
+							<reference key="NSSuperview" ref="568628114"/>
+							<bool key="NSEnabled">YES</bool>
+							<object class="NSButtonCell" key="NSCell" id="403405581">
+								<int key="NSCellFlags">-1543373312</int>
+								<int key="NSCellFlags2">134348800</int>
+								<string key="NSContents">Unfocus</string>
+								<reference key="NSSupport" ref="26"/>
+								<reference key="NSControlView" ref="656246042"/>
+								<int key="NSButtonFlags">-2038152961</int>
+								<int key="NSButtonFlags2">164</int>
+								<string key="NSAlternateContents"/>
+								<string key="NSKeyEquivalent"/>
+								<int key="NSPeriodicDelay">400</int>
+								<int key="NSPeriodicInterval">75</int>
 							</object>
 						</object>
 					</array>
@@ -1039,6 +1059,30 @@
 					</object>
 					<int key="connectionID">100208</int>
 				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">nextKeyView</string>
+						<reference key="source" ref="656246042"/>
+						<reference key="destination" ref="393000875"/>
+					</object>
+					<int key="connectionID">100211</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBActionConnection" key="connection">
+						<string key="label">unfocusButtonAction:</string>
+						<reference key="source" ref="512844837"/>
+						<reference key="destination" ref="656246042"/>
+					</object>
+					<int key="connectionID">100213</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">unfocusButton</string>
+						<reference key="source" ref="512844837"/>
+						<reference key="destination" ref="656246042"/>
+					</object>
+					<int key="connectionID">100214</int>
+				</object>
 			</array>
 			<object class="IBMutableOrderedSet" key="objectRecords">
 				<array key="orderedObjects">
@@ -1093,6 +1137,7 @@
 							<reference ref="1018851587"/>
 							<reference ref="615412139"/>
 							<reference ref="278033872"/>
+							<reference ref="656246042"/>
 						</array>
 						<reference key="parent" ref="275939982"/>
 					</object>
@@ -1471,6 +1516,19 @@
 						<reference key="object" ref="659368506"/>
 						<reference key="parent" ref="101133631"/>
 					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">100209</int>
+						<reference key="object" ref="656246042"/>
+						<array class="NSMutableArray" key="children">
+							<reference ref="403405581"/>
+						</array>
+						<reference key="parent" ref="568628114"/>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">100210</int>
+						<reference key="object" ref="403405581"/>
+						<reference key="parent" ref="656246042"/>
+					</object>
 				</array>
 			</object>
 			<dictionary class="NSMutableDictionary" key="flattenedProperties">
@@ -1504,7 +1562,7 @@
 				<string key="100109.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="100130.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<object class="NSAffineTransform" key="100130.IBViewBoundsToFrameTransform">
-					<bytes key="NSTransformStruct">P4AAAL+AAABBoAAAw/MAAA</bytes>
+					<bytes key="NSTransformStruct">P4AAAL+AAABBoAAAw+CAAA</bytes>
 				</object>
 				<string key="100131.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="100135.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
@@ -1587,9 +1645,14 @@
 				</object>
 				<string key="100206.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="100207.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
-				<string key="5.IBEditorWindowLastContentRect">{{404, 556}, {919, 577}}</string>
+				<string key="100209.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
+				<object class="NSAffineTransform" key="100209.IBViewBoundsToFrameTransform">
+					<bytes key="NSTransformStruct">P4AAAL+AAABBoAAAw+CAAA</bytes>
+				</object>
+				<string key="100210.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
+				<string key="5.IBEditorWindowLastContentRect">{{404, 279}, {919, 577}}</string>
 				<string key="5.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
-				<string key="5.IBWindowTemplateEditedContentRect">{{404, 556}, {919, 577}}</string>
+				<string key="5.IBWindowTemplateEditedContentRect">{{404, 279}, {919, 577}}</string>
 				<integer value="1" key="5.ImportedFromIB2"/>
 				<string key="5.editorWindowContentRectSynchronizationRect">{{201, 387}, {507, 413}}</string>
 				<integer value="1" key="5.windowTemplate.hasMinSize"/>
@@ -1601,7 +1664,7 @@
 			<nil key="activeLocalization"/>
 			<dictionary class="NSMutableDictionary" key="localizations"/>
 			<nil key="sourceID"/>
-			<int key="maxID">100208</int>
+			<int key="maxID">100214</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -1629,6 +1692,7 @@
 						<string key="focusDownFunctionButtonAction:">id</string>
 						<string key="focusUpFunctionButtonAction:">id</string>
 						<string key="followHottestSubpath:">id</string>
+						<string key="unfocusButtonAction:">id</string>
 						<string key="urlTextFieldClicked:">id</string>
 					</dictionary>
 					<dictionary class="NSMutableDictionary" key="actionInfosByName">
@@ -1648,6 +1712,10 @@
 							<string key="name">followHottestSubpath:</string>
 							<string key="candidateClassName">id</string>
 						</object>
+						<object class="IBActionInfo" key="unfocusButtonAction:">
+							<string key="name">unfocusButtonAction:</string>
+							<string key="candidateClassName">id</string>
+						</object>
 						<object class="IBActionInfo" key="urlTextFieldClicked:">
 							<string key="name">urlTextFieldClicked:</string>
 							<string key="candidateClassName">id</string>
@@ -1665,6 +1733,7 @@
 						<string key="stackCountTextField">NSTextField</string>
 						<string key="tickCountTextField">NSTextField</string>
 						<string key="totalTimeTextField">NSTextField</string>
+						<string key="unfocusButton">NSButton</string>
 						<string key="urlTextField">NSTextField</string>
 						<string key="versionTextField">NSTextField</string>
 					</dictionary>
@@ -1712,6 +1781,10 @@
 						<object class="IBToOneOutletInfo" key="totalTimeTextField">
 							<string key="name">totalTimeTextField</string>
 							<string key="candidateClassName">NSTextField</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="unfocusButton">
+							<string key="name">unfocusButton</string>
+							<string key="candidateClassName">NSButton</string>
 						</object>
 						<object class="IBToOneOutletInfo" key="urlTextField">
 							<string key="name">urlTextField</string>

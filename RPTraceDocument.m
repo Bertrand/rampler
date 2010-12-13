@@ -352,6 +352,25 @@
 	}
 }
 
+- (IBAction)unfocusButtonAction:(id)sender
+{
+    if (self.displayRoot != root) {
+	    RPCallTree *callTreeToSelect = nil;
+		NSInteger selectedRow;
+    	
+	    selectedRow = [mainOutlineView selectedRow];
+        if (selectedRow == -1) {
+	        callTreeToSelect = displayRoot;
+        } else {
+        	callTreeToSelect = [mainOutlineView itemAtRow:selectedRow];
+        }
+    	self.displayRoot = root;
+		[self updateTimeFormatter];
+	    [mainOutlineView reloadData];
+	    [self expandAndSelectCallTree:callTreeToSelect];
+    }
+}
+
 - (IBAction)focusButtonAction:(id)sender
 {
 	NSInteger selectedRow;
@@ -461,13 +480,13 @@
 - (void)outlineViewSelectionDidChange:(NSNotification *)notification;
 {
 	if ([mainOutlineView selectedRow] == -1) {
-		[focusButton setTitle:@"Unfocus"];
-        [focusButton setEnabled:root != displayRoot];
+        [unfocusButton setEnabled:root != displayRoot];
+        [focusButton setEnabled:NO];
         [focusDownFunctionButton setEnabled:NO];
         [focusUpFunctionButton setEnabled:NO];
         [hottestSubpathButton setEnabled:NO];
     } else {
-		[focusButton setTitle:@"Focus"];
+        [unfocusButton setEnabled:root != displayRoot];
         [focusButton setEnabled:YES];
         [focusDownFunctionButton setEnabled:YES];
         [focusUpFunctionButton setEnabled:YES];

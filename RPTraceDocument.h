@@ -23,6 +23,7 @@
 	
 	IBOutlet NSNumberFormatter* percentFormatter;
 	IBOutlet RPOutlineView* mainOutlineView;
+    IBOutlet NSButton* unfocusButton;
     IBOutlet NSButton* focusButton;
     IBOutlet NSButton* focusDownFunctionButton;
     IBOutlet NSButton* focusUpFunctionButton;
@@ -56,6 +57,7 @@
 @property (nonatomic, readonly, assign) double interval;
 @property (nonatomic, readonly, assign) double duration;
 
+- (IBAction)unfocusButtonAction:(id)sender;
 - (IBAction)focusButtonAction:(id)sender;
 - (IBAction)followHottestSubpath:(id)sender;
 - (IBAction)focusDownFunctionButtonAction:(id)sender;
