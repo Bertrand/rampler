@@ -8,6 +8,8 @@
 
 #import "RPURLLoaderController.h"
 #import "RPApplicationDelegate.h"
+#import "RPApplication.h"
+
 
 @implementation RPURLLoaderController
 
@@ -72,7 +74,14 @@
 		realFilename = _fileName;
 	}
 	_fileHandle = [[NSFileHandle alloc] initWithFileDescriptor:open([realFilename UTF8String], O_CREAT | O_WRONLY, S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH) closeOnDealloc:YES];
-	_connection = [[NSURLConnection alloc] initWithRequest:[NSURLRequest requestWithURL:_url] delegate:self startImmediately:YES];
+	
+	NSMutableURLRequest* request = [NSMutableURLRequest requestWithURL:_url];
+	
+	NSDictionary* httpHeaders = [(RPApplication*)[RPApplication sharedApplication] additionalHTTPHeaders];
+	for (NSString* key in httpHeaders) {
+		[request addValue:[httpHeaders objectForKey:key] forHTTPHeaderField:key];
+	}
+	_connection = [[NSURLConnection alloc] initWithRequest:request delegate:self startImmediately:YES];
 	[NSBundle loadNibNamed:@"RPURLLoaderController" owner:self];
 	[_progressIndicator startAnimation:nil];
 	[_textField setStringValue:[_url absoluteString]];
