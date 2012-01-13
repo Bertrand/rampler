@@ -136,8 +136,8 @@
 		currentPos = eolPos + 1;
 		
 	} while (eolPos < [data length]);
-	NSLog(@"total %d info %d lines %d", logLineNumber, infoLineCount, stackLineCount);
-	NSLog(@"stacks %d", [self.stacks count]);
+	NSLog(@"total %ld info %ld lines %ld", logLineNumber, infoLineCount, stackLineCount);
+	NSLog(@"stacks %lu", [self.stacks count]);
 	[lines release];
 }
 

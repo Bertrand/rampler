@@ -49,23 +49,23 @@
 }
 
 
-@property (readwrite,assign) NSInteger	threadId;
-@property (readwrite,assign) SInt64		time;
-@property (readwrite,assign) NSString*	type;
-@property (readwrite,assign) NSString*	ns;
-@property (readwrite,assign) NSString*	function;
-@property (readwrite,retain) NSString*	file; // file + line
-@property (readwrite,retain) NSString*	fileName;
-@property (readwrite,assign) UInt32		fileLine;
-@property (readwrite,assign) NSInteger	stackDepth;
-@property (readwrite,assign) NSUInteger	tickCount;
-@property (readwrite,assign) double		duration;
+@property (nonatomic, readwrite, assign) NSInteger	threadId;
+@property (nonatomic, readwrite, assign) SInt64		time;
+@property (nonatomic, readwrite, assign) NSString*	type;
+@property (nonatomic, readwrite, assign) NSString*	ns;
+@property (nonatomic, readwrite, assign) NSString*	function;
+@property (nonatomic, readwrite, retain) NSString*	file; // file + line
+@property (nonatomic, readwrite, retain) NSString*	fileName;
+@property (nonatomic, readwrite, assign) UInt32		fileLine;
+@property (nonatomic, readwrite, assign) NSInteger	stackDepth;
+@property (nonatomic, readwrite, assign) NSUInteger	tickCount;
+@property (nonatomic, readwrite, assign) double		duration;
 
-@property (readwrite,assign) NSString*	symbol;
-@property (readwrite,assign) NSString*	symbolId;
+@property (nonatomic, readwrite, assign) NSString*	symbol;
+@property (nonatomic, readwrite, assign) NSString*	symbolId;
 
-@property (readwrite,retain) NSString*	logLine;
-@property (readwrite,assign) NSInteger	logLineNumber;
+@property (nonatomic, readwrite, retain) NSString*	logLine;
+@property (nonatomic, readwrite, assign) NSInteger	logLineNumber;
 
 - (BOOL) isFunctionBegin;
 

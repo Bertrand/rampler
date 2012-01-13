@@ -23,11 +23,11 @@
 }
 
 
-@property (readwrite,assign) NSInteger	logLineNumber;
-@property (readwrite,retain) NSData*	data;
-@property (readwrite,assign) NSMutableArray*	lines;
-@property (readwrite,assign) BOOL eof;
-@property (readwrite,assign) RPLogLine*	currentLine;
+@property (nonatomic, readwrite, assign) NSInteger	logLineNumber;
+@property (nonatomic, readwrite, retain) NSData*	data;
+@property (nonatomic, readwrite, assign) NSMutableArray*	lines;
+@property (nonatomic, readwrite, assign) BOOL eof;
+@property (nonatomic, readwrite, assign) RPLogLine*	currentLine;
 
 - (id) initWithData:(NSData*)data;
 

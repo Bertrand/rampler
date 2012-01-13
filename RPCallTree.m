@@ -120,7 +120,7 @@
 	if (self.sampleCount == 0 && self.parent == nil) {
 		self.sampleCount = sampleCountTest;
 	} else if (self.sampleCount < sampleCountTest) {
-		NSLog(@"self.sampleCount %d sampleCountTest %d", self.sampleCount, sampleCountTest);
+		NSLog(@"self.sampleCount %ld sampleCountTest %ld", self.sampleCount, sampleCountTest);
 	}
 }
 

@@ -239,7 +239,7 @@
     mainOutlineView.columnIdentifierForCopy = @"file";
 	[mainOutlineView setDoubleAction:@selector(outlineDoubleAction:)];
 	
-	columnInfo = [[[self class] defaultOutlineColumnList] retain];
+	columnInfo = [[[self class] defaultOutlineColumnList] mutableCopy];
 	[self _updateOutlineViewColumn];
 }
 

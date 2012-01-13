@@ -45,7 +45,7 @@
 		NSString* line = [[NSString alloc] initWithData:[data subdataWithRange:NSMakeRange(currentPos, eolPos - currentPos)] encoding:NSUTF8StringEncoding];
 		//NSLog(@"%@", line);
 		RPLogLine* parsedLine  = [self parseLine:line]; 
-		if (!parsedLine) NSLog(@"Unable to parse log line %d. Ignoring it. (\"%@\")", logLineNumber, line);
+		if (!parsedLine) NSLog(@"Unable to parse log line %ld. Ignoring it. (\"%@\")", logLineNumber, line);
 		if (parsedLine) [lines addObject:parsedLine];
 		[line release];
 		
@@ -135,7 +135,7 @@
 		} 
 		
 		if (NO == [self.currentLine.symbol isEqual:callTree.symbol]) {
-			NSLog(@"oops, returning out of current symbol (%@) with symbol %@ (out line %d, begin line:%d)", callTree.symbol, self.currentLine.symbol, self.currentLine.logLineNumber, callTree.startLine);
+			NSLog(@"oops, returning out of current symbol (%@) with symbol %@ (out line %ld, begin line:%ld)", callTree.symbol, self.currentLine.symbol, self.currentLine.logLineNumber, callTree.startLine);
 			shouldEatCurrentLine = NO;
 		}
 		
@@ -143,7 +143,7 @@
 
 		
 		// No parent, we're at root level. We're going to ignore the line, but let's whine a little bit. 
-		NSLog(@"found a function-out log at root level, ignoring it (line %d: \"%@\")", self.currentLine.logLineNumber, self.currentLine.logLine);
+		NSLog(@"found a function-out log at root level, ignoring it (line %ld: \"%@\")", self.currentLine.logLineNumber, self.currentLine.logLine);
 		[self moveNextLine];
 		
 	} while(!self.eof);
