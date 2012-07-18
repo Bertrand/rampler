@@ -21,17 +21,25 @@
 	NSURLConnection *_connection;
 	NSString *_fileName;
 	NSFileHandle *_fileHandle;
+    
+    BOOL _openURLNibLoaded;
+	NSModalSession _urlOpenerSession;
 }
 
 + (NSURL *)addParameters:(NSURL *)url interval:(double)interval;
 
 @property(nonatomic, retain) NSURL *url;
 @property(nonatomic, retain) NSString *urlString;
+@property(nonatomic, retain) NSString *secretKey;
+@property(nonatomic, readwrite, assign) UInt64 samplingInterval;
 @property(nonatomic, assign) BOOL compressed;
 @property(nonatomic, readonly) NSString *fileName;
 
+@property(nonatomic, retain) IBOutlet NSWindow *openURLWindow;
 
+- (IBAction)openOpenURLDialog:(id)sender;
 - (IBAction)openDialogActionButtonClicked:(id)sender;
+- (IBAction)openDialogCloseButtonClicked:(id)sender;
 
 - (BOOL)start;
 

@@ -12,7 +12,13 @@
 
 @implementation RPURLLoaderController
 
-@synthesize url = _url, compressed = _compressed, fileName = _fileName;
+@synthesize url = _url;
+@synthesize compressed = _compressed;
+@synthesize fileName = _fileName;
+@synthesize openURLWindow;
+@synthesize samplingInterval;
+@synthesize secretKey;
+
 @dynamic urlString; 
 
 
@@ -58,6 +64,8 @@
 	[_fileHandle release];
 	[_connection release];
 	[_fileName release];
+    self.openURLWindow = nil;
+    
 	[super dealloc];
 }
 
@@ -174,9 +182,29 @@
 }
 
 
+// open Url dialog
+
+- (void) openOpenURLDialog:(id)sender
+{
+    if (!_openURLNibLoaded) {
+        _openURLNibLoaded = [NSBundle loadNibNamed:@"RPURLLoaderOpenDialog" owner:self];
+        NSAssert(_openURLNibLoaded, @"unable to open RPURLLoaderOpenDialog nil");
+    }
+    
+    _urlOpenerSession = [[NSApplication sharedApplication] beginModalSessionForWindow:self.openURLWindow];
+    [[NSApplication sharedApplication] runModalSession:_urlOpenerSession];
+
+}
+
+- (IBAction)openDialogCloseButtonClicked:(id)sender
+{
+	[[NSApplication sharedApplication] endModalSession:_urlOpenerSession];
+	[self.openURLWindow orderOut:nil];
+}
+
 - (IBAction)openDialogActionButtonClicked:(id)sender
 {
-    
+    NSLog(@"open clicked (url:%@)", self.url);
 }
 
 
