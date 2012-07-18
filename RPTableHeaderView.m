@@ -2,8 +2,7 @@
 //  RPTableHeaderView.m
 //  Rampler
 //
-//  Created by Jérôme Lebel on 09/12/10.
-//  Copyright 2010 Fotonauts. All rights reserved.
+//  Copyright 2010-2012 Fotonauts. All rights reserved.
 //
 
 #import "RPTableHeaderView.h"

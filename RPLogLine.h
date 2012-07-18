@@ -2,8 +2,7 @@
 //  RPLogLine.h
 //  Rampler
 //
-//  Created by Guiheneuf Bertrand on 10/4/10.
-//  Copyright 2010 Fotonauts. All rights reserved.
+//  Copyright 2010-2012 Fotonauts. All rights reserved.
 //
 
 #import <Cocoa/Cocoa.h>

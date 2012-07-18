@@ -2,8 +2,7 @@
 //  RPWebViewController.h
 //  Rampler
 //
-//  Created by Jérôme Lebel on 14/11/10.
-//  Copyright 2010 __MyCompanyName__. All rights reserved.
+//  Copyright 2010-2012 Fotonauts. All rights reserved.
 //
 
 #import <Cocoa/Cocoa.h>

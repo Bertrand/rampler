@@ -2,8 +2,7 @@
 //  RPApplicationDelegate.h
 //  Rampler
 //
-//  Created by Jérôme Lebel on 04/11/10.
-//  Copyright 2010 Fotonauts. All rights reserved.
+//  Copyright 2010-2012 Fotonauts. All rights reserved.
 //
 
 #import <Cocoa/Cocoa.h>
@@ -15,13 +14,15 @@
 {
 	IBOutlet NSWindow *_openURLDialog;
 	IBOutlet NSTextField *_urlTextField;
+	IBOutlet NSTextField *_secretKeyField;
 	IBOutlet NSTextField *_intervalTextField;
 	IBOutlet NSPopUpButton *_urlHistoricPopUp;
 	
 	
 	NSModalSession _urlOpenerSession;
-	RPWebViewController *webViewController;
 	NSMutableArray *_urlHistoric;
+    
+	RPWebViewController *webViewController;
 }
 
 

@@ -2,8 +2,7 @@
 //  RPURLLoaderController.h
 //  Rampler
 //
-//  Created by Jérôme Lebel on 10/11/10.
-//  Copyright 2010 Fotonauts. All rights reserved.
+//  Copyright 2010-2012 Fotonauts. All rights reserved.
 //
 
 #import <Cocoa/Cocoa.h>
@@ -27,8 +26,12 @@
 + (NSURL *)addParameters:(NSURL *)url interval:(double)interval;
 
 @property(nonatomic, retain) NSURL *url;
+@property(nonatomic, retain) NSString *urlString;
 @property(nonatomic, assign) BOOL compressed;
 @property(nonatomic, readonly) NSString *fileName;
+
+
+- (IBAction)openDialogActionButtonClicked:(id)sender;
 
 - (BOOL)start;
 

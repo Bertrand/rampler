@@ -2,8 +2,7 @@
 //  RPRubyTraceLogReader.m
 //  Rampler
 //
-//  Created by Jérôme Lebel on 20/10/10.
-//  Copyright 2010 Fotonauts. All rights reserved.
+//  Copyright 2010-2012 Fotonauts. All rights reserved.
 //
 
 #import "RPRubyTraceLogReader.h"

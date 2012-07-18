@@ -2,8 +2,7 @@
 //  RPApplicationDelegate.m
 //  Rampler
 //
-//  Created by Jérôme Lebel on 04/11/10.
-//  Copyright 2010 Fotonauts. All rights reserved.
+//  Copyright 2010-2012 Fotonauts. All rights reserved.
 //
 
 #import "RPApplicationDelegate.h"
@@ -119,12 +118,15 @@
 {
 	NSURL *url;
     double interval;
+    NSString* secretKey; 
     
 	[[NSApplication sharedApplication] endModalSession:_urlOpenerSession];
 	[_openURLDialog orderOut:nil];
 	
     url = [NSURL URLWithString:[_urlTextField stringValue]];
+    secretKey = _secretKeyField.stringValue;
     interval = [[_intervalTextField stringValue] doubleValue] / 1000.0;
+    
 	[self openURL:url withInterval:interval];
     [self setDefaultURLValue:url];
     [self setDefaultIntervalValue:interval];

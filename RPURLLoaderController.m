@@ -2,8 +2,7 @@
 //  RPURLLoaderController.m
 //  Rampler
 //
-//  Created by Jérôme Lebel on 10/11/10.
-//  Copyright 2010 Fotonauts. All rights reserved.
+//  Copyright 2010-2012 Fotonauts. All rights reserved.
 //
 
 #import "RPURLLoaderController.h"
@@ -14,6 +13,8 @@
 @implementation RPURLLoaderController
 
 @synthesize url = _url, compressed = _compressed, fileName = _fileName;
+@dynamic urlString; 
+
 
 + (NSURL *)addParameters:(NSURL *)url interval:(double)interval
 {
@@ -58,6 +59,16 @@
 	[_connection release];
 	[_fileName release];
 	[super dealloc];
+}
+
+- (NSString*)urlString
+{
+    return [self.url absoluteString];
+}
+
+- (void)setUrlString:(NSString*)urlString
+{
+    self.url = [NSURL URLWithString:urlString];
 }
 
 - (BOOL)start
@@ -161,5 +172,12 @@
 	[[NSApp delegate] urlLoaderController:self didFailWithError:error];
 	[(id)error release];
 }
+
+
+- (IBAction)openDialogActionButtonClicked:(id)sender
+{
+    
+}
+
 
 @end

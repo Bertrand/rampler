@@ -2,8 +2,7 @@
 //  MyDocument.h
 //  Rampler
 //
-//  Created by Guiheneuf Bertrand on 9/29/10.
-//  Copyright 2010 Fotonauts. All rights reserved.
+//  Copyright 2010-2012 Fotonauts. All rights reserved.
 //
 
 
@@ -54,6 +53,7 @@
 @property (nonatomic, readonly, retain) RPTraceDocument *mainDocument;
 @property (nonatomic, readonly, retain) NSString *version;
 @property (nonatomic, readonly, retain) NSURL* url;
+@property (nonatomic, readonly, retain) NSString* secretKey;
 @property (nonatomic, readonly, assign) double interval;
 @property (nonatomic, readonly, assign) double duration;
 

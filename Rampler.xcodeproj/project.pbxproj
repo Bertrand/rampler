@@ -20,6 +20,7 @@
 		0628E06D125396DB00B9255B /* RPDTraceLogReader.m in Sources */ = {isa = PBXBuildFile; fileRef = 0628E06C125396DB00B9255B /* RPDTraceLogReader.m */; };
 		0628E4BA125A361E00B9255B /* RPLogLine.m in Sources */ = {isa = PBXBuildFile; fileRef = 0628E4B9125A361E00B9255B /* RPLogLine.m */; };
 		0677F80E134F257900107A56 /* RPApplication.m in Sources */ = {isa = PBXBuildFile; fileRef = 0677F80D134F257900107A56 /* RPApplication.m */; };
+		06ECAAB115B6F29600F4FC33 /* RPURLLoaderOpenDialog.xib in Resources */ = {isa = PBXBuildFile; fileRef = 06ECAAAF15B6F29600F4FC33 /* RPURLLoaderOpenDialog.xib */; };
 		1DDD582C0DA1D0D100B32029 /* MyDocument.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1DDD58280DA1D0D100B32029 /* MyDocument.xib */; };
 		1DDD582D0DA1D0D100B32029 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1DDD582A0DA1D0D100B32029 /* MainMenu.xib */; };
 		8D15AC2C0486D014006FF6A4 /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 2A37F4B9FDCFA73011CA2CEA /* Credits.rtf */; };
@@ -53,6 +54,7 @@
 		0628E4B9125A361E00B9255B /* RPLogLine.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RPLogLine.m; sourceTree = "<group>"; };
 		0677F80C134F257900107A56 /* RPApplication.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RPApplication.h; sourceTree = "<group>"; };
 		0677F80D134F257900107A56 /* RPApplication.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RPApplication.m; sourceTree = "<group>"; };
+		06ECAAB015B6F29600F4FC33 /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = English.lproj/RPURLLoaderOpenDialog.xib; sourceTree = "<group>"; };
 		089C1660FE840EACC02AAC07 /* English */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		1058C7A7FEA54F5311CA2CBB /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
 		13E42FBA07B3F13500E4EEF1 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = /System/Library/Frameworks/CoreData.framework; sourceTree = "<absolute>"; };
@@ -184,6 +186,7 @@
 				1DDD58280DA1D0D100B32029 /* MyDocument.xib */,
 				1DDD582A0DA1D0D100B32029 /* MainMenu.xib */,
 				0227EC12128AF3A40053012B /* RPURLLoaderController.xib */,
+				06ECAAAF15B6F29600F4FC33 /* RPURLLoaderOpenDialog.xib */,
 				02883C50128F7256008E0AA4 /* WebViewController.xib */,
 			);
 			name = Resources;
@@ -257,6 +260,7 @@
 				1DDD582D0DA1D0D100B32029 /* MainMenu.xib in Resources */,
 				0227EC13128AF3A40053012B /* RPURLLoaderController.xib in Resources */,
 				02883C51128F7256008E0AA4 /* WebViewController.xib in Resources */,
+				06ECAAB115B6F29600F4FC33 /* RPURLLoaderOpenDialog.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -299,6 +303,14 @@
 				02883C4D128F724A008E0AA4 /* English */,
 			);
 			name = WebViewController.xib;
+			sourceTree = "<group>";
+		};
+		06ECAAAF15B6F29600F4FC33 /* RPURLLoaderOpenDialog.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				06ECAAB015B6F29600F4FC33 /* English */,
+			);
+			name = RPURLLoaderOpenDialog.xib;
 			sourceTree = "<group>";
 		};
 		089C165FFE840EACC02AAC07 /* InfoPlist.strings */ = {

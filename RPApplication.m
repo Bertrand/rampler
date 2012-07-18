@@ -2,8 +2,7 @@
 //  RPApplication.m
 //  Rampler
 //
-//  Created by Guiheneuf Bertrand on 08/04/11.
-//  Copyright 2011 Fotonauts. All rights reserved.
+//  Copyright 2010-2012 Fotonauts. All rights reserved.
 //
 
 #import "RPApplication.h"
