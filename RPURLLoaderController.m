@@ -8,6 +8,7 @@
 #import "RPURLLoaderController.h"
 #import "RPApplicationDelegate.h"
 #import "RPApplication.h"
+#import "NSURLAdditions.h"
 
 
 @implementation RPURLLoaderController
@@ -33,7 +34,7 @@
 	if (interval < MINI_INTERVAL) {
 		interval = MINI_INTERVAL;
 	}
-	// the time is received in ms, but the server receives it in micro seconds
+	// the time is received in ms, but ruby-sanspleur middleware expects them in micro seconds
 	intervalInMicrosecond = interval * 1000000;
 	parts = [[url absoluteString] componentsSeparatedByString:@"?"];
 	if ([parts count] > 1) {
@@ -69,14 +70,22 @@
 	[super dealloc];
 }
 
-- (NSString*)urlString
+- (NSURL*)url
 {
-    return [self.url absoluteString];
+    NSString* s = self.urlString;
+    if (s == nil) return nil; 
+    if (!([s hasPrefix:@"http://"] || [s hasPrefix:@"https://"]) {
+        s = [s by 
+    }
 }
 
-- (void)setUrlString:(NSString*)urlString
+- (NSURL*)actualUrl
 {
-    self.url = [NSURL URLWithString:urlString];
+    NSDictionary* params = [NSDictionary dictionaryWithObjectsAndKeys:
+                            [NSNumber numberWithUnsignedInt:self.samplingInterval], @"interval", 
+                            @"true", @"ruby_sanspleur", 
+                            nil];
+    return [self.url rp_URLByAppendingQuery:params];
 }
 
 - (BOOL)start
@@ -94,7 +103,7 @@
 	}
 	_fileHandle = [[NSFileHandle alloc] initWithFileDescriptor:open([realFilename UTF8String], O_CREAT | O_WRONLY, S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH) closeOnDealloc:YES];
 	
-	NSMutableURLRequest* request = [NSMutableURLRequest requestWithURL:_url];
+	NSMutableURLRequest* request = [NSMutableURLRequest requestWithURL:[self actualURL]];
 	
 	NSDictionary* httpHeaders = [(RPApplication*)[RPApplication sharedApplication] additionalHTTPHeaders];
 	for (NSString* key in httpHeaders) {
@@ -110,6 +119,8 @@
 	CFRelease(theUUID);
 	return YES;
 }
+
+
 
 - (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data
 {
@@ -196,15 +207,22 @@
 
 }
 
-- (IBAction)openDialogCloseButtonClicked:(id)sender
+- (void) closeOpenURLDialog:(id)sender
 {
 	[[NSApplication sharedApplication] endModalSession:_urlOpenerSession];
-	[self.openURLWindow orderOut:nil];
+	[self.openURLWindow orderOut:sender];
+}
+
+- (IBAction)openDialogCloseButtonClicked:(id)sender
+{
+    [self closeOpenURLDialog:sender];
 }
 
 - (IBAction)openDialogActionButtonClicked:(id)sender
 {
-    NSLog(@"open clicked (url:%@)", self.url);
+    [self closeOpenURLDialog:sender];
+    [self.openURLWindow orderOut:nil];
+    [self start];
 }
 
 

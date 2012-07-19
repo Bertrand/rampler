@@ -28,10 +28,9 @@
 
 + (NSURL *)addParameters:(NSURL *)url interval:(double)interval;
 
-@property(nonatomic, retain) NSURL *url;
 @property(nonatomic, retain) NSString *urlString;
 @property(nonatomic, retain) NSString *secretKey;
-@property(nonatomic, readwrite, assign) UInt64 samplingInterval;
+@property(nonatomic, readwrite, assign) UInt32 samplingInterval;
 @property(nonatomic, assign) BOOL compressed;
 @property(nonatomic, readonly) NSString *fileName;
 
