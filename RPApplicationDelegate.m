@@ -88,70 +88,17 @@
 	[[NSAppleEventManager sharedAppleEventManager] setEventHandler:self andSelector:@selector(handleEvent:withReplyEvent:) forEventClass:kInternetEventClass andEventID:kAEGetURL];
 }
 
-- (BOOL)openURL:(NSURL *)url withInterval:(double)interval
-{
-	RPURLLoaderController *urlLoader;
-	
-	urlLoader = [[RPURLLoaderController alloc] init];
-	urlLoader.url = [RPURLLoaderController addParameters:url interval:interval];
-	urlLoader.compressed = YES;
-	[urlLoader start];
-	return YES;
-}
 
-- (IBAction)openURLAction:(id)sender
-{
-    [_urlTextField setStringValue:[[self defaultURLValue] absoluteString]];
-    [_intervalTextField setStringValue:[NSString stringWithFormat:@"%.2f", [self defaultIntervalValue] * 1000]];
-	[_openURLDialog makeFirstResponder:_urlTextField];
-	_urlOpenerSession = [[NSApplication sharedApplication] beginModalSessionForWindow:_openURLDialog];
-	[[NSApplication sharedApplication] runModalSession:_urlOpenerSession];
-}
+//- (IBAction)urlHistoricPopUpButtonAction:(id)sender
+//{
+//	[_urlTextField setStringValue:[[_urlHistoricPopUp selectedItem] title]];
+//}
 
-- (IBAction)closeURLOpenerAction:(id)sender
-{
-	[[NSApplication sharedApplication] endModalSession:_urlOpenerSession];
-	[_openURLDialog orderOut:nil];
-}
-
-- (IBAction)validURLOpenerAction:(id)sender
-{
-	NSURL *url;
-    double interval;
-    NSString* secretKey; 
-    
-	[[NSApplication sharedApplication] endModalSession:_urlOpenerSession];
-	[_openURLDialog orderOut:nil];
-	
-    url = [NSURL URLWithString:[_urlTextField stringValue]];
-    secretKey = _secretKeyField.stringValue;
-    interval = [[_intervalTextField stringValue] doubleValue] / 1000.0;
-    
-	[self openURL:url withInterval:interval];
-    [self setDefaultURLValue:url];
-    [self setDefaultIntervalValue:interval];
-	[_urlHistoric removeObject:url];
-	[_urlHistoric insertObject:url atIndex:0];
-	[self setURLHistoricValue:_urlHistoric];
-	[self updateURLHistoricPopUp];
-}
-
-- (IBAction)urlHistoricPopUpButtonAction:(id)sender
-{
-	[_urlTextField setStringValue:[[_urlHistoricPopUp selectedItem] title]];
-}
-
-- (void)urlLoaderControllerDidFinish:(RPURLLoaderController *)urlLoaderController
-{
-	[[NSWorkspace sharedWorkspace] openFile:urlLoaderController.fileName];
-	[urlLoaderController release];
-}
-
-- (void)urlLoaderController:(RPURLLoaderController *)urlLoaderController didFailWithError:error
-{
-	NSLog(@"error %@ %@", urlLoaderController.url, error);
-	[urlLoaderController release];
-}
+//- (void)urlLoaderControllerDidFinish:(RPURLLoaderController *)urlLoaderController
+//{
+//	[[NSWorkspace sharedWorkspace] openFile:urlLoaderController.fileName];
+//	[urlLoaderController release];
+//}
 
 - (IBAction)openWebView:(id)sender
 {
@@ -171,7 +118,6 @@
 	httpURL = [[NSURL alloc] initWithScheme:@"http" host:[url host] path:[url path]];
 	
 	urlLoader = [[RPURLLoaderController alloc] init];
-	urlLoader.url = httpURL;
 	urlLoader.compressed = NO;
 	[urlLoader start];
 	[httpURL release];

@@ -34,6 +34,11 @@
 @property(nonatomic, assign) BOOL compressed;
 @property(nonatomic, readonly) NSString *fileName;
 
+@property(nonatomic, readwrite, copy) NSString *defaultURLString;
+@property(nonatomic, readwrite, copy) NSArray *recentURLStrings;
+@property(nonatomic, readwrite, assign) double defaultSamplingInterval;
+
+
 @property(nonatomic, retain) IBOutlet NSWindow *openURLWindow;
 
 - (IBAction)openOpenURLDialog:(id)sender;

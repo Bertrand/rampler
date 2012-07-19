@@ -11,16 +11,22 @@
 #import "NSURLAdditions.h"
 
 
+@interface RPURLLoaderController(Private)
+- (NSURL*)actualUrl;
+@end 
+
+
 @implementation RPURLLoaderController
 
-@synthesize url = _url;
 @synthesize compressed = _compressed;
 @synthesize fileName = _fileName;
 @synthesize openURLWindow;
 @synthesize samplingInterval;
 @synthesize secretKey;
 
-@dynamic urlString; 
+@synthesize urlString; 
+
+@dynamic defaultURLString; 
 
 
 + (NSURL *)addParameters:(NSURL *)url interval:(double)interval
@@ -74,9 +80,11 @@
 {
     NSString* s = self.urlString;
     if (s == nil) return nil; 
-    if (!([s hasPrefix:@"http://"] || [s hasPrefix:@"https://"]) {
-        s = [s by 
+    if (!([s hasPrefix:@"http://"] || [s hasPrefix:@"https://"])) {
+        s = [NSString stringWithFormat:@"http://%@", s];
     }
+    
+    return [NSURL URLWithString:s];
 }
 
 - (NSURL*)actualUrl
@@ -103,7 +111,7 @@
 	}
 	_fileHandle = [[NSFileHandle alloc] initWithFileDescriptor:open([realFilename UTF8String], O_CREAT | O_WRONLY, S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH) closeOnDealloc:YES];
 	
-	NSMutableURLRequest* request = [NSMutableURLRequest requestWithURL:[self actualURL]];
+	NSMutableURLRequest* request = [NSMutableURLRequest requestWithURL:[self actualUrl]];
 	
 	NSDictionary* httpHeaders = [(RPApplication*)[RPApplication sharedApplication] additionalHTTPHeaders];
 	for (NSString* key in httpHeaders) {
@@ -112,7 +120,7 @@
 	_connection = [[NSURLConnection alloc] initWithRequest:request delegate:self startImmediately:YES];
 	[NSBundle loadNibNamed:@"RPURLLoaderController" owner:self];
 	[_progressIndicator startAnimation:nil];
-	[_textField setStringValue:[_url absoluteString]];
+	//[_textField setStringValue:[_url absoluteString]];
 	[_window makeKeyAndOrderFront:nil];
 	
 	CFRelease(string);
@@ -152,7 +160,7 @@
 
 - (void)_downloadSucceed
 {
-	[[NSApp delegate] urlLoaderControllerDidFinish:self];
+	//[[NSApp delegate] urlLoaderControllerDidFinish:self];
 	[self _close];
 }
 
@@ -188,7 +196,7 @@
 - (void)alertDidEnd:(NSAlert *)alert returnCode:(NSInteger)returnCode contextInfo:(void *)error
 {
 	[self _close];
-	[[NSApp delegate] urlLoaderController:self didFailWithError:error];
+	//[[NSApp delegate] urlLoaderController:self didFailWithError:error];
 	[(id)error release];
 }
 
@@ -222,8 +230,57 @@
 {
     [self closeOpenURLDialog:sender];
     [self.openURLWindow orderOut:nil];
+    
+    [self addURLStringToRecentURLStrings:self.urlString];
     [self start];
 }
+
+#pragma mark -
+#pragma mark Defaults 
+
+- (NSString *)defaultURLString
+{    
+	return [[NSUserDefaults standardUserDefaults] stringForKey:@"defaultURLString"];
+}
+
+- (void)setDefaultURLString:(NSString *)url
+{
+	[[NSUserDefaults standardUserDefaults] setObject:url forKey:@"defaultURLString"];
+}
+
+- (NSArray*)recentURLStrings
+{
+	return [[NSUserDefaults standardUserDefaults] stringArrayForKey:@"recentURLStrings"];
+}
+
+- (void)setRecentURLStrings:(NSArray*)urlStrings
+{
+    return [[NSUserDefaults standardUserDefaults] setObject:urlStrings forKey:@"recentURLStrings"];
+}
+
+- (void)addURLStringToRecentURLStrings:(NSString*)urlString
+{
+    NSArray* oldRecentURLStrings = self.recentURLStrings;
+    NSMutableArray* newRecentURLStrings = [[NSMutableArray alloc] init];
+    
+    [newRecentURLStrings addObject:urlString];
+    for (NSString* recentURLString in oldRecentURLStrings) {
+        if (![recentURLString isEqual:urlString]) [newRecentURLStrings addObject:recentURLString];
+    }
+    [self setRecentURLStrings:newRecentURLStrings];
+    [newRecentURLStrings release];
+}
+
+- (double)defaultSamplingInterval
+{	
+    return [[NSUserDefaults standardUserDefaults] doubleForKey:@"defaultSamplingInterval"];
+}
+
+- (void)setDefaultSamplingInterval:(double)interval
+{
+	[[NSUserDefaults standardUserDefaults] setDouble:interval forKey:@"defaultSamplingInterval"];
+}
+
 
 
 @end

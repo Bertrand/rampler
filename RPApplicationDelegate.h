@@ -26,15 +26,15 @@
 }
 
 
-- (BOOL)openURL:(NSURL *)url withInterval:(double)interval;
-
-- (IBAction)openURLAction:(id)sender;
-- (IBAction)closeURLOpenerAction:(id)sender;
-- (IBAction)validURLOpenerAction:(id)sender;
+//- (BOOL)openURL:(NSURL *)url withInterval:(double)interval;
+//
+//- (IBAction)openURLAction:(id)sender;
+//- (IBAction)closeURLOpenerAction:(id)sender;
+//- (IBAction)validURLOpenerAction:(id)sender;
 - (IBAction)openWebView:(id)sender;
-- (IBAction)urlHistoricPopUpButtonAction:(id)sender;
+//- (IBAction)urlHistoricPopUpButtonAction:(id)sender;
 
-- (void)urlLoaderControllerDidFinish:(RPURLLoaderController *)urlLoaderController;
-- (void)urlLoaderController:(RPURLLoaderController *)urlLoaderController didFailWithError:error;
+//- (void)urlLoaderControllerDidFinish:(RPURLLoaderController *)urlLoaderController;
+//- (void)urlLoaderController:(RPURLLoaderController *)urlLoaderController didFailWithError:error;
 
 @end
