@@ -9,61 +9,36 @@
 #import "RPApplicationDelegate.h"
 #import "RPApplication.h"
 #import "NSURLAdditions.h"
+#import "RPKeychainWrapper.h"
+
+#define MAX_RECENT_URLS 30 // the number of URLs we keep in history
 
 
-@interface RPURLLoaderController(Private)
-- (NSURL*)actualUrl;
+@interface RPURLLoaderController()
+    @property(nonatomic, readwrite, assign) BOOL isLoadingURL;
+- (NSURL*)samplinglURL;
+- (void)updateDefaultsFromCurrentValues;
 @end 
-
 
 @implementation RPURLLoaderController
 
-@synthesize compressed = _compressed;
-@synthesize fileName = _fileName;
-@synthesize openURLWindow;
-@synthesize samplingInterval;
-@synthesize secretKey;
+    @synthesize compressed = _compressed;
+    @synthesize fileName = _fileName;
+    @synthesize openURLWindow;
+    @synthesize progressWindow;
+    @synthesize samplingInterval;
+    @synthesize urlString;
+    @synthesize isLoadingURL;
 
-@synthesize urlString; 
-
-@dynamic defaultURLString; 
+    @dynamic secretKey;
 
 
-+ (NSURL *)addParameters:(NSURL *)url interval:(double)interval
+- (id) init
 {
-	NSURL *result = url;
-	NSArray *parts;
-	NSString *query = nil;
-	NSRange range = { NSNotFound, 0 };
-	NSInteger intervalInMicrosecond;
-	
-	if (interval < MINI_INTERVAL) {
-		interval = MINI_INTERVAL;
-	}
-	// the time is received in ms, but ruby-sanspleur middleware expects them in micro seconds
-	intervalInMicrosecond = interval * 1000000;
-	parts = [[url absoluteString] componentsSeparatedByString:@"?"];
-	if ([parts count] > 1) {
-		query = [parts objectAtIndex:1];
-		range = [query rangeOfString:@"ruby_sanspleur=true"];
-	}
-	
-	if (range.location == NSNotFound) {
-		NSString *parameters = [NSString stringWithFormat:@"ruby_sanspleur=true&interval=%d", intervalInMicrosecond];
-		NSString *urlString;
-		
-		if (query) {
-			query = [query stringByAppendingFormat:@"&%@", parameters];
-		} else {
-			query = parameters;
-		}
-		urlString = [NSString stringWithFormat:@"%@?%@", [parts objectAtIndex:0], query];
-		if (![url scheme] || [[url scheme] isEqualToString:@""]) {
-			urlString = [@"http://" stringByAppendingString:urlString];
-		}
-		result = [NSURL URLWithString:urlString];
-	}
-	return result;
+    id me = [super init];
+    [self updateCurrentValuesFromDefault];
+    self.isLoadingURL = NO;
+    return me; 
 }
 
 - (void)dealloc
@@ -76,7 +51,23 @@
 	[super dealloc];
 }
 
-- (NSURL*)url
+- (NSString*)secretKey
+{
+    return _secretKey; 
+}
+
+- (void)setSecretKey:(NSString *)newSecretKey
+{
+    if (![newSecretKey isEqual:_secretKey]) {
+        [newSecretKey retain];
+        [_secretKey release];
+        _secretKey = newSecretKey; 
+        
+        [self setDefaultSecretKey:newSecretKey];
+    }
+}
+
+- (NSURL*)baseURL
 {
     NSString* s = self.urlString;
     if (s == nil) return nil; 
@@ -87,13 +78,13 @@
     return [NSURL URLWithString:s];
 }
 
-- (NSURL*)actualUrl
+- (NSURL*)samplinglURL
 {
     NSDictionary* params = [NSDictionary dictionaryWithObjectsAndKeys:
-                            [NSNumber numberWithUnsignedInt:self.samplingInterval], @"interval", 
+                            self.samplingInterval, @"interval", 
                             @"true", @"ruby_sanspleur", 
                             nil];
-    return [self.url rp_URLByAppendingQuery:params];
+    return [[self baseURL] rp_URLByAppendingQuery:params];
 }
 
 - (BOOL)start
@@ -111,18 +102,15 @@
 	}
 	_fileHandle = [[NSFileHandle alloc] initWithFileDescriptor:open([realFilename UTF8String], O_CREAT | O_WRONLY, S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH) closeOnDealloc:YES];
 	
-	NSMutableURLRequest* request = [NSMutableURLRequest requestWithURL:[self actualUrl]];
+	NSMutableURLRequest* request = [NSMutableURLRequest requestWithURL:[self samplinglURL]];
 	
 	NSDictionary* httpHeaders = [(RPApplication*)[RPApplication sharedApplication] additionalHTTPHeaders];
 	for (NSString* key in httpHeaders) {
 		[request addValue:[httpHeaders objectForKey:key] forHTTPHeaderField:key];
 	}
 	_connection = [[NSURLConnection alloc] initWithRequest:request delegate:self startImmediately:YES];
-	[NSBundle loadNibNamed:@"RPURLLoaderController" owner:self];
-	[_progressIndicator startAnimation:nil];
-	//[_textField setStringValue:[_url absoluteString]];
-	[_window makeKeyAndOrderFront:nil];
-	
+    self.isLoadingURL = YES; 
+    	
 	CFRelease(string);
 	CFRelease(theUUID);
 	return YES;
@@ -148,12 +136,13 @@
 	_window = nil;
 }
 
+
 - (void)_downloadFailed
 {
 	NSAlert *alert = [[[NSAlert alloc] init] autorelease];
 	[alert addButtonWithTitle:@"OK"];
 	[alert setMessageText:@"No data"];
-	[alert setInformativeText:[_url absoluteString]];
+	[alert setInformativeText:[[self baseURL] absoluteString]];
 	[alert setAlertStyle:NSWarningAlertStyle];
 	[alert beginSheetModalForWindow:_window modalDelegate:self didEndSelector:@selector(alertDidEnd:returnCode:contextInfo:) contextInfo:nil];
 }
@@ -180,6 +169,11 @@
 			[self _downloadSucceed];
 		}
 	}
+    
+    self.isLoadingURL = NO; 
+
+    [_connection release];
+    _connection = nil; 
 }
 
 - (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error
@@ -228,25 +222,15 @@
 
 - (IBAction)openDialogActionButtonClicked:(id)sender
 {
+    [self commitEditing];
     [self closeOpenURLDialog:sender];
     [self.openURLWindow orderOut:nil];
-    
-    [self addURLStringToRecentURLStrings:self.urlString];
+    [self updateDefaultsFromCurrentValues];
     [self start];
 }
 
 #pragma mark -
 #pragma mark Defaults 
-
-- (NSString *)defaultURLString
-{    
-	return [[NSUserDefaults standardUserDefaults] stringForKey:@"defaultURLString"];
-}
-
-- (void)setDefaultURLString:(NSString *)url
-{
-	[[NSUserDefaults standardUserDefaults] setObject:url forKey:@"defaultURLString"];
-}
 
 - (NSArray*)recentURLStrings
 {
@@ -258,29 +242,52 @@
     return [[NSUserDefaults standardUserDefaults] setObject:urlStrings forKey:@"recentURLStrings"];
 }
 
-- (void)addURLStringToRecentURLStrings:(NSString*)urlString
+- (void)addURLStringToRecentURLStrings:(NSString*)newURLString
 {
     NSArray* oldRecentURLStrings = self.recentURLStrings;
     NSMutableArray* newRecentURLStrings = [[NSMutableArray alloc] init];
     
-    [newRecentURLStrings addObject:urlString];
+    [newRecentURLStrings addObject:newURLString];
     for (NSString* recentURLString in oldRecentURLStrings) {
-        if (![recentURLString isEqual:urlString]) [newRecentURLStrings addObject:recentURLString];
+        if (![recentURLString isEqual:newURLString]) [newRecentURLStrings addObject:recentURLString];
+        if ([newRecentURLStrings count] > MAX_RECENT_URLS) break; 
     }
     [self setRecentURLStrings:newRecentURLStrings];
     [newRecentURLStrings release];
 }
 
-- (double)defaultSamplingInterval
-{	
-    return [[NSUserDefaults standardUserDefaults] doubleForKey:@"defaultSamplingInterval"];
-}
-
-- (void)setDefaultSamplingInterval:(double)interval
+- (NSString*)defaultSecretKey
 {
-	[[NSUserDefaults standardUserDefaults] setDouble:interval forKey:@"defaultSamplingInterval"];
+    return [RPKeychainWrapper internetPasswordForServiceName:@"com.fotonauts.ruby-sanspleur" accountName:@"secret-key"];
 }
 
+- (void) setDefaultSecretKey:(NSString*)newSecretKey
+{
+    return [RPKeychainWrapper setInternetPassword:newSecretKey forServiceName:@"com.fotonauts.ruby-sanspleur" accountName:@"secret-key"];
+}
+
+- (NSNumber*)defaultSamplingInterval
+{	
+    return [[NSUserDefaults standardUserDefaults] objectForKey:@"defaultSamplingInterval"];
+}
+
+- (void)setDefaultSamplingInterval:(NSNumber*)interval
+{
+	[[NSUserDefaults standardUserDefaults] setObject:interval forKey:@"defaultSamplingInterval"];
+}
+
+- (void) updateDefaultsFromCurrentValues
+{
+    [self addURLStringToRecentURLStrings:self.urlString];
+    [self setDefaultSamplingInterval:self.samplingInterval];
+}
+
+- (void)updateCurrentValuesFromDefault
+{
+    self.urlString = [[self recentURLStrings] objectAtIndex:0];
+    self.samplingInterval = [self defaultSamplingInterval];
+    self.secretKey = [self defaultSecretKey];
+}
 
 
 @end

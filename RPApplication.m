@@ -7,10 +7,10 @@
 
 #import "RPApplication.h"
 
-
 @implementation RPApplication
 
 @synthesize additionalHTTPHeaders = _additionalHTTPHeaders;
+
 
 - (NSDictionary*) additionalHTTPHeaders
 {
