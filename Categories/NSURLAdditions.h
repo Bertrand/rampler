@@ -1,9 +1,7 @@
 //
-//  NSURL_DooLittle.h
-//  DooLittle
+//  Rampler
 //
-//  Created by Guiheneuf Bertrand on 9/20/10.
-//  Copyright 2010 Fotonauts. All rights reserved.
+//  Copyright 2010-2012 Fotonauts. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
@@ -15,5 +13,7 @@
 
 - (NSDictionary*)rp_queryDictionary;
 - (NSURL*) rp_URLByAppendingQuery: (NSDictionary*)query;
+
+- (NSURL*) sha1SignedURLForSecretKey:(NSString*)secretKey; 
 
 @end

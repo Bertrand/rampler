@@ -1,5 +1,4 @@
 //
-//  RPURLLoaderController.m
 //  Rampler
 //
 //  Copyright 2010-2012 Fotonauts. All rights reserved.

@@ -1,9 +1,7 @@
 //
-//  NSURL_DooLittle.m
-//  DooLittle
+//  Rampler
 //
-//  Created by Guiheneuf Bertrand on 9/20/10.
-//  Copyright 2010 Fotonauts. All rights reserved.
+//  Copyright 2010-2012 Fotonauts. All rights reserved.
 //
 
 #import "NSURLAdditions.h"

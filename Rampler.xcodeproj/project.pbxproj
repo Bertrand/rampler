@@ -15,6 +15,8 @@
 		02883C55128F74FC008E0AA4 /* RPWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 02883C54128F74FC008E0AA4 /* RPWebViewController.m */; };
 		02883C5D128F7601008E0AA4 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 02883C5C128F7601008E0AA4 /* WebKit.framework */; };
 		02E1998612B12EDB00959845 /* RPTableHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 02E1998512B12EDB00959845 /* RPTableHeaderView.m */; };
+		0608139B15BA04B100A9B152 /* RPSha1Signer.m in Sources */ = {isa = PBXBuildFile; fileRef = 0608139A15BA04B100A9B152 /* RPSha1Signer.m */; };
+		0608139E15BA1B9000A9B152 /* NSDataAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 0608139D15BA1B9000A9B152 /* NSDataAdditions.m */; };
 		0628E06A1253952A00B9255B /* RPCallTree.m in Sources */ = {isa = PBXBuildFile; fileRef = 0628E0691253952A00B9255B /* RPCallTree.m */; };
 		0628E06D125396DB00B9255B /* RPDTraceLogReader.m in Sources */ = {isa = PBXBuildFile; fileRef = 0628E06C125396DB00B9255B /* RPDTraceLogReader.m */; };
 		0628E4BA125A361E00B9255B /* RPLogLine.m in Sources */ = {isa = PBXBuildFile; fileRef = 0628E4B9125A361E00B9255B /* RPLogLine.m */; };
@@ -47,6 +49,10 @@
 		02883C5C128F7601008E0AA4 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
 		02E1998412B12EDB00959845 /* RPTableHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RPTableHeaderView.h; sourceTree = "<group>"; };
 		02E1998512B12EDB00959845 /* RPTableHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RPTableHeaderView.m; sourceTree = "<group>"; };
+		0608139915BA04B100A9B152 /* RPSha1Signer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RPSha1Signer.h; sourceTree = "<group>"; };
+		0608139A15BA04B100A9B152 /* RPSha1Signer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RPSha1Signer.m; sourceTree = "<group>"; };
+		0608139C15BA1B9000A9B152 /* NSDataAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSDataAdditions.h; sourceTree = "<group>"; };
+		0608139D15BA1B9000A9B152 /* NSDataAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSDataAdditions.m; sourceTree = "<group>"; };
 		0628E0681253952900B9255B /* RPCallTree.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RPCallTree.h; sourceTree = "<group>"; };
 		0628E0691253952A00B9255B /* RPCallTree.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RPCallTree.m; sourceTree = "<group>"; };
 		0628E06B125396DB00B9255B /* RPDTraceLogReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RPDTraceLogReader.h; sourceTree = "<group>"; };
@@ -115,11 +121,22 @@
 			name = AppKit;
 			sourceTree = "<group>";
 		};
+		0608139815BA02B900A9B152 /* Utilities */ = {
+			isa = PBXGroup;
+			children = (
+				0608139915BA04B100A9B152 /* RPSha1Signer.h */,
+				0608139A15BA04B100A9B152 /* RPSha1Signer.m */,
+			);
+			path = Utilities;
+			sourceTree = "<group>";
+		};
 		06ED27ED15B80BAB0078B68E /* Categories */ = {
 			isa = PBXGroup;
 			children = (
 				06ED27EE15B80BAB0078B68E /* NSURLAdditions.h */,
 				06ED27EF15B80BAB0078B68E /* NSURLAdditions.m */,
+				0608139C15BA1B9000A9B152 /* NSDataAdditions.h */,
+				0608139D15BA1B9000A9B152 /* NSDataAdditions.m */,
 			);
 			path = Categories;
 			sourceTree = "<group>";
@@ -167,6 +184,7 @@
 		2A37F4ABFDCFA73011CA2CEA /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				0608139815BA02B900A9B152 /* Utilities */,
 				2A37F4AEFDCFA73011CA2CEA /* RPTraceDocument.h */,
 				2A37F4ACFDCFA73011CA2CEA /* RPTraceDocument.m */,
 				0628E0681253952900B9255B /* RPCallTree.h */,
@@ -303,6 +321,8 @@
 				0677F80E134F257900107A56 /* RPApplication.m in Sources */,
 				06ED27F015B80BAB0078B68E /* NSURLAdditions.m in Sources */,
 				0642459515B9CAE4007A72D0 /* RPKeychainWrapper.m in Sources */,
+				0608139B15BA04B100A9B152 /* RPSha1Signer.m in Sources */,
+				0608139E15BA1B9000A9B152 /* NSDataAdditions.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
