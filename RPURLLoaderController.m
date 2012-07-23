@@ -10,6 +10,7 @@
 #import "RPApplication.h"
 #import "NSURLAdditions.h"
 #import "RPKeychainWrapper.h"
+#import "RPSha1Signer.h"
 
 #define MAX_RECENT_URLS 30 // the number of URLs we keep in history
 
@@ -80,9 +81,13 @@
 
 - (NSURL*)samplinglURL
 {
+    CFUUIDRef theUUID = CFUUIDCreate(NULL);
+	CFStringRef UUIDString = CFUUIDCreateString(NULL, theUUID);
+    
     NSDictionary* params = [NSDictionary dictionaryWithObjectsAndKeys:
                             self.samplingInterval, @"interval", 
                             @"true", @"ruby_sanspleur", 
+                            UUIDString, @"ruby_sanspleur_uuid",
                             nil];
     return [[self baseURL] rp_URLByAppendingQuery:params];
 }
@@ -94,6 +99,7 @@
 	NSString *realFilename;
 	NSAssert(_connection == nil, @"Should have no connection");
 		
+    
 	_fileName = [[@"/tmp/" stringByAppendingPathComponent:[(NSString *)string stringByAppendingPathExtension:@"rubytrace"]] retain];
 	if (_compressed) {
 		realFilename = [_fileName stringByAppendingPathExtension:@"gz"];
@@ -102,12 +108,29 @@
 	}
 	_fileHandle = [[NSFileHandle alloc] initWithFileDescriptor:open([realFilename UTF8String], O_CREAT | O_WRONLY, S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH) closeOnDealloc:YES];
 	
-	NSMutableURLRequest* request = [NSMutableURLRequest requestWithURL:[self samplinglURL]];
+    NSURL* samplingURL = [self samplinglURL]; 
+	NSMutableURLRequest* request = [NSMutableURLRequest requestWithURL:samplingURL];
 	
 	NSDictionary* httpHeaders = [(RPApplication*)[RPApplication sharedApplication] additionalHTTPHeaders];
 	for (NSString* key in httpHeaders) {
 		[request addValue:[httpHeaders objectForKey:key] forHTTPHeaderField:key];
 	}
+    
+    if (self.secretKey) {
+        RPSha1Signer* signer = [[RPSha1Signer alloc] init];
+        signer.dataString = [samplingURL absoluteString];
+        signer.keyHexString = self.secretKey;
+        NSString* signature = signer.signatureHexString;
+        NSLog(@"data string : %@", signer.dataString);
+        NSLog(@"signature : %@", signature);
+        [signer release];
+        if (signature) {
+            [request addValue:signature forHTTPHeaderField:@"X-RUBY-SANSPLEUR-SIGNATURE"];
+        } else {
+            NSLog(@"WARNING: unable to compute signature.");
+        }
+    }
+    
 	_connection = [[NSURLConnection alloc] initWithRequest:request delegate:self startImmediately:YES];
     self.isLoadingURL = YES; 
     	

@@ -97,6 +97,12 @@
     return result;
 }
 
+- (NSURL*)rp_URLByAppendingQueryValue:(NSString*)value forKey:(NSString*)queryKey
+{
+    return  [self rp_URLByAppendingQuery:[NSDictionary dictionaryWithObject:value forKey:queryKey]];
+}
+
+
 @end
 
 

@@ -12,8 +12,7 @@
 + (NSString*)queryStringForParameters:(NSDictionary*)parameters;
 
 - (NSDictionary*)rp_queryDictionary;
-- (NSURL*) rp_URLByAppendingQuery: (NSDictionary*)query;
-
-- (NSURL*) sha1SignedURLForSecretKey:(NSString*)secretKey; 
+- (NSURL*)rp_URLByAppendingQuery:(NSDictionary*)query;
+- (NSURL*)rp_URLByAppendingQueryValue:(NSString*)value forKey:(NSString*)queryKey;
 
 @end
