@@ -7,13 +7,13 @@
 #import "RPKeychainWrapper.h"
 
 @interface RPKeychainWrapper()
-+ (void)_findItemAndPassword:(NSString*)serviceName accountName:(NSString*)accountName password:(NSString**)password keychainItem:(SecKeychainItemRef*) item;
++ (void)_findItemAndPassword:(NSString*)serviceName accountName:(NSString*)accountName password:(NSString* __autoreleasing *)password keychainItem:(SecKeychainItemRef*) item;
 @end
 
 @implementation RPKeychainWrapper
 
 
-+ (void)_findItemAndPassword:(NSString*)serviceName accountName:(NSString*)accountName password:(NSString**)password keychainItem:(SecKeychainItemRef*) item
++ (void)_findItemAndPassword:(NSString*)serviceName accountName:(NSString*)accountName password:(NSString* __autoreleasing *)password keychainItem:(SecKeychainItemRef*) item
 {
     
     OSStatus status;
@@ -38,7 +38,6 @@
 	if (status == 0 && password != NULL) {
 		NSData* passwordData = [NSData dataWithBytes:passwordBytes length:passwordBytesLength];
         *password = [[NSString alloc] initWithData:passwordData encoding:NSUTF8StringEncoding];
-        [*password autorelease];
 	}
 	
 	if (passwordBytes) SecKeychainItemFreeContent(NULL, passwordBytes);

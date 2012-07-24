@@ -17,12 +17,9 @@
 @implementation NSString(RamplerURL)
 - (NSString *)URLEncodedString
 {
-	CFStringRef result;
-	
-	result = CFURLCreateStringByAddingPercentEscapes(NULL, (CFStringRef)self, NULL, (CFStringRef)@" !*'\"();:@&=+$,/?%#[]%", kCFStringEncodingUTF8);
-	[(id)result retain];
-	CFRelease(result);
-	return [(id)result autorelease];
+	CFStringRef result = CFURLCreateStringByAddingPercentEscapes(NULL, (__bridge CFStringRef)self, NULL, (CFStringRef)@" !*'\"();:@&=+$,/?%#[]%", kCFStringEncodingUTF8);
+
+    return CFBridgingRelease(result);
 }
 @end
 
@@ -92,7 +89,6 @@
     }
     NSString*   urlString = [NSString stringWithFormat:@"%@://%@%@", [self scheme], [self host], path]; // we forge the string ourselves to avoid very stupid NSURL encoding issues
     NSURL* result = [NSURL URLWithString:urlString];
-    [path release];
     
     return result;
 }
@@ -114,7 +110,7 @@
 {
     NSCharacterSet* delimiterSet = [NSCharacterSet characterSetWithCharactersInString:@"&;?"] ;
     NSMutableDictionary* pairs = [NSMutableDictionary dictionary] ;
-    NSScanner* scanner = [[[NSScanner alloc] initWithString:string] autorelease] ;
+    NSScanner* scanner = [[NSScanner alloc] initWithString:string] ;
     while (![scanner isAtEnd]) {
         NSString* pairString ;
         [scanner scanUpToCharactersFromSet:delimiterSet

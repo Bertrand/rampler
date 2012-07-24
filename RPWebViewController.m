@@ -9,7 +9,7 @@
 
 @interface RPWebViewController()
 
-@property (nonatomic, retain) NSString *statusBarValue;
+@property (nonatomic) NSString *statusBarValue;
 
 @end
 
@@ -18,11 +18,6 @@
 
 @synthesize statusBarValue;
 
-- (void)dealloc
-{
-	self.statusBarValue = nil;
-	[super dealloc];
-}
 
 - (void)open
 {

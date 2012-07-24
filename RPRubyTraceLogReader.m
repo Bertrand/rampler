@@ -9,13 +9,13 @@
 #import "RPCallTree.h"
 
 @interface RPRubyTraceLogReader ()
-@property(nonatomic, retain)NSMutableArray* stacks;
-@property(nonatomic, retain)NSString* version;
-@property(nonatomic, retain)NSURL* url;
+@property(nonatomic) NSMutableArray* stacks;
+@property(nonatomic) NSString* version;
+@property(nonatomic) NSURL* url;
 @property(nonatomic, assign)double interval;
-@property (nonatomic, retain) NSString *beginningInfoDescription;
-@property (nonatomic, retain) NSString *endingInfoDescription;
-@property (nonatomic, retain) NSDate* startDate;
+@property (nonatomic) NSString *beginningInfoDescription;
+@property (nonatomic) NSString *endingInfoDescription;
+@property (nonatomic) NSDate* startDate;
 @property (nonatomic, assign) double duration;
 @property (nonatomic, assign) NSUInteger sampleCount;
 @end
@@ -42,23 +42,14 @@
 	self = [super init]; 
 	self.data = d;
 
-	self.stacks = [[[NSMutableArray alloc] init] autorelease];
-    self.beginningInfoDescription = [[[NSMutableString alloc] init]	autorelease];
-	self.endingInfoDescription = [[[NSMutableString alloc] init] autorelease];
+	stacks = [[NSMutableArray alloc] init];
+    self.beginningInfoDescription = [[NSMutableString alloc] init];
+	self.endingInfoDescription = [[NSMutableString alloc] init];
 	[self readData];
 	
 	return self;
 }
 
-- (void)dealloc
-{
-	self.stacks = nil;
-    self.beginningInfoDescription = nil;
-	self.endingInfoDescription = nil;
-	self.version = nil;
-	self.url = nil;
-	[super dealloc];
-}
 
 - (void) readData
 {
@@ -126,18 +117,15 @@
                 [lines addObject:parsedLine];
             } else if ([lines count] > 0) {
                 [self.stacks addObject:lines];
-                [lines release];
                 lines = [[NSMutableArray alloc] init];
             }
         }
-		[line release];
 		
 		currentPos = eolPos + 1;
 		
 	} while (eolPos < [data length]);
 	NSLog(@"total %ld info %ld lines %ld", logLineNumber, infoLineCount, stackLineCount);
 	NSLog(@"stacks %lu", [self.stacks count]);
-	[lines release];
 }
 
 
@@ -175,7 +163,7 @@
 		parsedLine.ns = [components objectAtIndex:9];
 	}
 	
-	return [parsedLine autorelease];
+	return parsedLine;
 }
 
 - (RPCallTree*)callTree

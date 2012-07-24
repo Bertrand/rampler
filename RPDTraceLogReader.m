@@ -23,7 +23,7 @@
 	self = [super init]; 
 	self.data = d;
 
-	self.lines = [NSMutableArray new];
+	lines = [[NSMutableArray alloc] init];
 	[self readData];
 	
 	return self;
@@ -46,7 +46,6 @@
 		RPLogLine* parsedLine  = [self parseLine:line]; 
 		if (!parsedLine) NSLog(@"Unable to parse log line %ld. Ignoring it. (\"%@\")", logLineNumber, line);
 		if (parsedLine) [lines addObject:parsedLine];
-		[line release];
 		
 		currentPos = eolPos + 1;
 		
@@ -88,7 +87,7 @@
 	parsedLine.symbol = [NSString stringWithFormat:@"%@::%@", parsedLine.ns, parsedLine.function];
 	parsedLine.symbolId = [NSString stringWithFormat:@"%@::%@", parsedLine.ns, parsedLine.function];
 	
-	return [parsedLine autorelease];
+	return parsedLine;
 }
 
 - (BOOL) moveNextLine
@@ -162,7 +161,7 @@
 	root = [[RPCallTree alloc] init];
 	[self feedCallTree:root];
 	[root freeze];
-	return [root autorelease];
+	return root;
 }
 
 - (NSString *)version

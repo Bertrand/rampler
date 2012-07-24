@@ -16,12 +16,12 @@
 
 @interface RPTraceDocument()
 
-@property (nonatomic, retain) RPCallTree* root;
-@property (nonatomic, retain) RPCallTree* displayRoot;
-@property (nonatomic, assign) RPOutlineView* mainOutlineView;;
-@property (nonatomic, retain) RPTraceDocument *mainDocument;
-@property (nonatomic, retain) NSString *version;
-@property (nonatomic, retain) NSURL* url;
+@property (nonatomic) RPCallTree* root;
+@property (nonatomic) RPCallTree* displayRoot;
+@property (nonatomic, weak) RPOutlineView* mainOutlineView;;
+@property (nonatomic) RPTraceDocument *mainDocument;
+@property (nonatomic) NSString *version;
+@property (nonatomic) NSURL* url;
 @property (nonatomic, assign) double interval;
 @property (nonatomic, assign) double duration;
 
@@ -59,8 +59,7 @@
 		];
 	result = [[[NSUserDefaults standardUserDefaults] arrayForKey:@"columns"] mutableCopy];
 	if (!result || ![[result objectAtIndex:0] isKindOfClass:[NSNumber class]] || [[result objectAtIndex:0] intValue] != COLUMN_INFO_VERSION) {
-		[result release];
-		result = [[defaultValue retain] autorelease];
+		result = defaultValue;
 	} else {
 		int ii, count;
 		
@@ -71,10 +70,8 @@
 			
 			column = [[result objectAtIndex:ii] mutableCopy];
 			[result replaceObjectAtIndex:ii withObject:column];
-			[column release];
 		}
 	}
-	[defaultValue release];
 
 	return result;
 }
@@ -91,11 +88,6 @@
 - (void)dealloc
 {
 	self.root = nil;
-	self.displayRoot = nil;
-    self.mainDocument = nil;
-	self.version = nil;
-	self.url = nil;
-	[super dealloc];
 }
 
 - (void)loadWithMainDocument:(RPTraceDocument *)document root:(RPCallTree *)newRoot version:(NSString *)newVersion
@@ -138,8 +130,7 @@
 - (void)setRoot:(RPCallTree *)newRoot
 {
 	if (newRoot != root) {
-		[root release];
-		root = [newRoot retain];
+		root = newRoot;
 		self.displayRoot = root;
 		if (root) {
 	    	[mainOutlineView reloadData];
@@ -161,7 +152,6 @@
 	self.url = [reader url];
 	self.interval = [reader interval];
 	self.duration = [reader duration];
-	[reader release];
 	
     // Insert code here to read your document from the given data of the specified type.  If the given outError != NULL, ensure that you set *outError when returning NO.
 
@@ -197,7 +187,6 @@
 		if (!column && [[info objectForKey:@"enabled"] boolValue]) {
 			column = [[NSTableColumn alloc] initWithIdentifier:[info objectForKey:@"identifier"]];
 			[mainOutlineView addTableColumn:column];
-			[column release];
 		}
 		if ([[info objectForKey:@"enabled"] boolValue]) {
 			[mainOutlineView moveColumn:[mainOutlineView columnWithIdentifier:[info objectForKey:@"identifier"]] toColumn:ii];
@@ -218,7 +207,6 @@
 	copy = [columnInfo mutableCopy];
 	[copy insertObject:[NSNumber numberWithInt:COLUMN_INFO_VERSION] atIndex:0];
 	[[NSUserDefaults standardUserDefaults] setObject:copy forKey:@"columns"];
-	[copy release];
 }
 
 - (void)awakeFromNib
@@ -289,7 +277,7 @@
                         ii--;
                     }
                 }
-                result = [significantChildren autorelease];
+                result = significantChildren;
                 break;
         	}
         }
@@ -322,7 +310,6 @@
     } else {
         [mainOutlineView selectRowIndexes:[NSIndexSet indexSet] byExtendingSelection:NO];
     }
-    [parents release];
 }
 
 - (IBAction)outlineDoubleAction:(id)sender
@@ -413,7 +400,6 @@
 		[[NSDocumentController sharedDocumentController] addDocument:newDocument];
 		[newDocument makeWindowControllers];
 		[newDocument showWindows];
-		[newDocument release];
 	}
 }
 
@@ -527,7 +513,7 @@
 		}
 		tag++;
 	}
-	return [result autorelease];
+	return result;
 }
 
 - (void)headerMenuAction:(NSMenuItem *)item
@@ -559,10 +545,9 @@
 			}
 			ii++;
 		}
-		info = [[columnInfo objectAtIndex:oldColumn] retain];
+		info = [columnInfo objectAtIndex:oldColumn];
 		[columnInfo removeObjectAtIndex:oldColumn];
 		[columnInfo insertObject:info atIndex:newColumn];
-		[info release];
 		[self _saveColumnInfo];
 	}
 }

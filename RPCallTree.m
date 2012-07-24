@@ -48,18 +48,6 @@
 	return self;
 }
 
-- (void)dealloc
-{
-	self.symbolId = nil;
-	self.symbol = nil;
-	self.file = nil;
-	self.subTrees = nil;
-	self.children = nil;
-	self.callDetails = nil;
-	self.ns = nil;
-	[callDetails release];
-	[super dealloc];
-}
 
 - (RPCallTree*) subTreeForSymbolId:(NSString*)symId
 {
@@ -76,7 +64,6 @@
 		subTree.symbolId = symId;
 
 		[self.subTrees setObject:subTree forKey:symId];
-		[subTree release];
 	} else {
 		//NSLog(@"Reusing subtree");
 	}
@@ -131,7 +118,6 @@
 	time = [[callDetails objectForKey:fileNameNumber] doubleValue] + valueToAdd;
 	number = [[NSNumber alloc] initWithDouble:time];
 	[callDetails setObject:number forKey:fileNameNumber];
-	[number release];
 }
 
 - (void)addCallTreeInfo:(RPCallTree *)callTreeToAdd bottomUp:(BOOL)bottomUp time:(float)time
@@ -190,8 +176,7 @@
 		}
 		[subTreeToTest removeObjectAtIndex:0];
 	}
-	[subTreeToTest release];
-	return [result autorelease];
+	return result;
 }
 
 - (RPCallTree *)topDownCallTreeForSymbolId:(NSString *)functionSymbolId
@@ -210,7 +195,7 @@
 		[mergedCallTree addCallTreeInfo:current bottomUp:NO time:0];
 	}
 	[result freeze];
-	return [result autorelease];
+	return result;
 }
 
 - (RPCallTree *)bottomUpCallTreeForSymbolId:(NSString *)functionSymbolId
@@ -229,7 +214,7 @@
 		[mergedCallTree addCallTreeInfo:current bottomUp:YES time:current.totalTime];
 	}
 	[result freeze];
-	return [result autorelease];
+	return result;
 }
 
 @end

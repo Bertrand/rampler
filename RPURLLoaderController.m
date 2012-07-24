@@ -49,15 +49,6 @@
     return me; 
 }
 
-- (void)dealloc
-{
-	[_fileHandle release];
-	[_connection release];
-	[_fileName release];
-    self.openURLWindow = nil;
-    
-	[super dealloc];
-}
 
 - (NSString*)secretKey
 {
@@ -67,8 +58,6 @@
 - (void)setSecretKey:(NSString *)newSecretKey
 {
     if (![newSecretKey isEqual:_secretKey]) {
-        [newSecretKey retain];
-        [_secretKey release];
         _secretKey = newSecretKey; 
         
         [self setDefaultSecretKey:newSecretKey];
@@ -108,7 +97,7 @@
 	CFStringRef uuidString = CFUUIDCreateString(NULL, theUUID);
 	NSAssert(_connection == nil, @"Should have no connection");
 		
-	_fileName = [[@"/tmp/" stringByAppendingPathComponent:[(NSString *)uuidString stringByAppendingPathExtension:@"rubytrace"]] retain];	
+	_fileName = [@"/tmp/" stringByAppendingPathComponent:[(__bridge_transfer NSString *)uuidString stringByAppendingPathExtension:@"rubytrace"]];	
 	_fileHandle = [[NSFileHandle alloc] initWithFileDescriptor:open([_fileName UTF8String], O_CREAT | O_WRONLY, S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH) closeOnDealloc:YES];
 	
     NSURL* samplingURL = [self samplinglURL]; 
@@ -124,7 +113,6 @@
         signer.dataString = [samplingURL absoluteString];
         signer.keyHexString = self.secretKey;
         NSString* signature = signer.signatureHexString;
-        [signer release];
         if (signature) {
             [request addValue:signature forHTTPHeaderField:REQUEST_SIGNATURE_HEADER];
         } else {
@@ -135,7 +123,6 @@
 	_connection = [[NSURLConnection alloc] initWithRequest:request delegate:self startImmediately:YES];
     self.isLoadingURL = YES; 
     	
-	CFRelease(uuidString);
 	CFRelease(theUUID);
 	return YES;
 }
@@ -148,10 +135,8 @@
     self.isLoadingURL = NO; 
     _httpStatusCode = -1;
     
-	[_fileHandle release];
 	_fileHandle = nil;
         
-    [_connection release];
     _connection = nil; 
 }
 
@@ -170,7 +155,7 @@
 
 - (void)_downloadFailed
 {
-	NSAlert *alert = [[[NSAlert alloc] init] autorelease];
+	NSAlert *alert = [[NSAlert alloc] init];
 	[alert addButtonWithTitle:@"OK"];
 	[alert setMessageText:@"Request returned no sampling data"];
 	[alert setInformativeText:[[self baseURL] absoluteString]];
@@ -198,7 +183,7 @@
 - (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error
 {
     [self _downloadFailed];
-	NSAlert *alert = [[[NSAlert alloc] init] autorelease];
+	NSAlert *alert = [[NSAlert alloc] init];
 	[alert addButtonWithTitle:@"OK"];
 	[alert setMessageText:@"Error while loading the sampling data"];
 	[alert setInformativeText:[NSString stringWithFormat:@"%@ %@", error, [error userInfo]]];
@@ -265,7 +250,6 @@
         if ([newRecentURLStrings count] > MAX_RECENT_URLS) break; 
     }
     [self setRecentURLStrings:newRecentURLStrings];
-    [newRecentURLStrings release];
 }
 
 - (NSString*)defaultSecretKey

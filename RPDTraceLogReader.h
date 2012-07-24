@@ -13,20 +13,19 @@
 @interface RPDTraceLogReader : NSObject<RPLogReader> {
 	NSInteger	logLineNumber; 
 	NSData*		data;
-	NSMutableArray* lines;
 	
 	// xxx - this is a hack
-	RPLogLine*	currentLine;
+	RPLogLine*	__weak currentLine;
 	NSInteger	currentLineNumber;
 	BOOL		eof;
 }
 
 
 @property (nonatomic, readwrite, assign) NSInteger	logLineNumber;
-@property (nonatomic, readwrite, retain) NSData*	data;
-@property (nonatomic, readwrite, assign) NSMutableArray*	lines;
+@property (nonatomic, readwrite) NSData*	data;
+@property (nonatomic, readwrite) NSMutableArray*	lines;
 @property (nonatomic, readwrite, assign) BOOL eof;
-@property (nonatomic, readwrite, assign) RPLogLine*	currentLine;
+@property (nonatomic, readwrite, weak) RPLogLine*	currentLine;
 
 - (id) initWithData:(NSData*)data;
 

@@ -22,7 +22,7 @@
 	NSString*	ns;
 	NSInteger	blockedTicks;
 	
-	RPCallTree* parent;
+	RPCallTree* __weak parent;
 	RPCallTree* root;
 	
 	NSMutableDictionary* subTrees;
@@ -30,21 +30,21 @@
 	NSMutableDictionary* callDetails;
 }
 
-@property (nonatomic, retain)	NSString* symbolId;
-@property (nonatomic, retain)	NSString* symbol;
-@property (nonatomic, retain)	NSString* file;
+@property (nonatomic)	NSString* symbolId;
+@property (nonatomic)	NSString* symbol;
+@property (nonatomic)	NSString* file;
 @property (nonatomic, assign)	SInt64 thread;
 @property (nonatomic, assign)	NSInteger stackDepth;
-@property (readonly,  assign)	RPCallTree* parent;
+@property (readonly,  weak)	RPCallTree* parent;
 @property (nonatomic, assign)	double totalTime;
 @property (nonatomic, assign)	double selfTime;
-@property (nonatomic, retain)	NSMutableDictionary* subTrees;
-@property (nonatomic, retain)	NSArray* children;
+@property (nonatomic)	NSMutableDictionary* subTrees;
+@property (nonatomic)	NSArray* children;
 @property (nonatomic, assign)	NSInteger startLine;
 @property (nonatomic, assign)	NSInteger sampleCount;
 @property (nonatomic, assign)	NSInteger stackTraceCount;
-@property (nonatomic, retain)	NSMutableDictionary* callDetails;
-@property (nonatomic, retain)	NSString* ns;
+@property (nonatomic)	NSMutableDictionary* callDetails;
+@property (nonatomic)	NSString* ns;
 @property (nonatomic, assign)	NSInteger blockedTicks;
 
 

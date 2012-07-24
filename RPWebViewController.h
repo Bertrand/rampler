@@ -20,7 +20,7 @@
 	NSString *statusBarValue;
 }
 
-@property (nonatomic, retain, readonly) NSString *statusBarValue;
+@property (nonatomic, readonly) NSString *statusBarValue;
 
 - (IBAction)backButtonAction:(id)sender;
 - (IBAction)forwardButtonAction:(id)sender;

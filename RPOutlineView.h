@@ -13,6 +13,6 @@
 	NSString *columnIdentifierForCopy;
 }
 
-@property(retain, nonatomic) NSString *columnIdentifierForCopy;
+@property( nonatomic) NSString *columnIdentifierForCopy;
 
 @end

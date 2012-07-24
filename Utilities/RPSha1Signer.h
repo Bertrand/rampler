@@ -9,8 +9,8 @@
 
 @interface RPSha1Signer : NSObject
 
-@property(nonatomic, readwrite, retain) NSData* data; 
-@property(nonatomic, readwrite, retain) NSData* key; 
+@property(nonatomic, readwrite) NSData* data; 
+@property(nonatomic, readwrite) NSData* key; 
 
 @property(nonatomic, readwrite, copy) NSString* dataString; 
 @property(nonatomic, readwrite, copy) NSString* keyHexString; 

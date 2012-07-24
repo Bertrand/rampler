@@ -22,20 +22,20 @@
 	NSUInteger sampleCount;
 	
 	// xxx - this is a hack
-	RPLogLine*	currentLine;
+	RPLogLine*	__weak currentLine;
 	NSInteger	currentLineNumber;
 	BOOL		eof;
 }
 
 @property (nonatomic, readwrite, assign) NSInteger	logLineNumber;
-@property (nonatomic, readwrite, retain) NSData*	data;
+@property (nonatomic, readwrite) NSData*	data;
 @property (nonatomic, readwrite, assign) BOOL eof;
-@property (nonatomic, readwrite, assign) RPLogLine*	currentLine;
-@property (nonatomic, readonly, retain) NSString *beginningInfoDescription;
-@property (nonatomic, readonly, retain) NSString *endingInfoDescription;
+@property (nonatomic, readwrite, weak) RPLogLine*	currentLine;
+@property (nonatomic, readonly) NSString *beginningInfoDescription;
+@property (nonatomic, readonly) NSString *endingInfoDescription;
 @property (nonatomic, readonly, assign) double interval;
-@property (nonatomic, readonly, retain) NSURL* url;
-@property (nonatomic, readonly, retain) NSDate* startDate;
+@property (nonatomic, readonly) NSURL* url;
+@property (nonatomic, readonly) NSDate* startDate;
 @property (nonatomic, readonly, assign) double duration;
 @property (nonatomic, readonly, assign) NSUInteger sampleCount;
 

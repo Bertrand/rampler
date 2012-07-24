@@ -20,8 +20,8 @@
 	RPCallTree* displayRoot;
 	double duration;
 	
-	IBOutlet NSNumberFormatter* percentFormatter;
-	IBOutlet RPOutlineView* mainOutlineView;
+	IBOutlet NSNumberFormatter* __weak percentFormatter;
+	IBOutlet RPOutlineView* __weak mainOutlineView;
     IBOutlet NSButton* unfocusButton;
     IBOutlet NSButton* focusButton;
     IBOutlet NSButton* focusDownFunctionButton;
@@ -44,16 +44,16 @@
     RPTraceDocument *mainDocument;
 }
 
-@property (nonatomic, readonly, retain) RPCallTree* root;
-@property (nonatomic, readonly, retain) RPCallTree* displayRoot;
-@property (nonatomic, assign) NSNumberFormatter* percentFormatter;
-@property (nonatomic, readonly, assign) RPOutlineView* mainOutlineView;;
+@property (nonatomic, readonly) RPCallTree* root;
+@property (nonatomic, readonly) RPCallTree* displayRoot;
+@property (nonatomic, weak) NSNumberFormatter* percentFormatter;
+@property (nonatomic, readonly, weak) RPOutlineView* mainOutlineView;;
 @property (nonatomic, assign) BOOL displayTimeUnitAsPercentOfTotal;
 @property (nonatomic, assign) BOOL hideInsignificantCalls;
-@property (nonatomic, readonly, retain) RPTraceDocument *mainDocument;
-@property (nonatomic, readonly, retain) NSString *version;
-@property (nonatomic, readonly, retain) NSURL* url;
-@property (nonatomic, readonly, retain) NSString* secretKey;
+@property (nonatomic, readonly) RPTraceDocument *mainDocument;
+@property (nonatomic, readonly) NSString *version;
+@property (nonatomic, readonly) NSURL* url;
+@property (nonatomic, readonly) NSString* secretKey;
 @property (nonatomic, readonly, assign) double interval;
 @property (nonatomic, readonly, assign) double duration;
 

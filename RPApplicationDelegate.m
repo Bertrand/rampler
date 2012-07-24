@@ -31,7 +31,6 @@
 	
 	urlLoader = [[RPURLLoaderController alloc] init];
 	[urlLoader start];
-	[httpURL release];
 }
 
 

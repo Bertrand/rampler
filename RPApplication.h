@@ -13,7 +13,7 @@
 
 }
 
-@property(nonatomic, readwrite, retain) NSMutableDictionary* additionalHTTPHeaders;
+@property(nonatomic, readwrite) NSMutableDictionary* additionalHTTPHeaders;
 
 
 

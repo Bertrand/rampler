@@ -11,7 +11,7 @@
 
 + (NSData*)dataFromHexString:(NSString*)hexString
 {
-    NSMutableData *stringData = [[[NSMutableData alloc] initWithCapacity:[hexString length]/2] autorelease];
+    NSMutableData *stringData = [[NSMutableData alloc] initWithCapacity:[hexString length]/2];
     unsigned char whole_byte;
     char byte_chars[3] = {'\0','\0','\0'};
     int i;

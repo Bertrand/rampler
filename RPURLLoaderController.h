@@ -25,18 +25,18 @@
 }
 
 
-@property(nonatomic, retain) NSString *urlString;
-@property(nonatomic, retain) NSString *secretKey;
-@property(nonatomic, readwrite, retain) NSNumber* samplingInterval;
-@property(nonatomic, readwrite, retain) NSNumber* samplingTimeout;
+@property(nonatomic) NSString *urlString;
+@property(nonatomic) NSString *secretKey;
+@property(nonatomic, readwrite) NSNumber* samplingInterval;
+@property(nonatomic, readwrite) NSNumber* samplingTimeout;
 @property(nonatomic, readonly) NSString *fileName;
 @property(nonatomic, readonly, assign) BOOL isLoadingURL;
 
 @property(nonatomic, readwrite, copy) NSArray *recentURLStrings;
-@property(nonatomic, readwrite, assign) NSNumber* defaultSamplingInterval;
+@property(nonatomic, readwrite, weak) NSNumber* defaultSamplingInterval;
 
-@property(nonatomic, retain) IBOutlet NSWindow *openURLWindow;
-@property(nonatomic, retain) IBOutlet NSWindow *progressWindow;
+@property(nonatomic) IBOutlet NSWindow *openURLWindow;
+@property(nonatomic) IBOutlet NSWindow *progressWindow;
 
 - (IBAction)openOpenURLDialog:(id)sender;
 - (IBAction)openDialogActionButtonClicked:(id)sender;
