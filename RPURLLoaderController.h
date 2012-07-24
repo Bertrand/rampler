@@ -13,11 +13,12 @@
 {
 	IBOutlet NSWindow *_window;
 
-	BOOL compressed;
 	NSURLConnection *_connection;
 	NSString *_fileName;
 	NSFileHandle *_fileHandle;
     NSString* _secretKey; 
+    
+    NSInteger _httpStatusCode; 
     
     BOOL _openURLNibLoaded;
 	NSModalSession _urlOpenerSession;
@@ -27,7 +28,7 @@
 @property(nonatomic, retain) NSString *urlString;
 @property(nonatomic, retain) NSString *secretKey;
 @property(nonatomic, readwrite, retain) NSNumber* samplingInterval;
-@property(nonatomic, assign) BOOL compressed;
+@property(nonatomic, readwrite, retain) NSNumber* samplingTimeout;
 @property(nonatomic, readonly) NSString *fileName;
 @property(nonatomic, readonly, assign) BOOL isLoadingURL;
 

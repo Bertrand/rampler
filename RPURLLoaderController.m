@@ -14,6 +14,13 @@
 
 #define MAX_RECENT_URLS 30 // the number of URLs we keep in history
 
+#define INTERVAL_PARAMETER_NAME @"ruby_sanspleur_interval" 
+#define TIMEOUT_PARAMETER_NAME @"ruby_sanspleur_timeout" 
+#define UUID_PARAMETER_NAME @"ruby_sanspleur_uuid" 
+#define ACTIVATE_SAMPLING_PARAMETER_NAME @"ruby_sanspleur"
+
+#define REQUEST_SIGNATURE_HEADER @"X-RUBY-SANSPLEUR-SIGNATURE"
+
 
 @interface RPURLLoaderController()
     @property(nonatomic, readwrite, assign) BOOL isLoadingURL;
@@ -23,11 +30,11 @@
 
 @implementation RPURLLoaderController
 
-    @synthesize compressed = _compressed;
     @synthesize fileName = _fileName;
     @synthesize openURLWindow;
     @synthesize progressWindow;
     @synthesize samplingInterval;
+    @synthesize samplingTimeout;
     @synthesize urlString;
     @synthesize isLoadingURL;
 
@@ -84,29 +91,25 @@
     CFUUIDRef theUUID = CFUUIDCreate(NULL);
 	CFStringRef UUIDString = CFUUIDCreateString(NULL, theUUID);
     
-    NSDictionary* params = [NSDictionary dictionaryWithObjectsAndKeys:
-                            self.samplingInterval, @"interval", 
-                            @"true", @"ruby_sanspleur", 
-                            UUIDString, @"ruby_sanspleur_uuid",
+    NSMutableDictionary* params = [NSMutableDictionary dictionaryWithObjectsAndKeys:
+                            self.samplingInterval,  INTERVAL_PARAMETER_NAME, 
+                            @"true",                ACTIVATE_SAMPLING_PARAMETER_NAME, 
+                            UUIDString,             UUID_PARAMETER_NAME,
                             nil];
+    if ([self.samplingTimeout intValue] > 0) {
+        [params setObject:self.samplingTimeout forKey:TIMEOUT_PARAMETER_NAME];
+    }
     return [[self baseURL] rp_URLByAppendingQuery:params];
 }
 
 - (BOOL)start
 {
 	CFUUIDRef theUUID = CFUUIDCreate(NULL);
-	CFStringRef string = CFUUIDCreateString(NULL, theUUID);
-	NSString *realFilename;
+	CFStringRef uuidString = CFUUIDCreateString(NULL, theUUID);
 	NSAssert(_connection == nil, @"Should have no connection");
 		
-    
-	_fileName = [[@"/tmp/" stringByAppendingPathComponent:[(NSString *)string stringByAppendingPathExtension:@"rubytrace"]] retain];
-	if (_compressed) {
-		realFilename = [_fileName stringByAppendingPathExtension:@"gz"];
-	} else {
-		realFilename = _fileName;
-	}
-	_fileHandle = [[NSFileHandle alloc] initWithFileDescriptor:open([realFilename UTF8String], O_CREAT | O_WRONLY, S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH) closeOnDealloc:YES];
+	_fileName = [[@"/tmp/" stringByAppendingPathComponent:[(NSString *)uuidString stringByAppendingPathExtension:@"rubytrace"]] retain];	
+	_fileHandle = [[NSFileHandle alloc] initWithFileDescriptor:open([_fileName UTF8String], O_CREAT | O_WRONLY, S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH) closeOnDealloc:YES];
 	
     NSURL* samplingURL = [self samplinglURL]; 
 	NSMutableURLRequest* request = [NSMutableURLRequest requestWithURL:samplingURL];
@@ -121,11 +124,9 @@
         signer.dataString = [samplingURL absoluteString];
         signer.keyHexString = self.secretKey;
         NSString* signature = signer.signatureHexString;
-        NSLog(@"data string : %@", signer.dataString);
-        NSLog(@"signature : %@", signature);
         [signer release];
         if (signature) {
-            [request addValue:signature forHTTPHeaderField:@"X-RUBY-SANSPLEUR-SIGNATURE"];
+            [request addValue:signature forHTTPHeaderField:REQUEST_SIGNATURE_HEADER];
         } else {
             NSLog(@"WARNING: unable to compute signature.");
         }
@@ -134,11 +135,32 @@
 	_connection = [[NSURLConnection alloc] initWithRequest:request delegate:self startImmediately:YES];
     self.isLoadingURL = YES; 
     	
-	CFRelease(string);
+	CFRelease(uuidString);
 	CFRelease(theUUID);
 	return YES;
 }
 
+
+
+
+- (void)_close
+{
+    self.isLoadingURL = NO; 
+    _httpStatusCode = -1;
+    
+	[_fileHandle release];
+	_fileHandle = nil;
+        
+    [_connection release];
+    _connection = nil; 
+}
+
+- (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse*)response
+{
+    NSHTTPURLResponse* httpResponse = (NSHTTPURLResponse*)response;
+    _httpStatusCode = [httpResponse statusCode];
+    NSLog(@"response status code : %ld", _httpStatusCode);
+}
 
 
 - (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data
@@ -146,75 +168,42 @@
 	[_fileHandle writeData:data];
 }
 
-- (void)_close
-{
-	[_fileHandle closeFile];
-	[_fileHandle release];
-	_fileHandle = nil;
-	[_fileHandle closeFile];
-	[_fileHandle release];
-	_fileHandle = nil;
-	[_window close];
-	[_window release];
-	_window = nil;
-}
-
-
 - (void)_downloadFailed
 {
 	NSAlert *alert = [[[NSAlert alloc] init] autorelease];
 	[alert addButtonWithTitle:@"OK"];
-	[alert setMessageText:@"No data"];
+	[alert setMessageText:@"Request returned no sampling data"];
 	[alert setInformativeText:[[self baseURL] absoluteString]];
 	[alert setAlertStyle:NSWarningAlertStyle];
-	[alert beginSheetModalForWindow:_window modalDelegate:self didEndSelector:@selector(alertDidEnd:returnCode:contextInfo:) contextInfo:nil];
+    [alert runModal];
 }
 
 - (void)_downloadSucceed
 {
-	//[[NSApp delegate] urlLoaderControllerDidFinish:self];
-	[self _close];
+	[[NSWorkspace sharedWorkspace] openFile:self.fileName];
 }
 
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection
 {
-	if (_compressed) {
-		if ([[[[NSFileManager defaultManager] attributesOfItemAtPath:[_fileName stringByAppendingPathExtension:@"gz"] error:nil] objectForKey:NSFileSize] longLongValue] < 100) {
-			[self _downloadFailed];
-		} else {
-			system([[NSString stringWithFormat:@"gunzip %@", [_fileName stringByAppendingPathExtension:@"gz"]] UTF8String]);
-			[self _downloadSucceed];
-		}
-	} else {
-		if ([[[[NSFileManager defaultManager] attributesOfItemAtPath:_fileName error:nil] objectForKey:NSFileSize] longLongValue] < 100) {
-			[self _downloadFailed];
-		} else {
-			[self _downloadSucceed];
-		}
-	}
-    
-    self.isLoadingURL = NO; 
+    BOOL httpFailure = _httpStatusCode >= 400; 
+    if (httpFailure || [[[[NSFileManager defaultManager] attributesOfItemAtPath:_fileName error:nil] objectForKey:NSFileSize] longLongValue] < 100) {
+        [self _downloadFailed];
+    } else {
+        [self _downloadSucceed];
+    }
 
-    [_connection release];
-    _connection = nil; 
+    [self _close];
 }
 
 - (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error
 {
+    [self _downloadFailed];
 	NSAlert *alert = [[[NSAlert alloc] init] autorelease];
 	[alert addButtonWithTitle:@"OK"];
-	[alert setMessageText:@"Error while loading the stack trace"];
+	[alert setMessageText:@"Error while loading the sampling data"];
 	[alert setInformativeText:[NSString stringWithFormat:@"%@ %@", error, [error userInfo]]];
 	[alert setAlertStyle:NSWarningAlertStyle];
-	[error retain];
-	[alert beginSheetModalForWindow:_window modalDelegate:self didEndSelector:@selector(alertDidEnd:returnCode:contextInfo:) contextInfo:error];
-}
-
-- (void)alertDidEnd:(NSAlert *)alert returnCode:(NSInteger)returnCode contextInfo:(void *)error
-{
-	[self _close];
-	//[[NSApp delegate] urlLoaderController:self didFailWithError:error];
-	[(id)error release];
+    [alert runModal]; 
 }
 
 
