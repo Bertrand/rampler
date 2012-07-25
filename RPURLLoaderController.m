@@ -127,16 +127,11 @@
 	return YES;
 }
 
-
-
-
 - (void)_close
 {
     self.isLoadingURL = NO; 
     _httpStatusCode = -1;
-    
 	_fileHandle = nil;
-        
     _connection = nil; 
 }
 
@@ -144,7 +139,6 @@
 {
     NSHTTPURLResponse* httpResponse = (NSHTTPURLResponse*)response;
     _httpStatusCode = [httpResponse statusCode];
-    NSLog(@"response status code : %ld", _httpStatusCode);
 }
 
 

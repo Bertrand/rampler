@@ -7,7 +7,6 @@
 
 #import "RPTraceDocument.h"
 #import "RPCallTree.h"
-#import "RPDTraceLogReader.h"
 #import "RPRubyTraceLogReader.h"
 #import "RPOutlineView.h"
 #import "RPTableHeaderView.h"
@@ -142,11 +141,10 @@
 {
 	id<RPLogReader> reader = nil;
 	
-	if ([typeName isEqualToString:@"Dtrace files"]) {
-		reader = [[RPDTraceLogReader alloc] initWithData:data];
-	} else if ([typeName isEqualToString:@"Ruby trace"]) {
+    if ([typeName isEqualToString:@"Ruby trace"]) {
 		reader = [[RPRubyTraceLogReader alloc] initWithData:data];
 	}
+    
 	self.root = [reader callTree];
 	self.version = [reader version];
 	self.url = [reader url];

@@ -6,7 +6,6 @@
 //
 
 #import "RPCallTree.h"
-#import "RPDTraceLogReader.h"
 
 @implementation RPCallTree
 

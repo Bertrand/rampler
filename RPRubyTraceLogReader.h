@@ -7,29 +7,21 @@
 
 #import <Cocoa/Cocoa.h>
 #import "RPLogLine.h"
+#import "RPLogReader.h"
+
 
 @interface RPRubyTraceLogReader : NSObject<RPLogReader> {
-	NSInteger	logLineNumber;
-	NSData*		data;
-	NSMutableArray* stacks;
-    NSMutableString* beginningInfoDescription;
-	NSMutableString* endingInfoDescription;
-	NSString*	version;
-	double interval;
-	NSURL* url;
-	NSDate* startDate;
-	double duration;
-	NSUInteger sampleCount;
-	
+    // declare those vars so they can be mutable internally
+    NSMutableString *beginningInfoDescription; 
+    NSMutableString *endingInfoDescription; 
+    
 	// xxx - this is a hack
 	RPLogLine*	__weak currentLine;
-	NSInteger	currentLineNumber;
-	BOOL		eof;
+    
 }
 
 @property (nonatomic, readwrite, assign) NSInteger	logLineNumber;
 @property (nonatomic, readwrite) NSData*	data;
-@property (nonatomic, readwrite, assign) BOOL eof;
 @property (nonatomic, readwrite, weak) RPLogLine*	currentLine;
 @property (nonatomic, readonly) NSString *beginningInfoDescription;
 @property (nonatomic, readonly) NSString *endingInfoDescription;

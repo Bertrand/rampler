@@ -24,7 +24,6 @@
 @implementation RPRubyTraceLogReader
 
 @synthesize logLineNumber;
-@synthesize eof;
 @synthesize currentLine;
 @synthesize data;
 @synthesize stacks;
