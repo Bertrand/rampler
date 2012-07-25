@@ -1,3 +1,4 @@
+
 //
 //  MyDocument.m
 //  Rampler
@@ -221,7 +222,7 @@
 	[tickCountTextField setStringValue:[NSString stringWithFormat:@"%d", root.sampleCount]];
 	[stackCountTextField setStringValue:[NSString stringWithFormat:@"%d", root.stackTraceCount]];
 	[versionTextField setStringValue:self.version];
-	[urlTextField setStringValue:[self.url absoluteString]];
+	[urlTextField setStringValue:self.url ? [self.url absoluteString] : @""];
     mainOutlineView.columnIdentifierForCopy = @"file";
 	[mainOutlineView setDoubleAction:@selector(outlineDoubleAction:)];
 	

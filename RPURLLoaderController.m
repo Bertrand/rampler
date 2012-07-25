@@ -22,6 +22,8 @@
 #define REQUEST_SIGNATURE_HEADER @"X-RUBY-SANSPLEUR-SIGNATURE"
 
 
+static RPURLLoaderController __strong * _sharedURLLoaderController = nil;
+
 @interface RPURLLoaderController()
     @property(nonatomic, readwrite, assign) BOOL isLoadingURL;
 - (NSURL*)samplinglURL;
@@ -40,13 +42,28 @@
 
     @dynamic secretKey;
 
++ (RPURLLoaderController*)sharedURLLoaderController
+{
+    if (_sharedURLLoaderController == nil) {
+        return [[RPURLLoaderController alloc] init]; // this will actually create the singleton and return it
+    }
+    return _sharedURLLoaderController;
+}
+
+
 
 - (id) init
 {
-    id me = [super init];
-    [self updateCurrentValuesFromDefault];
-    self.isLoadingURL = NO;
-    return me; 
+    self = [super init];
+    if (_sharedURLLoaderController) {
+        self = _sharedURLLoaderController;
+    } else {
+        [self updateCurrentValuesFromDefault];
+        self.isLoadingURL = NO;
+        _sharedURLLoaderController = self;
+    }
+    
+    return self; 
 }
 
 
@@ -93,6 +110,7 @@
 
 - (BOOL)start
 {
+    NSLog(@"starting : %p", self);
 	CFUUIDRef theUUID = CFUUIDCreate(NULL);
 	CFStringRef uuidString = CFUUIDCreateString(NULL, theUUID);
 	NSAssert(_connection == nil, @"Should have no connection");

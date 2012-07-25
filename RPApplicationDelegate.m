@@ -11,6 +11,10 @@
 
 @implementation RPApplicationDelegate
 
+- (void)applicationDidFinishLaunching:(NSNotification *)aNotification
+{
+    [self openWebView:self];
+}
 
 - (IBAction)openWebView:(id)sender
 {

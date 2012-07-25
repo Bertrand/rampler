@@ -6,6 +6,8 @@
 //
 
 #import "RPWebViewController.h"
+#import "RPURLLoaderController.h"
+
 
 @interface RPWebViewController()
 
@@ -17,6 +19,7 @@
 @implementation RPWebViewController
 
 @synthesize statusBarValue;
+@synthesize webView;
 
 
 - (void)open
@@ -31,10 +34,45 @@
 
 - (IBAction)backButtonAction:(id)sender
 {
+    [webView goBack:sender];
 }
 
 - (IBAction)forwardButtonAction:(id)sender
 {
+    [webView goForward:sender];
+}
+
+- (IBAction)leftRightClicked:(id)sender
+{
+    NSSegmentedControl* control = sender; 
+    if ([control selectedSegment] == 0) {
+        [self backButtonAction:sender];
+    } else {
+        [self forwardButtonAction:sender];
+    }
+}
+
+- (IBAction)refresh:(id)sender
+{
+    [[webView mainFrame] reload];
+}
+
+- (NSString*)currentURLString
+{
+    WebFrame* frame = [webView mainFrame];
+    WebDataSource* currentDataSource;
+    (currentDataSource = [frame provisionalDataSource]) || (currentDataSource = [frame dataSource]);
+    NSURL* currentURL = [[currentDataSource request] URL];
+    return [currentURL absoluteString];
+}
+
+- (IBAction)sampleCurrentURL:(id)sender
+{
+    if ([self currentURLString]) {
+        RPURLLoaderController* urlLoader = [RPURLLoaderController sharedURLLoaderController];
+        urlLoader.urlString = [self currentURLString];
+        [urlLoader openOpenURLDialog:sender];
+    }
 }
 
 - (IBAction)addressTextFieldAction:(id)sender
@@ -50,7 +88,8 @@
 
 - (void)webView:(WebView *)sender didReceiveTitle:(NSString *)title forFrame:(WebFrame *)frame
 {
-	[window setTitle:title];
+    if (frame == [webView mainFrame])
+        [window setTitle:title];
 }
 
 @end
@@ -59,6 +98,7 @@
 
 - (void)webView:(WebView *)sender didStartProvisionalLoadForFrame:(WebFrame *)frame
 {
+    [addressTextField setStringValue:[self currentURLString]];
 	[statusBar setStringValue:@"Loading…"];
 }
 

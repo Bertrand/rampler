@@ -38,6 +38,8 @@
 @property(nonatomic) IBOutlet NSWindow *openURLWindow;
 @property(nonatomic) IBOutlet NSWindow *progressWindow;
 
++ (RPURLLoaderController*)sharedURLLoaderController; 
+
 - (IBAction)openOpenURLDialog:(id)sender;
 - (IBAction)openDialogActionButtonClicked:(id)sender;
 - (IBAction)openDialogCloseButtonClicked:(id)sender;

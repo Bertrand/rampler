@@ -21,10 +21,15 @@
 }
 
 @property (nonatomic, readonly) NSString *statusBarValue;
+@property (nonatomic, readonly) WebView *webView;
+
+- (IBAction)leftRightClicked:(id)sender;
 
 - (IBAction)backButtonAction:(id)sender;
 - (IBAction)forwardButtonAction:(id)sender;
 - (IBAction)addressTextFieldAction:(id)sender;
+- (IBAction)refresh:(id)sender;
+- (IBAction)sampleCurrentURL:(id)sender;
 
 - (void)open;
 
