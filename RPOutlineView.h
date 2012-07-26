@@ -10,7 +10,6 @@
 
 @interface RPOutlineView : NSOutlineView
 {
-	NSString *columnIdentifierForCopy;
 }
 
 @property( nonatomic) NSString *columnIdentifierForCopy;

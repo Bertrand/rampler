@@ -47,7 +47,7 @@
             [queryString appendString:@"&"];
         }
         
-        NSObject* val = [parameters objectForKey:key];
+        NSObject* val = parameters[key];
         [queryString appendString:[key stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding]];
         [queryString appendString:@"="];
         [queryString appendString:[[val description] URLEncodedString]];
@@ -82,7 +82,7 @@
             [path appendString:@"&"];
         }
         
-        NSObject* val = [query objectForKey:key];
+        NSObject* val = query[key];
         [path appendString:[key stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding]];
         [path appendString:@"="];
         [path appendString:[[val description] URLEncodedString]];
@@ -95,7 +95,7 @@
 
 - (NSURL*)rp_URLByAppendingQueryValue:(NSString*)value forKey:(NSString*)queryKey
 {
-    return  [self rp_URLByAppendingQuery:[NSDictionary dictionaryWithObject:value forKey:queryKey]];
+    return  [self rp_URLByAppendingQuery:@{queryKey: value}];
 }
 
 
@@ -118,9 +118,9 @@
         [scanner scanCharactersFromSet:delimiterSet intoString:NULL] ;
         NSArray* kvPair = [pairString componentsSeparatedByString:@"="] ;
         if ([kvPair count] == 2) {
-            NSString* key = [[kvPair objectAtIndex:0] stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding] ;
-            NSString* value = [[kvPair objectAtIndex:1] stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding] ;
-            [pairs setObject:value forKey:key] ;
+            NSString* key = [kvPair[0] stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding] ;
+            NSString* value = [kvPair[1] stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding] ;
+            pairs[key] = value ;
         }
     }
 

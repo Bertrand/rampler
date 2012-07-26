@@ -10,7 +10,6 @@
 
 @implementation RPOutlineView
 
-@synthesize columnIdentifierForCopy;
 
 - (void)copy:(id)sender
 {
@@ -22,13 +21,13 @@
         
         item = [self itemAtRow:selectedRow];
 		for (NSTableColumn *column in [self tableColumns]) {
-    		if ([[column identifier] isEqualToString:columnIdentifierForCopy]) {
+    		if ([[column identifier] isEqualToString:self.columnIdentifierForCopy]) {
             	NSString *string;
                 NSPasteboard *pasteboard;
                 
                 string = [[self dataSource] outlineView:self objectValueForTableColumn:column byItem:item];
                 pasteboard = [NSPasteboard generalPasteboard];
-				[pasteboard declareTypes:[NSArray arrayWithObjects:NSStringPboardType, nil] owner:nil];
+				[pasteboard declareTypes:@[NSStringPboardType] owner:nil];
         		[pasteboard setString:string forType:NSStringPboardType];
                 break;
 	        }

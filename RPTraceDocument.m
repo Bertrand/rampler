@@ -30,16 +30,12 @@
 
 @implementation RPTraceDocument
 
-@synthesize root, displayRoot;
+@synthesize root;
 @synthesize percentFormatter;
 @synthesize displayTimeUnitAsPercentOfTotal;
 @synthesize mainOutlineView;
 @synthesize mainDocument;
-@synthesize version;
-@synthesize url;
 @synthesize secretKey;
-@synthesize interval;
-@synthesize duration;
 
 + (NSArray *)defaultOutlineColumnList
 {
@@ -47,18 +43,18 @@
 	NSMutableArray *defaultValue;
 
 	defaultValue = [[NSMutableArray alloc] initWithObjects:
-			[NSMutableDictionary dictionaryWithObjectsAndKeys:@"Thread", @"title", @"thread", @"identifier", [NSNumber numberWithFloat:52], @"width", [NSNumber numberWithBool:NO], @"enabled", nil],
-			[NSMutableDictionary dictionaryWithObjectsAndKeys:@"Total", @"title", @"totalTime", @"identifier", [NSNumber numberWithFloat:101], @"width", [NSNumber numberWithBool:YES], @"enabled", nil],
-			[NSMutableDictionary dictionaryWithObjectsAndKeys:@"Self", @"title", @"selfTime", @"identifier", [NSNumber numberWithFloat:61], @"width", [NSNumber numberWithBool:YES], @"enabled", nil],
-			[NSMutableDictionary dictionaryWithObjectsAndKeys:@"Tick count", @"title", @"tickCount", @"identifier", [NSNumber numberWithFloat:52], @"width", [NSNumber numberWithBool:NO], @"enabled", nil],
-			[NSMutableDictionary dictionaryWithObjectsAndKeys:@"Blocked ticks", @"title", @"blockedTicks", @"identifier", [NSNumber numberWithFloat:52], @"width", [NSNumber numberWithBool:YES], @"enabled", nil],
-			[NSMutableDictionary dictionaryWithObjectsAndKeys:@"File", @"title", @"file", @"identifier", [NSNumber numberWithFloat:232], @"width", [NSNumber numberWithBool:NO], @"enabled", nil],
+			[NSMutableDictionary dictionaryWithObjectsAndKeys:@"Thread", @"title", @"thread", @"identifier", @52.0f, @"width", @NO, @"enabled", nil],
+			[NSMutableDictionary dictionaryWithObjectsAndKeys:@"Total", @"title", @"totalTime", @"identifier", @101.0f, @"width", @YES, @"enabled", nil],
+			[NSMutableDictionary dictionaryWithObjectsAndKeys:@"Self", @"title", @"selfTime", @"identifier", @61.0f, @"width", @YES, @"enabled", nil],
+			[NSMutableDictionary dictionaryWithObjectsAndKeys:@"Tick count", @"title", @"tickCount", @"identifier", @52.0f, @"width", @NO, @"enabled", nil],
+			[NSMutableDictionary dictionaryWithObjectsAndKeys:@"Blocked ticks", @"title", @"blockedTicks", @"identifier", @52.0f, @"width", @YES, @"enabled", nil],
+			[NSMutableDictionary dictionaryWithObjectsAndKeys:@"File", @"title", @"file", @"identifier", @232.0f, @"width", @NO, @"enabled", nil],
 //			[NSMutableDictionary dictionaryWithObjectsAndKeys:@"Name Space", @"title", @"namespace", @"identifier", [NSNumber numberWithFloat:232], @"width", [NSNumber numberWithBool:YES], @"enabled", nil],
-			[NSMutableDictionary dictionaryWithObjectsAndKeys:@"Symbol", @"title", @"symbol", @"identifier", [NSNumber numberWithFloat:300], @"width", [NSNumber numberWithBool:YES], @"enabled", nil],
+			[NSMutableDictionary dictionaryWithObjectsAndKeys:@"Symbol", @"title", @"symbol", @"identifier", @300.0f, @"width", @YES, @"enabled", nil],
 			nil
 		];
 	result = [[[NSUserDefaults standardUserDefaults] arrayForKey:@"columns"] mutableCopy];
-	if (!result || ![[result objectAtIndex:0] isKindOfClass:[NSNumber class]] || [[result objectAtIndex:0] intValue] != COLUMN_INFO_VERSION) {
+	if (!result || ![result[0] isKindOfClass:[NSNumber class]] || [result[0] intValue] != COLUMN_INFO_VERSION) {
 		result = defaultValue;
 	} else {
 		int ii, count;
@@ -68,8 +64,8 @@
 		for (ii = 0; ii < count; ii++) {
 			NSMutableDictionary *column;
 			
-			column = [[result objectAtIndex:ii] mutableCopy];
-			[result replaceObjectAtIndex:ii withObject:column];
+			column = [result[ii] mutableCopy];
+			result[ii] = column;
 		}
 	}
 
@@ -102,25 +98,16 @@
 
 - (NSString *)windowNibName
 {
-    // Override returning the nib file name of the document
-    // If you need to use a subclass of NSWindowController or if your document supports multiple NSWindowControllers, you should remove this method and override -makeWindowControllers instead.
     return @"MyDocument";
 }
 
 - (void)windowControllerDidLoadNib:(NSWindowController *) aController
 {
     [super windowControllerDidLoadNib:aController];
-    // Add any code here that needs to be executed once the windowController has loaded the document's window.
 }
 
 - (NSData *)dataOfType:(NSString *)typeName error:(NSError **)outError
 {
-    // Insert code here to write your document to data of the specified type. If the given outError != NULL, ensure that you set *outError when returning nil.
-
-    // You can also choose to override -fileWrapperOfType:error:, -writeToURL:ofType:error:, or -writeToURL:ofType:forSaveOperation:originalContentsURL:error: instead.
-
-    // For applications targeted for Panther or earlier systems, you should use the deprecated API -dataRepresentationOfType:. In this case you can also choose to override -fileWrapperRepresentationOfType: or -writeToFile:ofType: instead.
-
     if ( outError != NULL ) {
 		*outError = [NSError errorWithDomain:NSOSStatusErrorDomain code:unimpErr userInfo:NULL];
 	}
@@ -131,7 +118,7 @@
 {
 	if (newRoot != root) {
 		root = newRoot;
-		self.displayRoot = root;
+		self.displayRoot = newRoot;
 		if (root) {
 	    	[mainOutlineView reloadData];
 		}
@@ -152,12 +139,6 @@
 	self.interval = [reader interval];
 	self.duration = [reader duration];
 	
-    // Insert code here to read your document from the given data of the specified type.  If the given outError != NULL, ensure that you set *outError when returning NO.
-
-    // You can also choose to override -readFromFileWrapper:ofType:error: or -readFromURL:ofType:error: instead. 
-    
-    // For applications targeted for Panther or earlier systems, you should use the deprecated API -loadDataRepresentation:ofType. In this case you can also choose to override -readFromFile:ofType: or -loadFileWrapperRepresentation:ofType: instead.
-    
     if ( outError != NULL ) {
 		*outError = [NSError errorWithDomain:NSOSStatusErrorDomain code:unimpErr userInfo:NULL];
 	}
@@ -182,15 +163,15 @@
 	for (NSDictionary *info in columnInfo) {
 		NSTableColumn *column;
 		
-		column = [mainOutlineView tableColumnWithIdentifier:[info objectForKey:@"identifier"]];
-		if (!column && [[info objectForKey:@"enabled"] boolValue]) {
-			column = [[NSTableColumn alloc] initWithIdentifier:[info objectForKey:@"identifier"]];
+		column = [mainOutlineView tableColumnWithIdentifier:info[@"identifier"]];
+		if (!column && [info[@"enabled"] boolValue]) {
+			column = [[NSTableColumn alloc] initWithIdentifier:info[@"identifier"]];
 			[mainOutlineView addTableColumn:column];
 		}
-		if ([[info objectForKey:@"enabled"] boolValue]) {
-			[mainOutlineView moveColumn:[mainOutlineView columnWithIdentifier:[info objectForKey:@"identifier"]] toColumn:ii];
-			[column setWidth:[[info objectForKey:@"width"] floatValue]];
-			[[column headerCell] setTitle:[info objectForKey:@"title"]];
+		if ([info[@"enabled"] boolValue]) {
+			[mainOutlineView moveColumn:[mainOutlineView columnWithIdentifier:info[@"identifier"]] toColumn:ii];
+			[column setWidth:[info[@"width"] floatValue]];
+			[[column headerCell] setTitle:info[@"title"]];
 			ii++;
 		} else if (column) {
 			[mainOutlineView removeTableColumn:column];
@@ -204,7 +185,7 @@
 	NSMutableArray *copy;
 	
 	copy = [columnInfo mutableCopy];
-	[copy insertObject:[NSNumber numberWithInt:COLUMN_INFO_VERSION] atIndex:0];
+	[copy insertObject:@COLUMN_INFO_VERSION atIndex:0];
 	[[NSUserDefaults standardUserDefaults] setObject:copy forKey:@"columns"];
 }
 
@@ -216,11 +197,11 @@
     	[focusUpFunctionButton setHidden:YES];
     }
 	[urlTextField setAction:@selector(urlTextFieldClicked:)];
-	[totalTimeTextField setStringValue:[NSString stringWithFormat:@"%.2fs", root.totalTime]];
+	[totalTimeTextField setStringValue:[NSString stringWithFormat:@"%.2fs", self.root.totalTime]];
 	[intervalTextField setStringValue:[NSString stringWithFormat:@"%.2fms", self.interval * 1000]];
-	[realIntervalTextField setStringValue:[NSString stringWithFormat:@"%.2fms", (root.totalTime / root.sampleCount) * 1000]];
-	[tickCountTextField setStringValue:[NSString stringWithFormat:@"%d", root.sampleCount]];
-	[stackCountTextField setStringValue:[NSString stringWithFormat:@"%d", root.stackTraceCount]];
+	[realIntervalTextField setStringValue:[NSString stringWithFormat:@"%.2fms", (self.root.totalTime / self.root.sampleCount) * 1000]];
+	[tickCountTextField setStringValue:[NSString stringWithFormat:@"%ld", self.root.sampleCount]];
+	[stackCountTextField setStringValue:[NSString stringWithFormat:@"%ld", self.root.stackTraceCount]];
 	[versionTextField setStringValue:self.version];
 	[urlTextField setStringValue:self.url ? [self.url absoluteString] : @""];
     mainOutlineView.columnIdentifierForCopy = @"file";
@@ -233,12 +214,12 @@
 - (void)updateTimeFormatter
 {
 	if (displayTimeUnitAsPercentOfTotal) {
-		self.percentFormatter.multiplier = [NSNumber numberWithDouble:100.0 / displayRoot.totalTime];
+		self.percentFormatter.multiplier = @(100.0 / self.displayRoot.totalTime);
 		self.percentFormatter.positiveSuffix = @"%";
 		self.percentFormatter.maximumFractionDigits = 2;
 
 	} else {
-		self.percentFormatter.multiplier = [NSNumber numberWithDouble:1000.0];
+		self.percentFormatter.multiplier = @1000.0;
 		self.percentFormatter.positiveSuffix = @"ms";
 		self.percentFormatter.maximumFractionDigits = 2;
 	}
@@ -257,7 +238,7 @@
             if ([result count] == 0) {
             	break;
             } else if ([result count] == 1) {
-                callTree = [result objectAtIndex:0];
+                callTree = result[0];
                 if (callTree.totalTime * 5 / 100 < callTree.selfTime) {
                 	break;
                 }
@@ -268,7 +249,7 @@
                 significantChildren = [result mutableCopy];
                 count = [significantChildren count];
                 for (ii = 0; ii < count; ii++) {
-                	RPCallTree *current = [significantChildren objectAtIndex:ii];
+                	RPCallTree *current = significantChildren[ii];
                     
                     if (callTree.totalTime * 5 / 100 > current.totalTime) {
                     	[significantChildren removeObjectAtIndex:ii];
@@ -334,23 +315,23 @@
 	RPCallTree* hottestNode = selectedNode;
 	while ([[self childrenForCallTree:hottestNode] count] > 0) {
 		[self.mainOutlineView expandItem:hottestNode];
-		hottestNode = [[self childrenForCallTree:hottestNode] objectAtIndex:0];
+		hottestNode = [self childrenForCallTree:hottestNode][0];
 	}
 }
 
 - (IBAction)unfocusButtonAction:(id)sender
 {
-    if (self.displayRoot != root) {
+    if (self.displayRoot != self.root) {
 	    RPCallTree *callTreeToSelect = nil;
 		NSInteger selectedRow;
     	
 	    selectedRow = [mainOutlineView selectedRow];
         if (selectedRow == -1) {
-	        callTreeToSelect = displayRoot;
+	        callTreeToSelect = self.displayRoot;
         } else {
         	callTreeToSelect = [mainOutlineView itemAtRow:selectedRow];
         }
-    	self.displayRoot = root;
+    	self.displayRoot = self.root;
 		[self updateTimeFormatter];
 	    [mainOutlineView reloadData];
 	    [self expandAndSelectCallTree:callTreeToSelect];
@@ -366,8 +347,8 @@
     if (selectedRow != -1) {
     	self.displayRoot = [mainOutlineView itemAtRow:selectedRow];
     } else {
-        callTreeToSelect = displayRoot;
-    	self.displayRoot = root;
+        callTreeToSelect = self.displayRoot;
+    	self.displayRoot = self.root;
     }
 	[self updateTimeFormatter];
     [mainOutlineView reloadData];
@@ -387,9 +368,9 @@
     	selectedCallTree = [mainOutlineView itemAtRow:selectedRow];
 		newDocument = [[RPTraceDocument alloc] initWithType:@"Ruby trace" error:nil];
 		if (topDown) {
-			newRoot = [root topDownCallTreeForSymbolId:selectedCallTree.symbolId];
+			newRoot = [self.root topDownCallTreeForSymbolId:selectedCallTree.symbolId];
 		} else {
-			newRoot = [root bottomUpCallTreeForSymbolId:selectedCallTree.symbolId];
+			newRoot = [self.root bottomUpCallTreeForSymbolId:selectedCallTree.symbolId];
 		}
         if (self.mainDocument) {
 			[newDocument loadWithMainDocument:self.mainDocument root:newRoot version:self.version];
@@ -420,9 +401,9 @@
 - (id)outlineView:(NSOutlineView *)outlineView child:(NSInteger)index ofItem:(id)item
 {
     if (!item) {
-    	item = displayRoot;
+    	item = self.displayRoot;
     }
-    return [[self childrenForCallTree:item] objectAtIndex:index];
+    return [self childrenForCallTree:item][index];
 }
 
 - (BOOL)outlineView:(NSOutlineView *)outlineView isItemExpandable:(id)item
@@ -433,7 +414,7 @@
 - (NSInteger)outlineView:(NSOutlineView *)outlineView numberOfChildrenOfItem:(id)item
 {
     if (!item) {
-    	item = displayRoot;
+    	item = self.displayRoot;
     }
 	return [[self childrenForCallTree:item] count];
 }
@@ -443,13 +424,13 @@
 	id result = nil;
     
 	if ([[tableColumn identifier] isEqualToString:@"thread"]) {
-    	result = [NSNumber numberWithLongLong:[item thread]];
+    	result = @([item thread]);
 	} else if ([[tableColumn identifier] isEqualToString:@"totalTime"]) {
-    	result = [NSNumber numberWithDouble:[item totalTime]];
+    	result = @([item totalTime]);
 	} else if ([[tableColumn identifier] isEqualToString:@"selfTime"]) {
-    	result = [NSNumber numberWithDouble:[item selfTime]];
+    	result = @([item selfTime]);
 	} else if ([[tableColumn identifier] isEqualToString:@"tickCount"]) {
-    	result = [NSNumber numberWithInteger:[item sampleCount]];
+    	result = @([item sampleCount]);
 	} else if ([[tableColumn identifier] isEqualToString:@"file"]) {
     	result = [item file];
 	} else if ([[tableColumn identifier] isEqualToString:@"namespace"]) {
@@ -457,7 +438,7 @@
 	} else if ([[tableColumn identifier] isEqualToString:@"symbol"]) {
     	result = [NSString stringWithFormat:@"%@::%@", [item ns], [item symbol]];
 	} else if ([[tableColumn identifier] isEqualToString:@"blockedTicks"]) {
-    	result = [NSNumber numberWithInteger:[item blockedTicks]];
+    	result = @([item blockedTicks]);
     }
     return result;
 }
@@ -465,13 +446,13 @@
 - (void)outlineViewSelectionDidChange:(NSNotification *)notification;
 {
 	if ([mainOutlineView selectedRow] == -1) {
-        [unfocusButton setEnabled:root != displayRoot];
+        [unfocusButton setEnabled:self.root != self.displayRoot];
         [focusButton setEnabled:NO];
         [focusDownFunctionButton setEnabled:NO];
         [focusUpFunctionButton setEnabled:NO];
         [hottestSubpathButton setEnabled:NO];
     } else {
-        [unfocusButton setEnabled:root != displayRoot];
+        [unfocusButton setEnabled:self.root != self.displayRoot];
         [focusButton setEnabled:YES];
         [focusDownFunctionButton setEnabled:YES];
         [focusUpFunctionButton setEnabled:YES];
@@ -504,10 +485,10 @@
 	for (NSDictionary *column in columnInfo) {
 		NSMenuItem *item;
 		
-		item = [result addItemWithTitle:[column objectForKey:@"title"] action:@selector(headerMenuAction:) keyEquivalent:@""];
-		[item setState:[[column objectForKey:@"enabled"] boolValue]?NSOnState:NSOffState];
+		item = [result addItemWithTitle:column[@"title"] action:@selector(headerMenuAction:) keyEquivalent:@""];
+		[item setState:[column[@"enabled"] boolValue]?NSOnState:NSOffState];
 		[item setTag:tag];
-		if ([[column objectForKey:@"identifier"] isEqualToString:@"symbol"]) {
+		if ([column[@"identifier"] isEqualToString:@"symbol"]) {
 			[item setEnabled:NO];
 		}
 		tag++;
@@ -519,8 +500,8 @@
 {
 	NSMutableDictionary *info;
 	
-	info = [columnInfo objectAtIndex:[item tag]];
-	[info setObject:[NSNumber numberWithBool:![[info objectForKey:@"enabled"] boolValue]] forKey:@"enabled"];
+	info = columnInfo[[item tag]];
+	info[@"enabled"] = [NSNumber numberWithBool:![info[@"enabled"] boolValue]];
 	[self _updateOutlineViewColumn];
 	[self _saveColumnInfo];
 }
@@ -528,13 +509,13 @@
 - (void)outlineViewColumnDidMove:(NSNotification *)notification
 {
 	if (!updatingColumns) {
-		NSInteger newColumn = [[[notification userInfo] objectForKey:@"NSNewColumn"] intValue];
-		NSInteger oldColumn = [[[notification userInfo] objectForKey:@"NSOldColumn"] intValue];
+		NSInteger newColumn = [[notification userInfo][@"NSNewColumn"] intValue];
+		NSInteger oldColumn = [[notification userInfo][@"NSOldColumn"] intValue];
 		NSDictionary *info;
 		NSInteger ii = 0;
 		
 		for (info in columnInfo) {
-			if (![[info objectForKey:@"enabled"] boolValue]) {
+			if (![info[@"enabled"] boolValue]) {
 				if (ii <= newColumn) {
 					newColumn++;
 				}
@@ -544,7 +525,7 @@
 			}
 			ii++;
 		}
-		info = [columnInfo objectAtIndex:oldColumn];
+		info = columnInfo[oldColumn];
 		[columnInfo removeObjectAtIndex:oldColumn];
 		[columnInfo insertObject:info atIndex:newColumn];
 		[self _saveColumnInfo];
@@ -556,10 +537,10 @@
 	if (!updatingColumns) {
 		NSTableColumn *column;
 		
-		column = [[notification userInfo] objectForKey:@"NSTableColumn"];
+		column = [notification userInfo][@"NSTableColumn"];
 		for (NSMutableDictionary *info in columnInfo) {
-			if ([[info objectForKey:@"identifier"] isEqualToString:[column identifier]]) {
-				[info setObject:[NSNumber numberWithFloat:[column width]] forKey:@"width"];
+			if ([info[@"identifier"] isEqualToString:[column identifier]]) {
+				info[@"width"] = [NSNumber numberWithFloat:[column width]];
 			}
 		}
 		[self _saveColumnInfo];

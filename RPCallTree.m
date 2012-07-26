@@ -7,32 +7,21 @@
 
 #import "RPCallTree.h"
 
+
+@interface RPCallTree()
+@property (readwrite,  weak)	RPCallTree* parent;
+@property (readwrite,  weak)	RPCallTree* root;
+@end
+
+
 @implementation RPCallTree
-
-@synthesize symbol;
-@synthesize symbolId;
-@synthesize subTrees;
-@synthesize totalTime;
-@synthesize selfTime;
-@synthesize file;
-@synthesize parent;
-@synthesize children;
-@synthesize thread;
-@synthesize stackDepth;
-@synthesize startLine;
-@synthesize sampleCount;
-@synthesize stackTraceCount;
-@synthesize callDetails;
-@synthesize ns;
-@synthesize blockedTicks;
-
 
 
 + (NSArray*) defaultSortDescriptor
 {
 	static NSArray* _defaultSortDescriptor = nil; 
 	if (_defaultSortDescriptor == nil) {
-		_defaultSortDescriptor = [[NSArray alloc] initWithObjects:[NSSortDescriptor sortDescriptorWithKey:@"totalTime" ascending:NO], nil];
+		_defaultSortDescriptor = @[[NSSortDescriptor sortDescriptorWithKey:@"totalTime" ascending:NO]];
 	}
 	
 	return _defaultSortDescriptor;
@@ -42,7 +31,7 @@
 {
 	self = [super init];
 	if (self) {
-		callDetails = [[NSMutableDictionary alloc] init];
+		self.callDetails = [[NSMutableDictionary alloc] init];
 	}
 	return self;
 }
@@ -54,15 +43,15 @@
 		self.subTrees = [NSMutableDictionary dictionary];
 	}
 	
-	RPCallTree* subTree = [self.subTrees objectForKey:symId];
+	RPCallTree* subTree = (self.subTrees)[symId];
 	if (subTree == nil) {
 		//NSLog(@"Creating subtree for symbol %@", symId);
 		subTree = [[RPCallTree alloc] init];
 
-		subTree->parent = self;
+		subTree.parent = self;
 		subTree.symbolId = symId;
 
-		[self.subTrees setObject:subTree forKey:symId];
+		(self.subTrees)[symId] = subTree;
 	} else {
 		//NSLog(@"Reusing subtree");
 	}
@@ -75,20 +64,20 @@
 	double subTreesTime = 0; 
 	NSInteger sampleCountTest = 0;
 	
-	for (RPCallTree* subtree in [subTrees objectEnumerator])
+	for (RPCallTree* subtree in [self.subTrees objectEnumerator])
 		subTreesTime += subtree.totalTime;
 
 	// root object needs special treatment. 
 	if (self.parent == nil) {
-		root = nil; 
+		self.root = nil;
 		self.totalTime = subTreesTime;
 		self.selfTime = 0;
 		//NSLog(@"total root time : %ld", self.totalTime);
 	} else {
-		root = parent->root ? parent->root : parent;
-		selfTime = totalTime - subTreesTime;
-		if (selfTime < 0) {
-			selfTime = 0;
+		self.root = self.parent.root ? self.parent.root : self.parent;
+		self.selfTime = self.totalTime - subTreesTime;
+		if (self.selfTime < 0) {
+			self.selfTime = 0;
 		}
 	}
 	
@@ -114,9 +103,9 @@
 	double time;
 	NSNumber *number;
 	
-	time = [[callDetails objectForKey:fileNameNumber] doubleValue] + valueToAdd;
-	number = [[NSNumber alloc] initWithDouble:time];
-	[callDetails setObject:number forKey:fileNameNumber];
+	time = [self.callDetails[fileNameNumber] doubleValue] + valueToAdd;
+	number = @(time);
+	self.callDetails[fileNameNumber] = number;
 }
 
 - (void)addCallTreeInfo:(RPCallTree *)callTreeToAdd bottomUp:(BOOL)bottomUp time:(float)time
@@ -138,7 +127,7 @@
 		self.startLine = callTreeToAdd.startLine;
 	}
 	for (NSString *fileNameNumber in [callTreeToAdd.callDetails allKeys]) {
-		[self addCallDetailsForFile:fileNameNumber time:[[callTreeToAdd.callDetails objectForKey:fileNameNumber] doubleValue]];
+		[self addCallDetailsForFile:fileNameNumber time:[(callTreeToAdd.callDetails)[fileNameNumber] doubleValue]];
 	}
     if (bottomUp) {
     	if (callTreeToAdd.parent.symbolId) {
@@ -160,7 +149,7 @@
 	result = [[NSMutableArray alloc] init];
 	[subTreeToTest addObjectsFromArray:[self.subTrees allValues]];
 	while ([subTreeToTest count] > 0) {
-		RPCallTree *current = [subTreeToTest objectAtIndex:0];
+		RPCallTree *current = subTreeToTest[0];
 		
 		for (RPCallTree *newCallTree in [current.subTrees allValues]) {
 			BOOL found = NO;

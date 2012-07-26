@@ -12,14 +12,7 @@
 
 
 @interface RPTraceDocument : NSDocument <NSMenuDelegate>
-{
-	NSString *version;
-	double interval;
-	NSURL *url;
-	RPCallTree* root;
-	RPCallTree* displayRoot;
-	double duration;
-	
+{	
 	IBOutlet NSNumberFormatter* __weak percentFormatter;
 	IBOutlet RPOutlineView* __weak mainOutlineView;
     IBOutlet NSButton* unfocusButton;

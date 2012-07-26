@@ -33,12 +33,6 @@ static RPURLLoaderController __strong * _sharedURLLoaderController = nil;
 @implementation RPURLLoaderController
 
     @synthesize fileName = _fileName;
-    @synthesize openURLWindow;
-    @synthesize progressWindow;
-    @synthesize samplingInterval;
-    @synthesize samplingTimeout;
-    @synthesize urlString;
-    @synthesize isLoadingURL;
 
     @dynamic secretKey;
 
@@ -103,7 +97,7 @@ static RPURLLoaderController __strong * _sharedURLLoaderController = nil;
                             UUIDString,             UUID_PARAMETER_NAME,
                             nil];
     if ([self.samplingTimeout intValue] > 0) {
-        [params setObject:self.samplingTimeout forKey:TIMEOUT_PARAMETER_NAME];
+        params[TIMEOUT_PARAMETER_NAME] = self.samplingTimeout;
     }
     return [[self baseURL] rp_URLByAppendingQuery:params];
 }
@@ -123,7 +117,7 @@ static RPURLLoaderController __strong * _sharedURLLoaderController = nil;
 	
 	NSDictionary* httpHeaders = [(RPApplication*)[RPApplication sharedApplication] additionalHTTPHeaders];
 	for (NSString* key in httpHeaders) {
-		[request addValue:[httpHeaders objectForKey:key] forHTTPHeaderField:key];
+		[request addValue:httpHeaders[key] forHTTPHeaderField:key];
 	}
     
     if (self.secretKey) {
@@ -183,7 +177,7 @@ static RPURLLoaderController __strong * _sharedURLLoaderController = nil;
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection
 {
     BOOL httpFailure = _httpStatusCode >= 400; 
-    if (httpFailure || [[[[NSFileManager defaultManager] attributesOfItemAtPath:_fileName error:nil] objectForKey:NSFileSize] longLongValue] < 100) {
+    if (httpFailure || [[[NSFileManager defaultManager] attributesOfItemAtPath:_fileName error:nil][NSFileSize] longLongValue] < 100) {
         [self _downloadFailed];
     } else {
         [self _downloadSucceed];
@@ -292,7 +286,7 @@ static RPURLLoaderController __strong * _sharedURLLoaderController = nil;
 
 - (void)updateCurrentValuesFromDefault
 {
-    self.urlString = [[self recentURLStrings] objectAtIndex:0];
+    self.urlString = [self recentURLStrings][0];
     self.samplingInterval = [self defaultSamplingInterval];
     self.secretKey = [self defaultSecretKey];
 }

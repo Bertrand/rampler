@@ -23,25 +23,17 @@
 
 @implementation RPRubyTraceLogReader
 
-@synthesize logLineNumber;
 @synthesize currentLine;
-@synthesize data;
-@synthesize stacks;
 @synthesize beginningInfoDescription;
 @synthesize endingInfoDescription;
-@synthesize version;
-@synthesize interval;
-@synthesize url;
-@synthesize startDate;
-@synthesize duration;
-@synthesize sampleCount;
+
 
 - (id) initWithData:(NSData*)d
 {
 	self = [super init]; 
 	self.data = d;
 
-	stacks = [[NSMutableArray alloc] init];
+	self.stacks = [[NSMutableArray alloc] init];
     self.beginningInfoDescription = [[NSMutableString alloc] init];
 	self.endingInfoDescription = [[NSMutableString alloc] init];
 	[self readData];
@@ -64,16 +56,16 @@
 	lines = [[NSMutableArray alloc] init];
 	do {
 		eolPos = currentPos;
-		const UInt8* bytes = [data bytes];
+		const UInt8* bytes = [self.data bytes];
 		
-		while ((eolPos < [data length]) && (bytes[eolPos] != '\n')) ++eolPos;
+		while ((eolPos < [self.data length]) && (bytes[eolPos] != '\n')) ++eolPos;
 
-		logLineNumber++; 
+		self.logLineNumber++; 
 		
-		NSString* line = [[NSString alloc] initWithData:[data subdataWithRange:NSMakeRange(currentPos, eolPos - currentPos)] encoding:NSUTF8StringEncoding];
+		NSString* line = [[NSString alloc] initWithData:[self.data subdataWithRange:NSMakeRange(currentPos, eolPos - currentPos)] encoding:NSUTF8StringEncoding];
         if (beginningInfo) {
 			infoLineCount++;
-			switch (logLineNumber) {
+			switch (self.logLineNumber) {
 				case 1:
 					self.version = line;
 					break;
@@ -122,8 +114,8 @@
 		
 		currentPos = eolPos + 1;
 		
-	} while (eolPos < [data length]);
-	NSLog(@"total %ld info %ld lines %ld", logLineNumber, infoLineCount, stackLineCount);
+	} while (eolPos < [self.data length]);
+	NSLog(@"total %ld info %ld lines %ld", self.logLineNumber, infoLineCount, stackLineCount);
 	NSLog(@"stacks %lu", [self.stacks count]);
 }
 
@@ -142,24 +134,24 @@
 	
 	RPLogLine* parsedLine = [[RPLogLine alloc] init];
 	
-	parsedLine.logLineNumber = logLineNumber;
+	parsedLine.logLineNumber = self.logLineNumber;
 	parsedLine.logLine = line;
-	parsedLine.threadId = [[components objectAtIndex:0] integerValue];
-	parsedLine.tickCount = [[components objectAtIndex:1] integerValue];
-	parsedLine.fileName = [components objectAtIndex:2];
-	parsedLine.fileLine = [[components objectAtIndex:3] integerValue];
+	parsedLine.threadId = [components[0] integerValue];
+	parsedLine.tickCount = [components[1] integerValue];
+	parsedLine.fileName = components[2];
+	parsedLine.fileLine = [components[3] integerValue];
 	parsedLine.file = [NSString stringWithFormat:@"%@:%d", parsedLine.fileName, parsedLine.fileLine];
-	parsedLine.type = [components objectAtIndex:4];
-	parsedLine.function = [components objectAtIndex:6];
+	parsedLine.type = components[4];
+	parsedLine.function = components[6];
 	parsedLine.symbol = [NSString stringWithFormat:@"%@", parsedLine.function];
-	parsedLine.duration = [[components objectAtIndex:8] doubleValue];
-	if ([components objectAtIndex:5]) {
-		parsedLine.symbolId = [components objectAtIndex:5];
+	parsedLine.duration = [components[8] doubleValue];
+	if (components[5]) {
+		parsedLine.symbolId = components[5];
 	} else {
 		parsedLine.symbolId = [NSString stringWithFormat:@"%@:%d", parsedLine.fileName, parsedLine.fileLine];
 	}
 	if ([components count] > 9) {
-		parsedLine.ns = [components objectAtIndex:9];
+		parsedLine.ns = components[9];
 	}
 	
 	return parsedLine;
@@ -172,12 +164,12 @@
 	
 	callTree = [[RPCallTree alloc] init];
 	callTree.thread = self.currentLine.threadId;
-	for (NSArray *lines in stacks) {
+	for (NSArray *lines in self.stacks) {
 		RPCallTree *current;
 		RPLogLine *line;
 		NSInteger lineSampleCount;
 		
-		lineSampleCount = [[lines objectAtIndex:0] tickCount];
+		lineSampleCount = [lines[0] tickCount];
 		count += lineSampleCount;
 		callTree.sampleCount += lineSampleCount;
 		current = callTree;

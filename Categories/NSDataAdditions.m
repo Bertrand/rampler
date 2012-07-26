@@ -33,7 +33,7 @@
     NSMutableString     *hexString  = [NSMutableString stringWithCapacity:(dataLength * 2)];
     
     for (int i = 0; i < dataLength; ++i)
-        [hexString appendString:[NSString stringWithFormat:@"%02X", (unsigned long)dataBuffer[i]]];
+        [hexString appendString:[NSString stringWithFormat:@"%02X", (unsigned int)dataBuffer[i]]];
     
     return hexString;
 }

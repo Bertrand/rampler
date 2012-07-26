@@ -11,8 +11,6 @@
 
 @implementation RPSha1Signer
 
-@synthesize data;
-@synthesize key; 
 
 @dynamic dataString;
 @dynamic keyHexString;
