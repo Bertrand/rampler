@@ -64,6 +64,8 @@
 - (NSURL*) rp_URLByAppendingQuery: (NSDictionary*)query
 {
     NSMutableString* path = [[self path] mutableCopy];
+    if (path.length == 0) [path appendString:@"/"]; // normalize URL for signing.
+    
     NSString* previousQuery = [[self query] stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
     BOOL first = YES;
     if (previousQuery && [previousQuery length] > 0) {
@@ -87,7 +89,9 @@
         [path appendString:@"="];
         [path appendString:[[val description] URLEncodedString]];
     }
-    NSString*   urlString = [NSString stringWithFormat:@"%@://%@%@", [self scheme], [self host], path]; // we forge the string ourselves to avoid very stupid NSURL encoding issues
+    
+    NSString* portString = [self port] ? [NSString stringWithFormat:@":%@", [self port]] : @"";
+    NSString* urlString = [NSString stringWithFormat:@"%@://%@%@%@", [self scheme], [self host], portString, path]; // we forge the string ourselves to avoid very stupid NSURL encoding issues
     NSURL* result = [NSURL URLWithString:urlString];
     
     return result;
