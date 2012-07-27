@@ -56,6 +56,7 @@
 - (IBAction)focusDownFunctionButtonAction:(id)sender;
 - (IBAction)focusUpFunctionButtonAction:(id)sender;
 - (IBAction)urlTextFieldClicked:(id)sender;
+- (IBAction)exportSample:(id)sender;
 - (void)updateTimeFormatter;
-
+- (void)exportAsSampleToFile:(NSURL*)url;
 @end

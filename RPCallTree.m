@@ -205,4 +205,23 @@
 	return result;
 }
 
+- (void) _exportToBuffer:(NSMutableString*)buffer indendation:(int)indentation
+{
+    [buffer appendString:@"    "];
+    for (int i = 0; i < indentation; i++) {
+        [buffer appendString:@" "];
+    }
+    NSString* symb = self.symbol;
+    if (nil == symb) {
+        symb = @"Unknown";
+    }
+    if (self.ns) {
+        symb = [NSString stringWithFormat:@"%@:%@", self.ns, symb];
+    }
+    [buffer appendFormat:@"%ld %@\n", self.sampleCount, symb];
+    for (RPCallTree* child in self.children) {
+        [child _exportToBuffer:buffer indendation:indentation+1];
+    }
+}
+
 @end

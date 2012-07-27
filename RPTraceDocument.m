@@ -292,6 +292,69 @@
     }
 }
 
+- (void)exportAsSampleToFile:(NSURL*)url
+{
+    NSError* e = nil;
+    NSMutableString* buffer = [NSMutableString new];
+    [buffer appendString:
+     @"Sampling process 83676 for 3 seconds with 1 millisecond of run time between samples\n"
+     "Sampling completed, processing symbols...\n"
+     "Analysis of sampling Google Chrome (pid 83676) every 1 millisecond\n"
+     "            Process:         Google Chrome [83676]\n"
+     "               Path:            /MesApps/Google Chrome.app/Contents/MacOS/Google Chrome\n"
+     "Load Address:    0xc1000\n"
+     "         Identifier:      com.google.Chrome\n"
+     "            Version:         20.0.1132.57 (1132.57)\n"
+     "Code Type:       X86 (Native)\n"
+     "Parent Process:  launchd [67629]\n"
+     "\n"
+     "Date/Time:       2012-07-27 10:56:26.981 +0200\n"
+     "OS Version:      Mac OS X 10.7.4 (11E53)\n"
+     "Report Version:  7\n"
+     "\n"
+     "Call graph:\n"
+     
+     ];
+    [self.root _exportToBuffer:buffer indendation:0];
+    [buffer appendString:
+     @"\n"
+     "Total number in stack (recursive counted multiple, when >=5):\n"
+     "27       _pthread_start  (in libsystem_c.dylib) + 335  [0x9b299ed9]\n"
+     "27       thread_start  (in libsystem_c.dylib) + 34  [0x9b29d6de]\n"
+     "25       ChromeMain  (in Google Chrome Framework) + 9926026  [0xa3ef0a]\n"
+     "18       ChromeMain  (in Google Chrome Framework) + 9793532  [0xa1e97c]\n"
+     "17       ChromeMain  (in Google Chrome Framework) + 9938289  [0xa41ef1]\n"
+     "17       ChromeMain  (in Google Chrome Framework) + 9938423  [0xa41f77]\n"
+     "17       __psynch_cvwait  (in libsystem_kernel.dylib) + 0  [0x905eb834]\n"
+     "17       _pthread_cond_wait  (in libsystem_c.dylib) + 827  [0x9b29de21]\n"
+     "10       ChromeMain  (in Google Chrome Framework) + 9905240  [0xa39dd8]\n"
+     "10       pthread_cond_wait$UNIX2003  (in libsystem_c.dylib) + 71  [0x9b24e42c]\n"
+     "8       ChromeMain  (in Google Chrome Framework) + 9806428  [0xa21bdc]\n"
+     "8       ChromeMain  (in Google Chrome Framework) + 9906182  [0xa3a186]\n"
+     "8       ChromeMain  (in Google Chrome Framework) + 9906443  [0xa3a28b]\n"
+     "8       mach_msg  (in libsystem_kernel.dylib) + 70  [0x905e91f6]\n"
+     "8       mach_msg_trap  (in libsystem_kernel.dylib) + 0  [0x905e9c18]\n"
+     "7       ChromeMain  (in Google Chrome Framework) + 9905463  [0xa39eb7]\n"
+     "7       pthread_cond_timedwait$UNIX2003  (in libsystem_c.dylib) + 70  [0x9b24e3e0]\n"
+     "\n"
+     "Sort by top of stack, same collapsed (when >= 5):\n"
+     "__psynch_cvwait  (in libsystem_kernel.dylib)        44523\n"
+     "mach_msg_trap  (in libsystem_kernel.dylib)        18326\n"
+     "kevent  (in libsystem_kernel.dylib)        10473\n"
+     "__read  (in libsystem_kernel.dylib)        2619\n"
+     "\n"
+     "Binary Images:\n"
+     "0xc1000 -    0xc1ff7 +com.google.Chrome (20.0.1132.57 - 1132.57) <681AF636-91E2-6FB2-E17F-BF8BBE452DE4> /MesApps/Google Chrome.app/Contents/MacOS/Google Chrome\n"
+     "0xc5000 -  0x365af03 +com.google.Chrome.framework (20.0.1132.57 - 1132.57) <64A660CA-DD92-DEB3-8CA4-3C069EACB0E7> /MesApps/Google Chrome.app/Contents/Versions/20.0.1132.57/Google Chrome Framework.framework/Google Chrome Framework\n"
+     "\n"
+     ];
+    if (![buffer writeToURL:url atomically:YES encoding:NSUTF8StringEncoding error:&e]){
+        [[NSAlert alertWithError:e] runModal];
+    }
+}
+#pragma mark -
+#pragma mark IBAction
+
 - (IBAction)outlineDoubleAction:(id)sender
 {
 	NSInteger selectedRow = [self.mainOutlineView selectedRow];
@@ -397,6 +460,22 @@
 {
 	NSLog(@"test");
 }
+
+- (IBAction)exportSample:(id)sender
+{
+    NSSavePanel* panel = [NSSavePanel savePanel];
+    [panel beginWithCompletionHandler:^(NSInteger click){
+        if (NSFileHandlingPanelOKButton == click) {
+            NSURL* url = [panel URL];
+            NSLog(@"got url = %@", url);
+            [self exportAsSampleToFile:url];
+        }
+    }];
+}
+
+
+#pragma mark -
+#pragma mark Outline view delegation
 
 - (id)outlineView:(NSOutlineView *)outlineView child:(NSInteger)index ofItem:(id)item
 {

@@ -37,5 +37,6 @@
 - (void)addCallDetailsForFile:(NSString *)file time:(double)valueToAdd;
 - (RPCallTree *)topDownCallTreeForSymbolId:(NSString *)symbolId;
 - (RPCallTree *)bottomUpCallTreeForSymbolId:(NSString *)functionSymbolId;
+- (void) _exportToBuffer:(NSMutableString*)fh indendation:(int)indentation;
 
 @end
