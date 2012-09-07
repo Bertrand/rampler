@@ -39,7 +39,7 @@ static RPURLLoaderController __strong * _sharedURLLoaderController = nil;
 + (RPURLLoaderController*)sharedURLLoaderController
 {
     if (_sharedURLLoaderController == nil) {
-        return [[RPURLLoaderController alloc] init]; // this will actually create the singleton and return it
+        _sharedURLLoaderController =  [[RPURLLoaderController alloc] init]; // this will actually create the singleton and return it
     }
     return _sharedURLLoaderController;
 }
