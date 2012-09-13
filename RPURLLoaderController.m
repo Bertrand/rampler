@@ -8,7 +8,6 @@
 #import "RPURLLoaderController.h"
 #import "RPApplicationDelegate.h"
 #import "RPApplication.h"
-#import "NSURLAdditions.h"
 #import "RPKeychainWrapper.h"
 #import "RPSha1Signer.h"
 
@@ -122,11 +121,12 @@ static RPURLLoaderController __strong * _sharedURLLoaderController = nil;
     
     if (self.secretKey) {
         RPSha1Signer* signer = [[RPSha1Signer alloc] init];
-        signer.dataString = [samplingURL absoluteString];
+        signer.dataString = [[samplingURL rp_urlBySortingQueryParameters] absoluteString];
         signer.keyHexString = self.secretKey;
         NSString* signature = signer.signatureHexString;
         if (signature) {
             [request addValue:signature forHTTPHeaderField:REQUEST_SIGNATURE_HEADER];
+            NSLog(@"successfully signed URL '%@'", signer.dataString);
         } else {
             NSLog(@"WARNING: unable to compute signature.");
         }

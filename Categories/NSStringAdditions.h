@@ -8,6 +8,8 @@
 
 #import <Foundation/Foundation.h>
 
-@interface NSStringAdditions : NSString
+@interface NSString(NSStringAdditions)
+
+- (NSString *)encodeAsURLParameter;
 
 @end

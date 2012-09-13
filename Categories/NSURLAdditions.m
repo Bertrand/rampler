@@ -7,21 +7,6 @@
 #import "NSURLAdditions.h"
 
 
-#pragma mark -
-#pragma mark NSString Additions
-
-@interface NSString(RamplerURL)
-- (NSString *)URLEncodedString;
-@end
-
-@implementation NSString(RamplerURL)
-- (NSString *)URLEncodedString
-{
-	CFStringRef result = CFURLCreateStringByAddingPercentEscapes(NULL, (__bridge CFStringRef)self, NULL, (CFStringRef)@" !*'\"();:@&=+$,/?%#[]%", kCFStringEncodingUTF8);
-
-    return CFBridgingRelease(result);
-}
-@end
 
 
 #pragma mark -
@@ -50,7 +35,7 @@
         NSObject* val = parameters[key];
         [queryString appendString:[key stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding]];
         [queryString appendString:@"="];
-        [queryString appendString:[[val description] URLEncodedString]];
+        [queryString appendString:[[val description] encodeAsURLParameter]];
     }
     
     return queryString;
@@ -64,7 +49,7 @@
 - (NSURL*) rp_URLByAppendingQuery: (NSDictionary*)query
 {
     NSMutableString* path = [[self path] mutableCopy];
-    if (path.length == 0) [path appendString:@"/"]; // normalize URL for signing.
+    if (path.length == 0) [path appendString:@"/"]; 
     
     NSString* previousQuery = [[self query] stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
     BOOL first = YES;
@@ -74,7 +59,7 @@
         [path appendString:@"?"];
         [path appendString:previousQuery];
     }
-    NSArray* keys = [[query allKeys] sortedArrayUsingSelector:@selector(compare:)]; // using predictible order avoids misses in stupid caches
+    NSArray* keys = [[query allKeys] sortedArrayUsingSelector:@selector(compare:)]; 
     for (NSString* key in keys){
         if (first) {
             first = NO;
@@ -87,7 +72,7 @@
         NSObject* val = query[key];
         [path appendString:[key stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding]];
         [path appendString:@"="];
-        [path appendString:[[val description] URLEncodedString]];
+        [path appendString:[[val description] encodeAsURLParameter]];
     }
     
     NSString* portString = [self port] ? [NSString stringWithFormat:@":%@", [self port]] : @"";
@@ -102,6 +87,17 @@
     return  [self rp_URLByAppendingQuery:@{queryKey: value}];
 }
 
+- (NSURL*)rp_urlBySortingQueryParameters
+{
+    NSString* path = [self path];
+    if (path == nil) path = @"";
+    
+    NSString* pathString = [path stringByAppendingString:[NSURL queryStringForParameters:[self rp_queryDictionary]]];
+    NSString* portString = [self port] ? [NSString stringWithFormat:@":%@", [self port]] : @"";
+    NSString* urlString = [NSString stringWithFormat:@"%@://%@%@%@", [self scheme], [self host], portString, pathString]; 
+    
+    return [NSURL URLWithString:urlString];
+}
 
 @end
 

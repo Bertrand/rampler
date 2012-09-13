@@ -6,7 +6,6 @@
 //
 
 #import "RPSha1Signer.h"
-#import "NSDataAdditions.h"
 #import <CommonCrypto/CommonHMAC.h>
 
 @implementation RPSha1Signer

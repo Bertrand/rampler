@@ -8,6 +8,12 @@
 
 #import "NSStringAdditions.h"
 
-@implementation NSStringAdditions
+@implementation NSString(NSStringAdditions)
+
+- (NSString *)encodeAsURLParameter
+{
+    CFStringRef result = CFURLCreateStringByAddingPercentEscapes(NULL, (__bridge CFStringRef)self, NULL, (CFStringRef)@" !*'\"();:@&=+$,/?%#[]%", kCFStringEncodingUTF8);
+    return CFBridgingRelease(result);
+}
 
 @end
