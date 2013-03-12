@@ -51,7 +51,7 @@
     NSMutableString* path = [[self path] mutableCopy];
     if (path.length == 0) [path appendString:@"/"]; 
     
-    NSString* previousQuery = [[self query] stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+    NSString* previousQuery = [self query];
     BOOL first = YES;
     if (previousQuery && [previousQuery length] > 0) {
         // there is already a query. Unless proven necessary, we don't parse it and we just append the query dict to the url
