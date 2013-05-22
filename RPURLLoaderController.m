@@ -121,7 +121,13 @@ static RPURLLoaderController __strong * _sharedURLLoaderController = nil;
     
     if (self.secretKey) {
         RPSha1Signer* signer = [[RPSha1Signer alloc] init];
-        signer.dataString = [[samplingURL rp_urlBySortingQueryParameters] absoluteString];
+        NSURL* urlToSign = [samplingURL rp_urlBySortingQueryParameters];
+        NSString* hostHeader = httpHeaders[@"HOST"];
+        if (hostHeader) {
+            urlToSign = [urlToSign rp_urlBySettingHostname:hostHeader];
+        }
+        
+        signer.dataString = [urlToSign absoluteString];
         signer.keyHexString = self.secretKey;
         NSString* signature = signer.signatureHexString;
         if (signature) {

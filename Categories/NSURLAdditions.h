@@ -16,5 +16,6 @@
 - (NSURL*)rp_URLByAppendingQueryValue:(NSString*)value forKey:(NSString*)queryKey;
 
 - (NSURL*)rp_urlBySortingQueryParameters;
+- (NSURL*)rp_urlBySettingHostname:(NSString*)host;
 
 @end

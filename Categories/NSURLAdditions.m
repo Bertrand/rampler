@@ -99,6 +99,19 @@
     return [NSURL URLWithString:urlString];
 }
 
+- (NSURL*)rp_urlBySettingHostname:(NSString*)host
+{
+    NSString* path = [self path];
+    if (path == nil) path = @"";
+    
+    NSString* query = [self query];
+    NSString* portString = [self port] ? [NSString stringWithFormat:@":%@", [self port]] : @"";
+    NSString* urlString = query ? [NSString stringWithFormat:@"%@://%@%@%@?%@", [self scheme], host, portString, path, query] :
+        [NSString stringWithFormat:@"%@://%@%@%@", [self scheme], host, portString, path];
+    
+    return [NSURL URLWithString:urlString];
+}
+
 @end
 
 
