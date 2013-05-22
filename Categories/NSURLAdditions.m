@@ -112,6 +112,19 @@
     return [NSURL URLWithString:urlString];
 }
 
+- (NSURL*)rp_urlByRemovingPort
+{
+    NSString* path = [self path];
+    if (path == nil) path = @"";
+    
+    NSString* query = [self query];
+    NSString* urlString = query ? [NSString stringWithFormat:@"%@://%@%@?%@", [self scheme], [self host], path, query] :
+    [NSString stringWithFormat:@"%@://%@%@", [self scheme], [self host], path];
+    
+    return [NSURL URLWithString:urlString];
+}
+
+
 @end
 
 

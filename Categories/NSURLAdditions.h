@@ -17,5 +17,6 @@
 
 - (NSURL*)rp_urlBySortingQueryParameters;
 - (NSURL*)rp_urlBySettingHostname:(NSString*)host;
+- (NSURL*)rp_urlByRemovingPort;
 
 @end

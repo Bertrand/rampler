@@ -127,6 +127,8 @@ static RPURLLoaderController __strong * _sharedURLLoaderController = nil;
             urlToSign = [urlToSign rp_urlBySettingHostname:hostHeader];
         }
         
+        urlToSign = [urlToSign rp_urlByRemovingPort];
+        
         signer.dataString = [urlToSign absoluteString];
         signer.keyHexString = self.secretKey;
         NSString* signature = signer.signatureHexString;
