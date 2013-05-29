@@ -8,6 +8,13 @@
 #import "RPRubyTraceLogReader.h"
 #import "RPCallTree.h"
 
+
+static NSString* kTabSeparator = @"\t";
+static NSString* kTracesStartMarker = @"-- Traces --";
+static NSString* kFileIndexStartMarker = @"-- File Index --";
+static NSString* kClassIndexStartMarker = @"-- Class Index --";
+static NSString* kFunctionIndexStartMarker = @"-- Function Index --";
+
 @interface RPRubyTraceLogReader ()
 @property(nonatomic) NSMutableArray* stacks;
 @property(nonatomic) NSString* version;
@@ -32,7 +39,7 @@
 {
 	self = [super init]; 
 	self.data = d;
-
+    
 	self.stacks = [[NSMutableArray alloc] init];
     self.beginningInfoDescription = [[NSMutableString alloc] init];
 	self.endingInfoDescription = [[NSMutableString alloc] init];
@@ -42,7 +49,63 @@
 }
 
 
-- (void) readData
+- (NSString*)readNextLine
+{
+    NSInteger dataLength = [self.data length];
+    if (_currentPosition >= dataLength) return nil;
+
+    NSInteger eolPos = _currentPosition;
+    const UInt8* bytes = [self.data bytes];
+    
+    while ((eolPos < dataLength) && (bytes[eolPos] != '\n')) ++eolPos;
+    NSString* line = [[NSString alloc] initWithData:[self.data subdataWithRange:NSMakeRange(_currentPosition, eolPos - _currentPosition)] encoding:NSUTF8StringEncoding];
+
+    _currentPosition = eolPos + 1;
+    return line;
+}
+
+- (BOOL) parseHeader:(NSString*)header
+{
+    NSArray* values = [header componentsSeparatedByString:kTabSeparator];
+    if (values.count < 4) return NO;
+    
+    self.version = [NSURL URLWithString:values[0]];
+    self.url = values[1];
+    self.interval = [values[2] doubleValue] / 1000000.0;
+    self.startDate = [NSDate dateWithString:values[3]];
+    
+    if (values.count > 4) {
+        self.beginningInfoDescription = values[4]; // Fixme: unescape when writer escapes \t and \n
+    }
+    
+    return YES;
+}
+
+
+
+- (BOOL) readData
+{
+    NSString* curLine = [self readNextLine];
+    if (!curLine) return NO; // empty file
+    
+    BOOL headerOK = [self parseHeader:curLine];
+    if (!headerOK) return NO;
+    
+    curLine = [self readNextLine];
+    if (!curLine || ![curLine isEqualToString:kTracesStartMarker]) return NO;
+    
+    curLine = [self readNextLine];
+    while (curLine && ![curLine isEqualToString:kFileIndexStartMarker]) {
+        NSArray* stackTraceInfos = [curLine componentsSeparatedByString:kTabSeparator];
+        if (stackTraceInfos.count != 3) return NO;
+        int stackDepth = [stackTraceInfos[0] intValue];
+        NSInteger tickCount = [stackTraceInfos[1] integerValue];
+        
+    }
+    
+}
+
+- (void) readDataOld
 {
 	NSInteger currentPos = 0;
 	NSInteger eolPos = currentPos;

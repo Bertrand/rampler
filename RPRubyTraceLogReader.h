@@ -18,6 +18,7 @@
 	// xxx - this is a hack
 	RPLogLine*	__weak currentLine;
     
+    NSInteger _currentPosition;
 }
 
 @property (nonatomic, readwrite, assign) NSInteger	logLineNumber;
@@ -33,7 +34,7 @@
 
 - (id) initWithData:(NSData*)data;
 
-- (void) readData;
+- (BOOL) readData;
 - (RPLogLine*) parseLine:(NSString*)line;
 
 @end
