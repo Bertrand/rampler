@@ -21,6 +21,7 @@
 		0628E4BA125A361E00B9255B /* RPLogLine.m in Sources */ = {isa = PBXBuildFile; fileRef = 0628E4B9125A361E00B9255B /* RPLogLine.m */; };
 		0642459215B987C2007A72D0 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0642459115B987C2007A72D0 /* Security.framework */; };
 		0677F80E134F257900107A56 /* RPApplication.m in Sources */ = {isa = PBXBuildFile; fileRef = 0677F80D134F257900107A56 /* RPApplication.m */; };
+		06B8C0A81756AA0B00F3FB0D /* RPStackTrace.m in Sources */ = {isa = PBXBuildFile; fileRef = 06B8C0A71756AA0B00F3FB0D /* RPStackTrace.m */; };
 		06C6901F15BFDAE2001692CF /* NSStringAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 06C6901E15BFDAE2001692CF /* NSStringAdditions.m */; };
 		06C6902315BFE07A001692CF /* RPKeychainWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = 06C6902215BFE07A001692CF /* RPKeychainWrapper.m */; };
 		06ECAAB115B6F29600F4FC33 /* RPURLLoaderOpenDialog.xib in Resources */ = {isa = PBXBuildFile; fileRef = 06ECAAAF15B6F29600F4FC33 /* RPURLLoaderOpenDialog.xib */; };
@@ -60,6 +61,8 @@
 		0642459115B987C2007A72D0 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		0677F80C134F257900107A56 /* RPApplication.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RPApplication.h; sourceTree = "<group>"; };
 		0677F80D134F257900107A56 /* RPApplication.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RPApplication.m; sourceTree = "<group>"; };
+		06B8C0A61756AA0B00F3FB0D /* RPStackTrace.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RPStackTrace.h; sourceTree = "<group>"; };
+		06B8C0A71756AA0B00F3FB0D /* RPStackTrace.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RPStackTrace.m; sourceTree = "<group>"; };
 		06C6901D15BFDAE2001692CF /* NSStringAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSStringAdditions.h; sourceTree = "<group>"; };
 		06C6901E15BFDAE2001692CF /* NSStringAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSStringAdditions.m; sourceTree = "<group>"; };
 		06C6902015BFDF5D001692CF /* RPLogReader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RPLogReader.h; sourceTree = "<group>"; };
@@ -106,6 +109,8 @@
 				06C6902015BFDF5D001692CF /* RPLogReader.h */,
 				026DF5F1126EDB4E005466CF /* RPRubyTraceLogReader.h */,
 				026DF5F2126EDB4E005466CF /* RPRubyTraceLogReader.m */,
+				06B8C0A61756AA0B00F3FB0D /* RPStackTrace.h */,
+				06B8C0A71756AA0B00F3FB0D /* RPStackTrace.m */,
 			);
 			name = "Log Reader";
 			sourceTree = "<group>";
@@ -325,6 +330,7 @@
 				0608139E15BA1B9000A9B152 /* NSDataAdditions.m in Sources */,
 				06C6901F15BFDAE2001692CF /* NSStringAdditions.m in Sources */,
 				06C6902315BFE07A001692CF /* RPKeychainWrapper.m in Sources */,
+				06B8C0A81756AA0B00F3FB0D /* RPStackTrace.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -7,6 +7,7 @@
 
 #import "RPRubyTraceLogReader.h"
 #import "RPCallTree.h"
+#import "RPStackTrace.h"
 
 
 static NSString* kTabSeparator = @"\t";
@@ -99,10 +100,24 @@ static NSString* kFunctionIndexStartMarker = @"-- Function Index --";
         NSArray* stackTraceInfos = [curLine componentsSeparatedByString:kTabSeparator];
         if (stackTraceInfos.count != 3) return NO;
         int stackDepth = [stackTraceInfos[0] intValue];
-        NSInteger tickCount = [stackTraceInfos[1] integerValue];
+
+        RPStackTrace* stackTrace = [[RPStackTrace alloc] init];
+        stackTrace.sampleCount = [stackTraceInfos[1] integerValue];
+        stackTrace.duration = [stackTraceInfos[2] doubleValue];
         
+        NSMutableArray* stackLines = [[NSMutableArray alloc] initWithCapacity:stackDepth];
+        for (int i=0; i<stackDepth; ++i) {
+            curLine = [self readNextLine];
+            if (!curLine) return NO;
+            RPLogLine* parsedLine  = [self parseLine:curLine];
+            if (!parsedLine) return NO;
+            [stackLines addObject:parsedLine];
+        }
+        stackTrace.frames = stackLines;
+        [self.stacks addObject:stackTrace];
     }
     
+    return YES;
 }
 
 - (void) readDataOld
@@ -185,37 +200,35 @@ static NSString* kFunctionIndexStartMarker = @"-- Function Index --";
 
 - (RPLogLine*) parseLine:(NSString*)line
 {
-	if (line == nil || [line length] < 5) return NULL;
 	
 	NSArray* components = [line componentsSeparatedByString:@"\t"];
-	if ([components count] < 7) {
-		if ([components count] > 0) {
-			NSLog(@"problem with lines %@", line);
-		}
-		return NULL;
+	if ([components count] != 4) {
+		return nil;
 	}
 	
 	RPLogLine* parsedLine = [[RPLogLine alloc] init];
 	
-	parsedLine.logLineNumber = self.logLineNumber;
-	parsedLine.logLine = line;
-	parsedLine.threadId = [components[0] integerValue];
-	parsedLine.tickCount = [components[1] integerValue];
-	parsedLine.fileName = components[2];
-	parsedLine.fileLine = [components[3] integerValue];
-	parsedLine.file = [NSString stringWithFormat:@"%@:%d", parsedLine.fileName, parsedLine.fileLine];
-	parsedLine.type = components[4];
-	parsedLine.function = components[6];
-	parsedLine.symbol = [NSString stringWithFormat:@"%@", parsedLine.function];
-	parsedLine.duration = [components[8] doubleValue];
-	if (components[5]) {
-		parsedLine.symbolId = components[5];
-	} else {
-		parsedLine.symbolId = [NSString stringWithFormat:@"%@:%d", parsedLine.fileName, parsedLine.fileLine];
-	}
-	if ([components count] > 9) {
-		parsedLine.ns = components[9];
-	}
+    parsedLine.fileId = [components[0] integerValue];
+    parsedLine.fileLine = [components[1] integerValue];
+    parsedLine.classId = [components[2] integerValue];
+    parsedLine.functionId = [components[3] integerValue];
+    
+//	parsedLine.tickCount = [components[1] integerValue];
+//	parsedLine.fileName = components[2];
+//	parsedLine.fileLine = [components[3] integerValue];
+//	parsedLine.file = [NSString stringWithFormat:@"%@:%d", parsedLine.fileName, parsedLine.fileLine];
+//	parsedLine.type = components[4];
+//	parsedLine.function = components[6];
+//	parsedLine.symbol = [NSString stringWithFormat:@"%@", parsedLine.function];
+//	parsedLine.duration = [components[8] doubleValue];
+//	if (components[5]) {
+//		parsedLine.symbolId = components[5];
+//	} else {
+//		parsedLine.symbolId = [NSString stringWithFormat:@"%@:%d", parsedLine.fileName, parsedLine.fileLine];
+//	}
+//	if ([components count] > 9) {
+//		parsedLine.ns = components[9];
+//	}
 	
 	return parsedLine;
 }
