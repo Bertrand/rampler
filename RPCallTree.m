@@ -105,7 +105,7 @@
 	
 	time = [self.callDetails[fileNameNumber] doubleValue] + valueToAdd;
 	number = @(time);
-	self.callDetails[fileNameNumber] = number;
+	if (fileNameNumber) self.callDetails[fileNameNumber] = number;
 }
 
 - (void)addCallTreeInfo:(RPCallTree *)callTreeToAdd bottomUp:(BOOL)bottomUp time:(float)time

@@ -32,6 +32,8 @@
 @property (nonatomic, readonly, assign) double duration;
 @property (nonatomic, readonly, assign) NSUInteger sampleCount;
 
+@property (nonatomic) NSError* parseError;
+
 - (id) initWithData:(NSData*)data;
 
 - (BOOL) readData;
