@@ -104,7 +104,6 @@
 							<string key="NSFrame">{{458, 12}, {96, 32}}</string>
 							<reference key="NSSuperview" ref="957765127"/>
 							<reference key="NSWindow"/>
-							<reference key="NSNextKeyView"/>
 							<bool key="NSEnabled">YES</bool>
 							<object class="NSButtonCell" key="NSCell" id="306800361">
 								<int key="NSCellFlags">67108864</int>
@@ -174,7 +173,7 @@
 							<object class="NSTextFieldCell" key="NSCell" id="901815202">
 								<int key="NSCellFlags">68157504</int>
 								<int key="NSCellFlags2">4195328</int>
-								<string key="NSContents">(microsecond?)</string>
+								<string key="NSContents">(milliseconds)</string>
 								<reference key="NSSupport" ref="90671120"/>
 								<reference key="NSControlView" ref="1054827892"/>
 								<reference key="NSBackgroundColor" ref="531221246"/>
@@ -263,7 +262,7 @@
 											<string key="NSFrameSize">{526, 117}</string>
 											<reference key="NSSuperview" ref="917084233"/>
 											<reference key="NSWindow"/>
-											<reference key="NSNextKeyView" ref="433390560"/>
+											<reference key="NSNextKeyView" ref="52437542"/>
 											<bool key="NSEnabled">YES</bool>
 											<bool key="NSAllowsLogicalLayoutDirection">NO</bool>
 											<bool key="NSControlAllowsExpansionToolTips">YES</bool>
@@ -432,7 +431,7 @@
 							<string key="NSFrame">{{20, 79}, {528, 135}}</string>
 							<reference key="NSSuperview" ref="957765127"/>
 							<reference key="NSWindow"/>
-							<reference key="NSNextKeyView" ref="52437542"/>
+							<reference key="NSNextKeyView" ref="917084233"/>
 							<int key="NSsFlags">133682</int>
 							<reference key="NSVScroller" ref="433390560"/>
 							<reference key="NSHScroller" ref="654657722"/>

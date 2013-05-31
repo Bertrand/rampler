@@ -76,7 +76,7 @@ NSInteger RPRubyTraceParseError = -1;
     return line;
 }
 
-#define THROW_ON_PARSE_ERROR 1
+#define THROW_ON_PARSE_ERROR 0
 
 #define _PARSE_ASSERT(__boolValue__, __reasonString__, __return_value__, __throw__) if (!(__boolValue__)) { \
     self.parseError = [NSError errorWithDomain:RPRubyTraceErrorDomain code:RPRubyTraceParseError userInfo:@{NSLocalizedDescriptionKey : (__reasonString__)}];\
