@@ -224,4 +224,50 @@
     }
 }
 
+
+#pragma mark -
+#pragma mark Simple Tree Manipulation functions 
+
+- (RPCallTree *)copyWithParent:(RPCallTree*)parent withRoot:(RPCallTree*)root deep:(BOOL)deepCopy
+{
+    RPCallTree* treeCopy = [[RPCallTree alloc] init];
+    treeCopy.symbolId = self.symbolId;
+    treeCopy.symbol = self.symbol;
+    treeCopy.file = self.file;
+    treeCopy.thread = self.thread;
+    treeCopy.stackDepth = self.stackDepth;
+    treeCopy.totalTime = self.totalTime;
+    treeCopy.selfTime = self.selfTime;
+    treeCopy.startLine = self.startLine;
+    treeCopy.sampleCount = self.sampleCount;
+    treeCopy.blockedTicks = self.blockedTicks;
+    
+    treeCopy.parent = parent;
+    treeCopy.root = root;
+    
+    if (deepCopy) {
+        if (self.subTrees) {
+            treeCopy.subTrees = [[NSMutableDictionary alloc] initWithCapacity:self.subTrees.count];
+            for (NSString* symbolId in self.subTrees) {
+                treeCopy.subTrees[symbolId] = [self.subTrees[symbolId] copyWithParent:self withRoot:self.root deep:YES];
+            }
+        }
+    } else {
+        treeCopy.subTrees = self.subTrees;
+    }
+    
+    return treeCopy;
+}
+
+
+#pragma mark -
+#pragma mark Advanced Tree Manipulation functions
+
+- (RPCallTree *)callTreeByFlattenRecursionInSubTree:(RPCallTree*)subtree
+{
+    RPCallTree* result = [self copyWithParent:nil withRoot:nil deep:YES];
+    [result freeze];
+    return result;
+}
+
 @end

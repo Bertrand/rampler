@@ -418,33 +418,41 @@
     [self expandAndSelectCallTree:callTreeToSelect];
 }
 
+- (void)openDerivedDocumentWithRoot:(RPCallTree*)newRoot
+{
+    RPTraceDocument* newDocument = [[RPTraceDocument alloc] initWithType:@"Ruby trace" error:nil];
+
+    if (self.mainDocument) {
+        [newDocument loadWithMainDocument:self.mainDocument root:newRoot version:self.version];
+    } else {
+        [newDocument loadWithMainDocument:self root:newRoot version:self.version];
+    }
+    [[NSDocumentController sharedDocumentController] addDocument:newDocument];
+    [newDocument makeWindowControllers];
+    [newDocument showWindows];
+}
+
+- (RPCallTree*)selectedCallTree
+{
+  	NSInteger selectedRow = [mainOutlineView selectedRow];
+    return selectedRow == -1 ? nil : [mainOutlineView itemAtRow:selectedRow];
+}
+
 - (void)openFocusOnSelectionWithTopDown:(BOOL)topDown
 {
-	NSInteger selectedRow;
-	
-    selectedRow = [mainOutlineView selectedRow];
-    if (selectedRow != -1) {
-		RPTraceDocument *newDocument;
-		RPCallTree *selectedCallTree;
-		RPCallTree *newRoot;
-		
-    	selectedCallTree = [mainOutlineView itemAtRow:selectedRow];
-		newDocument = [[RPTraceDocument alloc] initWithType:@"Ruby trace" error:nil];
-		if (topDown) {
-			newRoot = [self.root topDownCallTreeForSymbolId:selectedCallTree.symbolId];
-		} else {
-			newRoot = [self.root bottomUpCallTreeForSymbolId:selectedCallTree.symbolId];
-		}
-        if (self.mainDocument) {
-			[newDocument loadWithMainDocument:self.mainDocument root:newRoot version:self.version];
-        } else {
-			[newDocument loadWithMainDocument:self root:newRoot version:self.version];
-        }
-		[[NSDocumentController sharedDocumentController] addDocument:newDocument];
-		[newDocument makeWindowControllers];
-		[newDocument showWindows];
-	}
+    RPCallTree* selectedTree = [self selectedCallTree];
+    if (!selectedTree) return;
+    
+    RPCallTree *newRoot;
+    if (topDown) {
+        newRoot = [self.root topDownCallTreeForSymbolId:selectedTree.symbolId];
+    } else {
+        newRoot = [self.root bottomUpCallTreeForSymbolId:selectedTree.symbolId];
+    }
+    [self openDerivedDocumentWithRoot:newRoot];
+
 }
+
 
 - (IBAction)focusDownFunctionButtonAction:(id)sender;
 {
@@ -459,6 +467,15 @@
 - (IBAction)urlTextFieldClicked:(id)sender
 {
 	NSLog(@"test");
+}
+
+- (IBAction)flattenRecursionButtonAction:(id)sender
+{
+    RPCallTree* selectedTree = [self selectedCallTree];
+    if (!selectedTree) return;
+    
+    RPCallTree* flattenedTree = [self.root callTreeByFlattenRecursionInSubTree:selectedTree];
+    [self openDerivedDocumentWithRoot:flattenedTree];
 }
 
 - (IBAction)exportSample:(id)sender
@@ -524,19 +541,15 @@
 
 - (void)outlineViewSelectionDidChange:(NSNotification *)notification;
 {
-	if ([mainOutlineView selectedRow] == -1) {
-        [unfocusButton setEnabled:self.root != self.displayRoot];
-        [focusButton setEnabled:NO];
-        [focusDownFunctionButton setEnabled:NO];
-        [focusUpFunctionButton setEnabled:NO];
-        [hottestSubpathButton setEnabled:NO];
-    } else {
-        [unfocusButton setEnabled:self.root != self.displayRoot];
-        [focusButton setEnabled:YES];
-        [focusDownFunctionButton setEnabled:YES];
-        [focusUpFunctionButton setEnabled:YES];
-        [hottestSubpathButton setEnabled:YES];
-    }
+    BOOL allowSelectionDependentActions = [mainOutlineView selectedRow] != -1;
+    
+    [focusButton setEnabled:allowSelectionDependentActions];
+    [focusDownFunctionButton setEnabled:allowSelectionDependentActions];
+    [focusUpFunctionButton setEnabled:allowSelectionDependentActions];
+    [hottestSubpathButton setEnabled:allowSelectionDependentActions];
+    [flattenRecursionButton setEnabled:allowSelectionDependentActions];
+    
+    [unfocusButton setEnabled:self.root != self.displayRoot];
 }
 
 - (void)setHideInsignificantCalls:(BOOL)value

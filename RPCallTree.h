@@ -39,4 +39,6 @@
 - (RPCallTree *)bottomUpCallTreeForSymbolId:(NSString *)functionSymbolId;
 - (void) _exportToBuffer:(NSMutableString*)fh indendation:(int)indentation;
 
+- (RPCallTree *)callTreeByFlattenRecursionInSubTree:(RPCallTree*)subtree;
+
 @end

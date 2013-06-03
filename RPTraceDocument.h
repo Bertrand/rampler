@@ -20,6 +20,7 @@
     IBOutlet NSButton* focusDownFunctionButton;
     IBOutlet NSButton* focusUpFunctionButton;
     IBOutlet NSButton* hottestSubpathButton;
+    IBOutlet NSButton* flattenRecursionButton;
 	IBOutlet NSTextField* urlTextField;
 	
 	IBOutlet NSTextField* totalTimeTextField;
@@ -55,6 +56,7 @@
 - (IBAction)followHottestSubpath:(id)sender;
 - (IBAction)focusDownFunctionButtonAction:(id)sender;
 - (IBAction)focusUpFunctionButtonAction:(id)sender;
+- (IBAction)flattenRecursionButtonAction:(id)sender;
 - (IBAction)urlTextFieldClicked:(id)sender;
 - (IBAction)exportSample:(id)sender;
 - (void)updateTimeFormatter;
