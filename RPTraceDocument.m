@@ -497,7 +497,8 @@
 - (id)outlineView:(NSOutlineView *)outlineView child:(NSInteger)index ofItem:(id)item
 {
     if (!item) {
-    	item = self.displayRoot;
+        item = self.displayRoot;
+        return item;
     }
     return [self childrenForCallTree:item][index];
 }
@@ -511,6 +512,7 @@
 {
     if (!item) {
     	item = self.displayRoot;
+        return 1;
     }
 	return [[self childrenForCallTree:item] count];
 }

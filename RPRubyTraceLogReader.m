@@ -293,10 +293,10 @@ NSInteger RPRubyTraceParseError = -1;
             NSString* function = [self functionForIndex:frame.functionId];
             NSString* symbolId = [NSString stringWithFormat:@"%ld", frame.functionId];
             
-			callTreeFrame = [callTreeFrame subTreeForSymbolId:symbolId];
-			if (callTreeFrame.symbol !=  nil && ![callTreeFrame.symbol isEqualToString:frame.symbol]) {
-				//NSLog(@"++ %@ ++ %@ ++ %@", callTreeFrame.symbol, frame.symbol, symbolId);
-			}
+            callTreeFrame = [callTreeFrame subTreeForFunctionId:frame.functionId classId:frame.classId create:YES];
+//			if (callTreeFrame.symbol !=  nil && ![callTreeFrame.symbol isEqualToString:frame.symbol]) {
+//				//NSLog(@"++ %@ ++ %@ ++ %@", callTreeFrame.symbol, frame.symbol, symbolId);
+//			}
 			callTreeFrame.sampleCount += stackTraceSampleCount;
 			callTreeFrame.thread = frame.threadId;
 			callTreeFrame.stackDepth = frame.stackDepth;
