@@ -5,10 +5,10 @@
 //  Copyright 2010-2012 Fotonauts. All rights reserved.
 //
 
-#import "RPLogLine.h"
+#import "RPStackFrame.h"
 
 
-@implementation RPLogLine
+@implementation RPStackFrame
 
 @synthesize symbol;
 

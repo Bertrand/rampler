@@ -6,7 +6,7 @@
 //
 
 #import <Cocoa/Cocoa.h>
-#import "RPLogLine.h"
+#import "RPStackFrame.h"
 #import "RPLogReader.h"
 
 
@@ -16,14 +16,14 @@
     NSMutableString *endingInfoDescription; 
     
 	// xxx - this is a hack
-	RPLogLine*	__weak currentLine;
+	RPStackFrame*	__weak currentLine;
     
     NSInteger _currentPosition;
 }
 
 @property (nonatomic, readwrite, assign) NSInteger	logLineNumber;
 @property (nonatomic, readwrite) NSData*	data;
-@property (nonatomic, readwrite, weak) RPLogLine*	currentLine;
+@property (nonatomic, readwrite, weak) RPStackFrame*	currentLine;
 @property (nonatomic, readonly) NSString *beginningInfoDescription;
 @property (nonatomic, readonly) NSString *endingInfoDescription;
 @property (nonatomic, readonly, assign) double interval;
@@ -37,6 +37,6 @@
 - (id) initWithData:(NSData*)data;
 
 - (BOOL) readData;
-- (RPLogLine*) parseLine:(NSString*)line;
+- (RPStackFrame*) parseLine:(NSString*)line;
 
 @end

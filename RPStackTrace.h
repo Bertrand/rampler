@@ -6,7 +6,7 @@
 
 #import <Foundation/Foundation.h>
 
-@class RPLogLine;
+@class RPStackFrame;
 
 @interface RPStackTrace : NSObject
 

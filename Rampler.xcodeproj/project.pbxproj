@@ -18,7 +18,7 @@
 		0608139B15BA04B100A9B152 /* RPSha1Signer.m in Sources */ = {isa = PBXBuildFile; fileRef = 0608139A15BA04B100A9B152 /* RPSha1Signer.m */; };
 		0608139E15BA1B9000A9B152 /* NSDataAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 0608139D15BA1B9000A9B152 /* NSDataAdditions.m */; };
 		0628E06A1253952A00B9255B /* RPCallTree.m in Sources */ = {isa = PBXBuildFile; fileRef = 0628E0691253952A00B9255B /* RPCallTree.m */; };
-		0628E4BA125A361E00B9255B /* RPLogLine.m in Sources */ = {isa = PBXBuildFile; fileRef = 0628E4B9125A361E00B9255B /* RPLogLine.m */; };
+		0628E4BA125A361E00B9255B /* RPStackFrame.m in Sources */ = {isa = PBXBuildFile; fileRef = 0628E4B9125A361E00B9255B /* RPStackFrame.m */; };
 		0642459215B987C2007A72D0 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0642459115B987C2007A72D0 /* Security.framework */; };
 		0677F80E134F257900107A56 /* RPApplication.m in Sources */ = {isa = PBXBuildFile; fileRef = 0677F80D134F257900107A56 /* RPApplication.m */; };
 		06B8C0A81756AA0B00F3FB0D /* RPStackTrace.m in Sources */ = {isa = PBXBuildFile; fileRef = 06B8C0A71756AA0B00F3FB0D /* RPStackTrace.m */; };
@@ -56,8 +56,8 @@
 		0608139D15BA1B9000A9B152 /* NSDataAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSDataAdditions.m; sourceTree = "<group>"; };
 		0628E0681253952900B9255B /* RPCallTree.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RPCallTree.h; sourceTree = "<group>"; };
 		0628E0691253952A00B9255B /* RPCallTree.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RPCallTree.m; sourceTree = "<group>"; };
-		0628E4B8125A361E00B9255B /* RPLogLine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RPLogLine.h; sourceTree = "<group>"; };
-		0628E4B9125A361E00B9255B /* RPLogLine.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RPLogLine.m; sourceTree = "<group>"; };
+		0628E4B8125A361E00B9255B /* RPStackFrame.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RPStackFrame.h; sourceTree = "<group>"; };
+		0628E4B9125A361E00B9255B /* RPStackFrame.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RPStackFrame.m; sourceTree = "<group>"; };
 		0642459115B987C2007A72D0 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		0677F80C134F257900107A56 /* RPApplication.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RPApplication.h; sourceTree = "<group>"; };
 		0677F80D134F257900107A56 /* RPApplication.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RPApplication.m; sourceTree = "<group>"; };
@@ -104,8 +104,8 @@
 		0278E017129132A000EB8C68 /* Log Reader */ = {
 			isa = PBXGroup;
 			children = (
-				0628E4B8125A361E00B9255B /* RPLogLine.h */,
-				0628E4B9125A361E00B9255B /* RPLogLine.m */,
+				0628E4B8125A361E00B9255B /* RPStackFrame.h */,
+				0628E4B9125A361E00B9255B /* RPStackFrame.m */,
 				06C6902015BFDF5D001692CF /* RPLogReader.h */,
 				026DF5F1126EDB4E005466CF /* RPRubyTraceLogReader.h */,
 				026DF5F2126EDB4E005466CF /* RPRubyTraceLogReader.m */,
@@ -317,7 +317,7 @@
 				8D15AC310486D014006FF6A4 /* RPTraceDocument.m in Sources */,
 				8D15AC320486D014006FF6A4 /* main.m in Sources */,
 				0628E06A1253952A00B9255B /* RPCallTree.m in Sources */,
-				0628E4BA125A361E00B9255B /* RPLogLine.m in Sources */,
+				0628E4BA125A361E00B9255B /* RPStackFrame.m in Sources */,
 				026DF5F3126EDB4E005466CF /* RPRubyTraceLogReader.m in Sources */,
 				025680F312831AF5000BF1DF /* RPApplicationDelegate.m in Sources */,
 				0227EC08128ACDAE0053012B /* RPURLLoaderController.m in Sources */,

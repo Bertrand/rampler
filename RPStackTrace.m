@@ -5,7 +5,7 @@
 //
 
 #import "RPStackTrace.h"
-#import "RPLogLine.h"
+#import "RPStackFrame.h"
 
 
 @implementation RPStackTrace

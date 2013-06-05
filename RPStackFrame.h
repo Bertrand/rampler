@@ -8,11 +8,11 @@
 #import <Cocoa/Cocoa.h>
 
 @class RPCallTree;
-@class RPLogLine;
+@class RPStackFrame;
 
 
 
-@interface RPLogLine : NSObject {
+@interface RPStackFrame : NSObject {
 
 }
 

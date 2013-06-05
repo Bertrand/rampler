@@ -115,14 +115,14 @@ NSInteger RPRubyTraceParseError = -1;
     return YES;
 }
 
-- (RPLogLine*) parseLine:(NSString*)line
+- (RPStackFrame*) parseLine:(NSString*)line
 {
 	
 	NSArray* components = [line componentsSeparatedByString:@"\t"];
     PARSE_ASSERT(components.count == 4, @"Invalid index number (index is probably not given in order", nil);
 
 	
-	RPLogLine* parsedLine = [[RPLogLine alloc] init];
+	RPStackFrame* parsedLine = [[RPStackFrame alloc] init];
 	
     parsedLine.fileId = [components[0] integerValue];
     parsedLine.fileLine = [components[1] integerValue];
@@ -216,7 +216,7 @@ NSInteger RPRubyTraceParseError = -1;
         for (int i=0; i<stackDepth; ++i) {
             curLine = [self readNextLine];
             PARSE_ASSERT(curLine, @"unexpected end of file while reading stack trace", NO);
-            RPLogLine* parsedLine  = [self parseLine:curLine];
+            RPStackFrame* parsedLine  = [self parseLine:curLine];
             if (!parsedLine) return NO;
             [stackLines addObject:parsedLine];
         }
@@ -279,7 +279,7 @@ NSInteger RPRubyTraceParseError = -1;
 	callTree.thread = 0; //self.currentLine.threadId;
 	for (RPStackTrace *stackTrace in self.stacks) {
 		RPCallTree *callTreeFrame;
-		RPLogLine *frame;
+		RPStackFrame *frame;
 		NSInteger stackTraceSampleCount;
 		
 		stackTraceSampleCount = [stackTrace sampleCount];
