@@ -226,6 +226,16 @@
     otherTree.selfStackTraceCount += self.selfStackTraceCount;
     otherTree.selfBlockedTicks += self.selfBlockedTicks;
     
+    // FixMe: really, we shouldn't have to do this. Properly implement copies.
+    otherTree.methodId = self.methodId;
+    otherTree.classId = self.classId;
+    otherTree.fileId = self.fileId;
+    otherTree.method = self.method;
+    otherTree.moduleOrClass = self.moduleOrClass;
+    otherTree.file = self.file;
+    otherTree.thread = self.thread;
+    otherTree.startLine = self.startLine;
+    
     if (deepMerge) {
         [self eachChild:^(RPCallTree* child) {
             RPCallTree* otherChild = [otherTree matchingSubTree:child create:YES];

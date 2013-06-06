@@ -38,14 +38,16 @@
 @property (nonatomic, weak) NSNumberFormatter* percentFormatter;
 @property (nonatomic, readonly, weak) RPOutlineView* mainOutlineView;;
 @property (nonatomic, assign) BOOL displayTimeUnitAsPercentOfTotal;
+
 @property (nonatomic, assign) BOOL hideInsignificantCalls;
+@property (nonatomic, assign) BOOL flattenRecursion;
+
 @property (nonatomic, readonly) RPTraceDocument *mainDocument;
 @property (nonatomic, readonly) NSString *version;
 @property (nonatomic, readonly) NSURL* url;
 @property (nonatomic, readonly, assign) double interval;
 @property (nonatomic, readonly, assign) double duration;
 
-- (IBAction)unfocusButtonAction:(id)sender;
 - (IBAction)focusButtonAction:(id)sender;
 - (IBAction)followHottestSubpath:(id)sender;
 - (IBAction)focusDownFunctionButtonAction:(id)sender;

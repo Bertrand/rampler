@@ -372,7 +372,7 @@
 						<object class="NSButton" id="487248742">
 							<reference key="NSNextResponder" ref="568628114"/>
 							<int key="NSvFlags">268</int>
-							<string key="NSFrame">{{20, 540}, {154, 17}}</string>
+							<string key="NSFrame">{{20, 441}, {154, 17}}</string>
 							<reference key="NSSuperview" ref="568628114"/>
 							<reference key="NSWindow"/>
 							<reference key="NSNextKeyView" ref="402746024"/>
@@ -395,10 +395,10 @@
 						<object class="NSButton" id="402746024">
 							<reference key="NSNextResponder" ref="568628114"/>
 							<int key="NSvFlags">268</int>
-							<string key="NSFrame">{{17, 518}, {156, 18}}</string>
+							<string key="NSFrame">{{17, 544}, {156, 18}}</string>
 							<reference key="NSSuperview" ref="568628114"/>
 							<reference key="NSWindow"/>
-							<reference key="NSNextKeyView" ref="605487873"/>
+							<reference key="NSNextKeyView"/>
 							<bool key="NSEnabled">YES</bool>
 							<object class="NSButtonCell" key="NSCell" id="404531450">
 								<int key="NSCellFlags">-2080374784</int>
@@ -425,7 +425,7 @@
 						<object class="NSButton" id="441967953">
 							<reference key="NSNextResponder" ref="568628114"/>
 							<int key="NSvFlags">268</int>
-							<string key="NSFrame">{{20, 458}, {154, 17}}</string>
+							<string key="NSFrame">{{20, 389}, {154, 17}}</string>
 							<reference key="NSSuperview" ref="568628114"/>
 							<reference key="NSWindow"/>
 							<reference key="NSNextKeyView" ref="604121045"/>
@@ -433,7 +433,7 @@
 							<object class="NSButtonCell" key="NSCell" id="467471079">
 								<int key="NSCellFlags">-1543503872</int>
 								<int key="NSCellFlags2">134348800</int>
-								<string key="NSContents">Focus</string>
+								<string key="NSContents">Focus on subtree</string>
 								<reference key="NSSupport" ref="26"/>
 								<reference key="NSControlView" ref="441967953"/>
 								<int key="NSButtonFlags">-2038153216</int>
@@ -448,13 +448,13 @@
 						<object class="NSButton" id="393000875">
 							<reference key="NSNextResponder" ref="568628114"/>
 							<int key="NSvFlags">268</int>
-							<string key="NSFrame">{{17, 387}, {143, 18}}</string>
+							<string key="NSFrame">{{17, 519}, {143, 18}}</string>
 							<reference key="NSSuperview" ref="568628114"/>
 							<reference key="NSWindow"/>
 							<reference key="NSNextKeyView" ref="683722997"/>
 							<bool key="NSEnabled">YES</bool>
 							<object class="NSButtonCell" key="NSCell" id="79160803">
-								<int key="NSCellFlags">-2080374784</int>
+								<int key="NSCellFlags">67108864</int>
 								<int key="NSCellFlags2">131072</int>
 								<string key="NSContents">Hide insignificant calls</string>
 								<reference key="NSSupport" ref="26"/>
@@ -473,7 +473,7 @@
 						<object class="NSButton" id="604121045">
 							<reference key="NSNextResponder" ref="568628114"/>
 							<int key="NSvFlags">268</int>
-							<string key="NSFrame">{{20, 434}, {154, 17}}</string>
+							<string key="NSFrame">{{20, 365}, {154, 17}}</string>
 							<reference key="NSSuperview" ref="568628114"/>
 							<reference key="NSWindow"/>
 							<reference key="NSNextKeyView"/>
@@ -726,45 +726,24 @@
 							</object>
 							<bool key="NSAllowsLogicalLayoutDirection">NO</bool>
 						</object>
-						<object class="NSButton" id="605487873">
-							<reference key="NSNextResponder" ref="568628114"/>
-							<int key="NSvFlags">268</int>
-							<string key="NSFrame">{{20, 481}, {154, 17}}</string>
-							<reference key="NSSuperview" ref="568628114"/>
-							<reference key="NSWindow"/>
-							<reference key="NSNextKeyView" ref="441967953"/>
-							<bool key="NSEnabled">YES</bool>
-							<object class="NSButtonCell" key="NSCell" id="932339951">
-								<int key="NSCellFlags">-1543503872</int>
-								<int key="NSCellFlags2">134348800</int>
-								<string key="NSContents">Unfocus</string>
-								<reference key="NSSupport" ref="26"/>
-								<reference key="NSControlView" ref="605487873"/>
-								<int key="NSButtonFlags">-2038153216</int>
-								<int key="NSButtonFlags2">164</int>
-								<string key="NSAlternateContents"/>
-								<string key="NSKeyEquivalent"/>
-								<int key="NSPeriodicDelay">400</int>
-								<int key="NSPeriodicInterval">75</int>
-							</object>
-							<bool key="NSAllowsLogicalLayoutDirection">NO</bool>
-						</object>
 						<object class="NSButton" id="683722997">
 							<reference key="NSNextResponder" ref="568628114"/>
 							<int key="NSvFlags">268</int>
-							<string key="NSFrame">{{20, 333}, {154, 17}}</string>
+							<string key="NSFrame">{{17, 494}, {154, 17}}</string>
 							<reference key="NSSuperview" ref="568628114"/>
 							<reference key="NSWindow"/>
 							<reference key="NSNextKeyView" ref="615412139"/>
 							<bool key="NSEnabled">YES</bool>
 							<object class="NSButtonCell" key="NSCell" id="991716951">
-								<int key="NSCellFlags">-2080374784</int>
-								<int key="NSCellFlags2">134348800</int>
+								<int key="NSCellFlags">67108864</int>
+								<int key="NSCellFlags2">131072</int>
 								<string key="NSContents">flatten recursion</string>
 								<reference key="NSSupport" ref="26"/>
 								<reference key="NSControlView" ref="683722997"/>
-								<int key="NSButtonFlags">-2038153216</int>
-								<int key="NSButtonFlags2">164</int>
+								<int key="NSButtonFlags">1211912448</int>
+								<int key="NSButtonFlags2">2</int>
+								<reference key="NSNormalImage" ref="708351893"/>
+								<reference key="NSAlternateImage" ref="818230101"/>
 								<string key="NSAlternateContents"/>
 								<string key="NSKeyEquivalent"/>
 								<int key="NSPeriodicDelay">400</int>
@@ -961,22 +940,6 @@
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBActionConnection" key="connection">
-						<string key="label">unfocusButtonAction:</string>
-						<reference key="source" ref="512844837"/>
-						<reference key="destination" ref="605487873"/>
-					</object>
-					<int key="connectionID">100213</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBOutletConnection" key="connection">
-						<string key="label">unfocusButton</string>
-						<reference key="source" ref="512844837"/>
-						<reference key="destination" ref="605487873"/>
-					</object>
-					<int key="connectionID">100214</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBActionConnection" key="connection">
 						<string key="label">flattenRecursionButtonAction:</string>
 						<reference key="source" ref="512844837"/>
 						<reference key="destination" ref="683722997"/>
@@ -1114,14 +1077,6 @@
 				<object class="IBConnectionRecord">
 					<object class="IBOutletConnection" key="connection">
 						<string key="label">nextKeyView</string>
-						<reference key="source" ref="605487873"/>
-						<reference key="destination" ref="393000875"/>
-					</object>
-					<int key="connectionID">100211</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBOutletConnection" key="connection">
-						<string key="label">nextKeyView</string>
 						<reference key="source" ref="683722997"/>
 						<reference key="destination" ref="393000875"/>
 					</object>
@@ -1161,9 +1116,7 @@
 						<int key="objectID">6</int>
 						<reference key="object" ref="568628114"/>
 						<array class="NSMutableArray" key="children">
-							<reference ref="487248742"/>
 							<reference ref="402746024"/>
-							<reference ref="441967953"/>
 							<reference ref="516204192"/>
 							<reference ref="939533990"/>
 							<reference ref="514263404"/>
@@ -1176,11 +1129,12 @@
 							<reference ref="1018851587"/>
 							<reference ref="615412139"/>
 							<reference ref="278033872"/>
-							<reference ref="605487873"/>
 							<reference ref="581930014"/>
+							<reference ref="441967953"/>
 							<reference ref="604121045"/>
 							<reference ref="393000875"/>
 							<reference ref="683722997"/>
+							<reference ref="487248742"/>
 						</array>
 						<reference key="parent" ref="275939982"/>
 					</object>
@@ -1534,19 +1488,6 @@
 						<reference key="parent" ref="101133631"/>
 					</object>
 					<object class="IBObjectRecord">
-						<int key="objectID">100209</int>
-						<reference key="object" ref="605487873"/>
-						<array class="NSMutableArray" key="children">
-							<reference ref="932339951"/>
-						</array>
-						<reference key="parent" ref="568628114"/>
-					</object>
-					<object class="IBObjectRecord">
-						<int key="objectID">100210</int>
-						<reference key="object" ref="932339951"/>
-						<reference key="parent" ref="605487873"/>
-					</object>
-					<object class="IBObjectRecord">
 						<int key="objectID">100215</int>
 						<reference key="object" ref="683722997"/>
 						<array class="NSMutableArray" key="children">
@@ -1621,8 +1562,6 @@
 				<string key="100205.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="100206.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="100207.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
-				<string key="100209.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
-				<string key="100210.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="100215.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="100216.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="5.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
@@ -1661,8 +1600,6 @@
 						<string key="focusButtonAction:">id</string>
 						<string key="focusDownFunctionButtonAction:">id</string>
 						<string key="followHottestSubpath:">id</string>
-						<string key="outlineDoubleAction:">id</string>
-						<string key="unfocusButtonAction:">id</string>
 					</dictionary>
 					<dictionary class="NSMutableDictionary" key="actionInfosByName">
 						<object class="IBActionInfo" key="flattenRecursionButtonAction:">
@@ -1681,20 +1618,11 @@
 							<string key="name">followHottestSubpath:</string>
 							<string key="candidateClassName">id</string>
 						</object>
-						<object class="IBActionInfo" key="outlineDoubleAction:">
-							<string key="name">outlineDoubleAction:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="unfocusButtonAction:">
-							<string key="name">unfocusButtonAction:</string>
-							<string key="candidateClassName">id</string>
-						</object>
 					</dictionary>
 					<dictionary class="NSMutableDictionary" key="outlets">
 						<string key="flattenRecursionButton">NSButton</string>
 						<string key="focusButton">NSButton</string>
 						<string key="focusDownFunctionButton">NSButton</string>
-						<string key="focusUpFunctionButton">NSButton</string>
 						<string key="hottestSubpathButton">NSButton</string>
 						<string key="intervalTextField">NSTextField</string>
 						<string key="realIntervalTextField">NSTextField</string>
@@ -1716,10 +1644,6 @@
 						</object>
 						<object class="IBToOneOutletInfo" key="focusDownFunctionButton">
 							<string key="name">focusDownFunctionButton</string>
-							<string key="candidateClassName">NSButton</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="focusUpFunctionButton">
-							<string key="name">focusUpFunctionButton</string>
 							<string key="candidateClassName">NSButton</string>
 						</object>
 						<object class="IBToOneOutletInfo" key="hottestSubpathButton">

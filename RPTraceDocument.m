@@ -111,11 +111,20 @@
 {
 	if (newRoot != _root) {
 		_root = newRoot;
-		self.displayRoot = newRoot;
-		if (_root) {
-	    	[_mainOutlineView reloadData];
-		}
+        [self updateDisplayRoot];
 	}
+}
+
+- (void) updateDisplayRoot
+{
+    RPSampleSession* newRoot = self.root;
+    
+    if (self.flattenRecursion) {
+        newRoot = [newRoot sessionByFlatteningRecursion];
+    }
+    
+    self.displayRoot = newRoot;
+    if (self.displayRoot) [_mainOutlineView reloadData];
 }
 
 - (BOOL)readFromData:(NSData *)data ofType:(NSString *)typeName error:(NSError **)outError
@@ -284,24 +293,17 @@
     }
 }
 
+- (void) focusOnSelectedRow
+{
+    RPCallTree *callTreeToSelect = [self selectedCallTree];
+    if (!callTreeToSelect) return;
+    [self openDerivedDocumentWithRoot:[self.displayRoot sessionByFocussingOnSubTree:callTreeToSelect]];
+}
 
 #pragma mark -
 #pragma mark IBAction
 
-- (IBAction)outlineDoubleAction:(id)sender
-{
-	NSInteger selectedRow = [self.mainOutlineView selectedRow];
-	
-	if (selectedRow != -1) {
-		RPCallTree* selectedNode = [self.mainOutlineView itemAtRow:selectedRow];
-		
-		if ([_mainOutlineView isItemExpanded:selectedNode]) {
-			[_mainOutlineView collapseItem:selectedNode];
-		} else {
-			[self followHottestSubpath:nil];
-		}
-	}
-}
+
 
 - (void)openDerivedDocumentWithRoot:(RPSampleSession*)newRoot
 {
@@ -335,52 +337,28 @@
 	}
 }
 
-- (IBAction)unfocusButtonAction:(id)sender
+- (void)outlineDoubleAction:(id)sender
 {
-    if (self.displayRoot != self.root) {
-	    RPCallTree *callTreeToSelect = nil;
-		NSInteger selectedRow;
-    	
-	    selectedRow = [_mainOutlineView selectedRow];
-        if (selectedRow == -1) {
-	        callTreeToSelect = self.displayRoot;
-        } else {
-        	callTreeToSelect = [_mainOutlineView itemAtRow:selectedRow];
-        }
-    	self.displayRoot = self.root;
-		[self updateTimeFormatter];
-	    [_mainOutlineView reloadData];
-	    [self expandAndSelectCallTree:callTreeToSelect];
-    }
+    [self focusOnSelectedRow];
 }
 
 - (IBAction)focusButtonAction:(id)sender
 {
-    RPCallTree *callTreeToSelect = [self selectedCallTree];
-    if (!callTreeToSelect) return;
-    
-    self.displayRoot = [self.root sessionByFocussingOnSubTree:callTreeToSelect];
-    
-	[self updateTimeFormatter];
-    [_mainOutlineView reloadData];
-    [self expandAndSelectCallTree:self.displayRoot];
+    [self focusOnSelectedRow];
 }
 
 - (IBAction)focusDownFunctionButtonAction:(id)sender;
 {
     RPCallTree* selectedCall = [self selectedCallTree];
-    if (!selectedCall) return;
-    
-    self.displayRoot = [self.root callTreeByMergingDownIdenticalCalls:selectedCall];
-	[self updateTimeFormatter];
-    [_mainOutlineView reloadData];
+    if (!selectedCall) return;    
+    [self openDerivedDocumentWithRoot:[self.root callTreeByMergingDownIdenticalCalls:selectedCall]];
 }
 
 
 - (IBAction)flattenRecursionButtonAction:(id)sender
 {
-    RPSampleSession* flattenedTree = [self.root sessionByFlatteningRecursion];
-    [self openDerivedDocumentWithRoot:flattenedTree];
+    self.flattenRecursion = ([flattenRecursionButton state] == NSOnState);
+    [self updateDisplayRoot];
 }
 
 
