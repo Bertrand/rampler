@@ -30,9 +30,6 @@
 - (id)init
 {
 	self = [super init];
-	if (self) {
-		self.callDetails = [[NSMutableDictionary alloc] init];
-	}
 	return self;
 }
 
@@ -145,16 +142,6 @@
 	}
 }
 
-- (void)addCallDetailsForFile:(NSString *)fileNameNumber time:(double)valueToAdd
-{
-	double time;
-	NSNumber *number;
-	
-	time = [self.callDetails[fileNameNumber] doubleValue] + valueToAdd;
-	number = @(time);
-	if (fileNameNumber) self.callDetails[fileNameNumber] = number;
-}
-
 - (void)addCallTreeInfo:(RPCallTree *)callTreeToAdd bottomUp:(BOOL)bottomUp time:(float)time
 {
 	NSAssert([self.symbolId isEqualToString:callTreeToAdd.symbolId], @"symbol id are not identical %@ %@", self.symbolId, callTreeToAdd.symbolId);
@@ -173,9 +160,7 @@
 	if (self.startLine == 0) {
 		self.startLine = callTreeToAdd.startLine;
 	}
-	for (NSString *fileNameNumber in [callTreeToAdd.callDetails allKeys]) {
-		[self addCallDetailsForFile:fileNameNumber time:[(callTreeToAdd.callDetails)[fileNameNumber] doubleValue]];
-	}
+
     if (bottomUp) {
     	if (callTreeToAdd.parent.symbolId) {
             [[self matchingSubTree:callTreeToAdd.parent create:YES] addCallTreeInfo:callTreeToAdd.parent bottomUp:bottomUp time:time];

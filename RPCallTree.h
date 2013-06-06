@@ -30,7 +30,6 @@
 @property (nonatomic, assign)	NSInteger startLine;
 @property (nonatomic, assign)	NSInteger sampleCount;
 @property (nonatomic, assign)	NSInteger stackTraceCount;
-@property (nonatomic)	NSMutableDictionary* callDetails;
 @property (nonatomic, assign)	NSInteger blockedTicks;
 
 
@@ -39,7 +38,6 @@
 
 - (void)freeze;
 
-- (void)addCallDetailsForFile:(NSString *)file time:(double)valueToAdd;
 - (RPCallTree *)topDownCallTreeForSymbolId:(NSString *)symbolId;
 - (RPCallTree *)bottomUpCallTreeForSymbolId:(NSString *)functionSymbolId;
 - (void) _exportToBuffer:(NSMutableString*)fh indendation:(int)indentation;

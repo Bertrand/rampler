@@ -307,7 +307,6 @@ NSInteger RPRubyTraceParseError = -1;
 			callTreeFrame.ns = className;
 			callTreeFrame.totalTime += self.duration * stackTraceSampleCount / self.sampleCount;
 			callTreeFrame.blockedTicks += stackTraceSampleCount - 1;
-			[callTreeFrame addCallDetailsForFile:frame.file time:frame.duration];
 		}
 	}
 	[callTree freeze];
