@@ -68,11 +68,13 @@
 
 - (IBAction)sampleCurrentURL:(id)sender
 {
+    RPURLLoaderController* urlLoader = [RPURLLoaderController sharedURLLoaderController];
+
     if ([self currentURLString]) {
-        RPURLLoaderController* urlLoader = [RPURLLoaderController sharedURLLoaderController];
         urlLoader.urlString = [self currentURLString];
-        [urlLoader openOpenURLDialog:sender];
     }
+    
+    [urlLoader openOpenURLDialog:sender];
 }
 
 - (IBAction)addressTextFieldAction:(id)sender
