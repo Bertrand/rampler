@@ -16,7 +16,6 @@
     IBOutlet NSButton* unfocusButton;
     IBOutlet NSButton* focusButton;
     IBOutlet NSButton* focusDownFunctionButton;
-    IBOutlet NSButton* focusUpFunctionButton;
     IBOutlet NSButton* hottestSubpathButton;
     IBOutlet NSButton* flattenRecursionButton;
 	IBOutlet NSTextField* urlTextField;
@@ -43,7 +42,6 @@
 @property (nonatomic, readonly) RPTraceDocument *mainDocument;
 @property (nonatomic, readonly) NSString *version;
 @property (nonatomic, readonly) NSURL* url;
-@property (nonatomic, readonly) NSString* secretKey;
 @property (nonatomic, readonly, assign) double interval;
 @property (nonatomic, readonly, assign) double duration;
 

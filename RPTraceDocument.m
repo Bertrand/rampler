@@ -187,7 +187,6 @@
 	[self updateTimeFormatter];
     if (self.mainDocument) {
     	[focusDownFunctionButton setHidden:YES];
-    	[focusUpFunctionButton setHidden:YES];
     }
 	[urlTextField setAction:@selector(urlTextFieldClicked:)];
 	[totalTimeTextField setStringValue:[NSString stringWithFormat:@"%.2fs", self.root.totalTime]];
@@ -439,7 +438,6 @@
     
     [focusButton setEnabled:allowSelectionDependentActions];
     [focusDownFunctionButton setEnabled:allowSelectionDependentActions];
-    [focusUpFunctionButton setEnabled:allowSelectionDependentActions];
     [hottestSubpathButton setEnabled:allowSelectionDependentActions];
     
     [unfocusButton setEnabled:self.root != self.displayRoot];
