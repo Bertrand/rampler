@@ -16,9 +16,6 @@
     NSMutableString *beginningInfoDescription; 
     NSMutableString *endingInfoDescription; 
     
-	// xxx - this is a hack
-	RPStackFrame*	__weak currentLine;
-    
     NSInteger _currentPosition;
 }
 

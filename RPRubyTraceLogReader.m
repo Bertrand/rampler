@@ -41,7 +41,6 @@ NSInteger RPRubyTraceParseError = -1;
 
 @implementation RPRubyTraceLogReader
 
-@synthesize currentLine;
 @synthesize beginningInfoDescription;
 @synthesize endingInfoDescription;
 
@@ -261,7 +260,7 @@ NSInteger RPRubyTraceParseError = -1;
 	int totalSampleCount = 0;
 	
 	session = [[RPSampleSession alloc] init];
-	session.thread = 0; //self.currentLine.threadId;
+	session.thread = 0;
 
 	for (RPStackTrace *stackTrace in self.stacks) {
 		RPCallTree *callTreeFrame;
