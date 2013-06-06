@@ -278,7 +278,7 @@ NSInteger RPRubyTraceParseError = -1;
             NSString* function = [self functionForIndex:frame.functionId];
             
 
-            callTreeFrame = [callTreeFrame subTreeForFunctionId:frame.functionId classId:frame.classId create:YES];
+            callTreeFrame = [callTreeFrame subTreeForMethodId:frame.functionId classId:frame.classId create:YES];
             
             if (frame.isLeaf) {
                 // last frame. Assign all canonical durations to this one.

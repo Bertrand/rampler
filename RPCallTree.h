@@ -14,9 +14,15 @@
 
 // canonical identifiers
 
-@property (nonatomic, assign)	NSInteger functionId;
+@property (nonatomic, assign)	NSInteger methodId;
 @property (nonatomic, assign)	NSInteger classId;
 @property (nonatomic, assign)	NSInteger fileId;
+
+// human readable symbol (derived from corresponding canonical identifiers)
+
+@property (nonatomic)	NSString* method;
+@property (nonatomic)	NSString* file;
+@property (nonatomic)	NSString* moduleOrClass;
 
 // canonical timing data
 
@@ -37,7 +43,6 @@
 
 @property (nonatomic, assign)   double duration; 
 
-
 // children
 
 @property (nonatomic)	NSMutableArray* subTrees;   // canonical data
@@ -48,21 +53,21 @@
 @property (readonly,  unsafe_unretained)	RPCallTree* parent; // Consistency is handled by the code. Declared unsafe to avoid costly weak ARC maps
 @property (readonly,  unsafe_unretained)	RPCallTree* root;   // Same comment ^^
 
+
 // more or less deprecated or not yet refactored
 
-@property (nonatomic)	NSString* method;
-@property (nonatomic)	NSString* file;
-@property (nonatomic)	NSString* moduleOrClass;
 @property (nonatomic, assign)	SInt64 thread;
-
 @property (nonatomic, assign)	NSInteger startLine;
 
 
 
-- (RPCallTree*) subTreeForFunctionId:(NSInteger)functionId classId:(NSInteger)classId create:(BOOL)createIfNeeded;
-
+- (RPCallTree*) subTreeForMethodId:(NSInteger)methodId classId:(NSInteger)classId create:(BOOL)createIfNeeded;
 
 - (void)freeze;
+
+@end
+
+@interface RPCallTree(Private)
 
 - (void) mergeRecursionsWithMaxRecursionHops:(NSInteger)maxHops;
 - (void) recursivelyMergeIdenticalCalls:(RPCallTree*)targetCall into:(RPCallTree*)rootDestination;

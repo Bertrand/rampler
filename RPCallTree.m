@@ -57,14 +57,14 @@
     return self.selfSampleCount * self.session.sessionDurationPerTick;
 }
 
-- (RPCallTree*) subTreeForFunctionId:(NSInteger)functionId classId:(NSInteger)classId create:(BOOL)createIfNeeded
+- (RPCallTree*) subTreeForMethodId:(NSInteger)methodId classId:(NSInteger)classId create:(BOOL)createIfNeeded
 {
 	if (self.subTrees == nil) {
 		self.subTrees = [NSMutableArray array];
 	}
     
     for (RPCallTree* child in self.subTrees) {
-        if (child.functionId == functionId && child.classId == classId) return child;
+        if (child.methodId == methodId && child.classId == classId) return child;
     }
     
     RPCallTree* subTree = nil;
@@ -72,7 +72,7 @@
         subTree = [[RPCallTree alloc] init];
         
 		subTree.parent = self;
-		subTree.functionId = functionId;
+		subTree.methodId = methodId;
         subTree.classId = classId;
         
         [self.subTrees addObject:subTree];
@@ -83,7 +83,7 @@
 
 - (RPCallTree*) matchingSubTree:(RPCallTree*)otherSubTree create:(BOOL)createIfNeeded
 {
-    return [self subTreeForFunctionId:otherSubTree.functionId classId:otherSubTree.classId create:createIfNeeded];
+    return [self subTreeForMethodId:otherSubTree.methodId classId:otherSubTree.classId create:createIfNeeded];
 }
 
 
@@ -114,7 +114,7 @@
 - (BOOL)isSameFrameAs:(RPCallTree* __unsafe_unretained)otherCallTree
 {
     if (!otherCallTree)return NO;
-    return _functionId == otherCallTree->_functionId && _classId == otherCallTree->_classId;
+    return _methodId == otherCallTree->_methodId && _classId == otherCallTree->_classId;
 }
 
 - (NSArray*)snapshotOfCurrentChildren
@@ -159,7 +159,7 @@
 {
     RPCallTree* treeCopy = [[[self class] alloc] init];
     
-    treeCopy.functionId = self.functionId;
+    treeCopy.methodId = self.methodId;
     treeCopy.classId = self.classId;
     treeCopy.fileId = self.fileId;
 
