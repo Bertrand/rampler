@@ -38,7 +38,7 @@
 
 - (NSString*)description
 {
-    return [NSString stringWithFormat:@"RPCallTree %@::%@, %ld children", self.ns, self.symbol, self.subTrees ? self.subTrees.count : 0];
+    return [NSString stringWithFormat:@"RPCallTree %@::%@, %ld children", self.moduleOrClass, self.method, self.subTrees ? self.subTrees.count : 0];
 }
 
 - (RPSampleSession*)session
@@ -167,8 +167,8 @@
     treeCopy.selfStackTraceCount = self.selfStackTraceCount;
     treeCopy.selfBlockedTicks = self.selfBlockedTicks;
     
-    treeCopy.symbol = self.symbol;
-    treeCopy.ns = self.ns;
+    treeCopy.method = self.method;
+    treeCopy.moduleOrClass = self.moduleOrClass;
     treeCopy.file = self.file;
     treeCopy.thread = self.thread;
     treeCopy.startLine = self.startLine;

@@ -423,9 +423,9 @@
 	} else if ([[tableColumn identifier] isEqualToString:@"file"]) {
     	result = [item file];
 	} else if ([[tableColumn identifier] isEqualToString:@"namespace"]) {
-    	result = [item ns];
+    	result = [item moduleOrClass];
 	} else if ([[tableColumn identifier] isEqualToString:@"symbol"]) {
-    	result = [NSString stringWithFormat:@"%@::%@", [item ns], [item symbol]];
+    	result = [NSString stringWithFormat:@"%@::%@", [item moduleOrClass], [item method]];
 	} else if ([[tableColumn identifier] isEqualToString:@"blockedTicks"]) {
     	result = @([item blockedTicks]);
     }

@@ -289,9 +289,9 @@ NSInteger RPRubyTraceParseError = -1;
             }
 
 			callTreeFrame.startLine = frame.logLineNumber;
-			callTreeFrame.symbol = function;
+			callTreeFrame.method = function;
 			callTreeFrame.file = filePath;
-			callTreeFrame.ns = className;
+			callTreeFrame.moduleOrClass = className;
 		}
 	}
     

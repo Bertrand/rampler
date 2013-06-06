@@ -50,9 +50,9 @@
 
 // more or less deprecated or not yet refactored
 
-@property (nonatomic)	NSString* symbol;
+@property (nonatomic)	NSString* method;
 @property (nonatomic)	NSString* file;
-@property (nonatomic)	NSString* ns;
+@property (nonatomic)	NSString* moduleOrClass;
 @property (nonatomic, assign)	SInt64 thread;
 
 @property (nonatomic, assign)	NSInteger startLine;
