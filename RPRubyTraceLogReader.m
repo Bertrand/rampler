@@ -129,23 +129,6 @@ NSInteger RPRubyTraceParseError = -1;
     parsedLine.fileLine = [components[1] integerValue];
     parsedLine.classId = [components[2] integerValue];
     parsedLine.functionId = [components[3] integerValue];
-    
-    //	parsedLine.tickCount = [components[1] integerValue];
-    //	parsedLine.fileName = components[2];
-    //	parsedLine.fileLine = [components[3] integerValue];
-    //	parsedLine.file = [NSString stringWithFormat:@"%@:%d", parsedLine.fileName, parsedLine.fileLine];
-    //	parsedLine.type = components[4];
-    //	parsedLine.function = components[6];
-    //	parsedLine.symbol = [NSString stringWithFormat:@"%@", parsedLine.function];
-    //	parsedLine.duration = [components[8] doubleValue];
-    //	if (components[5]) {
-    //		parsedLine.symbolId = components[5];
-    //	} else {
-    //		parsedLine.symbolId = [NSString stringWithFormat:@"%@:%d", parsedLine.fileName, parsedLine.fileLine];
-    //	}
-    //	if ([components count] > 9) {
-    //		parsedLine.ns = components[9];
-    //	}
 	
 	return parsedLine;
 }
@@ -294,7 +277,6 @@ NSInteger RPRubyTraceParseError = -1;
             NSString* filePath = [self filePathForIndex:frame.fileId];
             NSString* className = [self classnameForIndex:frame.classId];
             NSString* function = [self functionForIndex:frame.functionId];
-            NSString* symbolId = [NSString stringWithFormat:@"%ld", frame.functionId];
             
 
             callTreeFrame = [callTreeFrame subTreeForFunctionId:frame.functionId classId:frame.classId create:YES];
@@ -307,7 +289,6 @@ NSInteger RPRubyTraceParseError = -1;
             }
 
 			callTreeFrame.startLine = frame.logLineNumber;
-			callTreeFrame.symbolId = symbolId;
 			callTreeFrame.symbol = function;
 			callTreeFrame.file = filePath;
 			callTreeFrame.ns = className;

@@ -50,7 +50,6 @@
 
 // more or less deprecated or not yet refactored
 
-@property (nonatomic)	NSString* symbolId;
 @property (nonatomic)	NSString* symbol;
 @property (nonatomic)	NSString* file;
 @property (nonatomic)	NSString* ns;
@@ -64,10 +63,6 @@
 
 
 - (void)freeze;
-
-- (RPCallTree *)topDownCallTreeForSymbolId:(NSString *)symbolId;
-- (RPCallTree *)bottomUpCallTreeForSymbolId:(NSString *)functionSymbolId;
-
 
 - (void) mergeRecursionsWithMaxRecursionHops:(NSInteger)maxHops;
 - (void) recursivelyMergeIdenticalCalls:(RPCallTree*)targetCall into:(RPCallTree*)rootDestination;

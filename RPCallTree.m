@@ -144,100 +144,7 @@
 	}
 }
 
-- (void)addCallTreeInfo:(RPCallTree *)callTreeToAdd bottomUp:(BOOL)bottomUp time:(float)time
-{
-	NSAssert([self.symbolId isEqualToString:callTreeToAdd.symbolId], @"symbol id are not identical %@ %@", self.symbolId, callTreeToAdd.symbolId);
-	self.sampleCount += callTreeToAdd.sampleCount;
-	if (!self.symbol) {
-		self.symbol = callTreeToAdd.symbol;
-	}
-	if (!self.file) {
-		self.file = callTreeToAdd.file;
-	}
-//    if (bottomUp) {
-//		self.totalTime += time;
-//    } else {
-//		self.totalTime += callTreeToAdd.totalTime;
-//    }
-	if (self.startLine == 0) {
-		self.startLine = callTreeToAdd.startLine;
-	}
 
-    if (bottomUp) {
-    	if (callTreeToAdd.parent.symbolId) {
-            [[self matchingSubTree:callTreeToAdd.parent create:YES] addCallTreeInfo:callTreeToAdd.parent bottomUp:bottomUp time:time];
-        }
-    } else {
-		for (RPCallTree *child in callTreeToAdd.children) {
-			[[self matchingSubTree:child create:YES] addCallTreeInfo:child bottomUp:bottomUp time:time];
-		}
-    }
-}
-
-- (NSArray *)allCallTreeForSymbolId:(NSString *)searchSymbolId withRecursiveCall:(BOOL)recursive
-{
-	NSMutableArray *subTreeToTest;
-	NSMutableArray *result;
-	
-	subTreeToTest = [[NSMutableArray alloc] init];
-	result = [[NSMutableArray alloc] init];
-	[subTreeToTest addObjectsFromArray:self.subTrees];
-	while ([subTreeToTest count] > 0) {
-		RPCallTree *current = subTreeToTest[0];
-		
-		for (RPCallTree *newCallTree in current.subTrees) {
-			BOOL found = NO;
-			
-			if ([newCallTree.symbolId isEqualToString:searchSymbolId]) {
-				[result addObject:newCallTree];
-				found = YES;
-			}
-			if (recursive || !found) {
-				[subTreeToTest addObject:newCallTree];
-			}
-		}
-		[subTreeToTest removeObjectAtIndex:0];
-	}
-	return result;
-}
-
-- (RPCallTree *)topDownCallTreeForSymbolId:(NSString *)functionSymbolId
-{
-	RPCallTree *result;
-	NSArray *allCallTrees;
-	
-	result = [[RPCallTree alloc] init];
-	result.symbolId = functionSymbolId;
-	result.file = @"-";
-	allCallTrees = [self allCallTreeForSymbolId:functionSymbolId withRecursiveCall:NO];
-	for (RPCallTree *current in allCallTrees) {
-		RPCallTree *mergedCallTree;
-		
-		mergedCallTree = [result matchingSubTree:current create:YES];
-		[mergedCallTree addCallTreeInfo:current bottomUp:NO time:0];
-	}
-	[result freeze];
-	return result;
-}
-
-- (RPCallTree *)bottomUpCallTreeForSymbolId:(NSString *)functionSymbolId
-{
-	RPCallTree *result;
-	NSArray *allCallTrees;
-	
-	result = [[RPCallTree alloc] init];
-	result.symbolId = functionSymbolId;
-	result.file = @"-";
-	allCallTrees = [self allCallTreeForSymbolId:functionSymbolId withRecursiveCall:NO];
-	for (RPCallTree *current in allCallTrees) {
-		RPCallTree *mergedCallTree;
-		
-		mergedCallTree = [result matchingSubTree:current create:YES];
-		[mergedCallTree addCallTreeInfo:current bottomUp:YES time:current.totalTime];
-	}
-	[result freeze];
-	return result;
-}
 
 
 #pragma mark -
@@ -260,7 +167,6 @@
     treeCopy.selfStackTraceCount = self.selfStackTraceCount;
     treeCopy.selfBlockedTicks = self.selfBlockedTicks;
     
-    treeCopy.symbolId = self.symbolId;
     treeCopy.symbol = self.symbol;
     treeCopy.ns = self.ns;
     treeCopy.file = self.file;
