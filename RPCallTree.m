@@ -6,16 +6,19 @@
 //
 
 #import "RPCallTree.h"
-
+#import "RPSampleSession.h"
 
 @interface RPCallTree()
-@property (readwrite,  weak)	RPCallTree* parent;
-@property (readwrite,  weak)	RPCallTree* root;
+@property (readwrite,  unsafe_unretained)	RPCallTree* parent;
+@property (readwrite,  unsafe_unretained)	RPCallTree* root;
 @end
+
 
 
 @implementation RPCallTree
 
+@dynamic totalTime;
+@dynamic selfTime;
 
 + (NSArray*) defaultSortDescriptor
 {
@@ -38,6 +41,21 @@
     return [NSString stringWithFormat:@"RPCallTree %@::%@, %ld children", self.ns, self.symbol, self.subTrees ? self.subTrees.count : 0];
 }
 
+- (RPSampleSession*)session
+{
+    return (RPSampleSession*)self.root;
+}
+
+
+- (double)totalTime
+{
+    return self.sampleCount * self.session.sessionDurationPerTick;
+}
+
+- (double)selfTime
+{
+    return self.selfSampleCount * self.session.sessionDurationPerTick;
+}
 
 - (RPCallTree*) subTreeForFunctionId:(NSInteger)functionId classId:(NSInteger)classId create:(BOOL)createIfNeeded
 {
@@ -93,9 +111,10 @@
     [self.subTrees removeObject:subTree];
 }
 
-- (BOOL)isSameFrameAs:(RPCallTree*)otherCallTree
+- (BOOL)isSameFrameAs:(RPCallTree* __unsafe_unretained)otherCallTree
 {
-    return [self.symbolId isEqualToString:otherCallTree.symbolId] && [self.ns isEqualToString:otherCallTree.ns];
+    if (!otherCallTree)return NO;
+    return _functionId == otherCallTree->_functionId && _classId == otherCallTree->_classId;
 }
 
 - (NSArray*)snapshotOfCurrentChildren
@@ -105,40 +124,23 @@
 
 - (void)freeze
 {
-	double subTreesTime = 0; 
-	NSInteger sampleCountTest = 0;
-	
-	for (RPCallTree* subtree in self.subTrees)
-		subTreesTime += subtree.totalTime;
-
-	// root object needs special treatment. 
 	if (self.parent == nil) {
-		self.root = nil;
-		self.totalTime = subTreesTime;
-		self.selfTime = 0;
-		//NSLog(@"total root time : %ld", self.totalTime);
+		self.root = self;
 	} else {
-		self.root = self.parent.root ? self.parent.root : self.parent;
-		self.selfTime = self.totalTime - subTreesTime;
-		if (self.selfTime < 0) {
-			self.selfTime = 0;
-		}
+		self.root = self.parent.root;
 	}
+    
+    self.sampleCount = self.selfSampleCount;
+    self.stackTraceCount = self.selfStackTraceCount;
+    self.blockedTicks = self.selfBlockedTicks;
 	
 	self.children = [self.subTrees sortedArrayUsingDescriptors:[self.class defaultSortDescriptor]];
-	self.stackTraceCount = 0;
 	for (RPCallTree* child in self.children) {
 		[child freeze];
-		self.stackTraceCount += child.stackTraceCount;
-		sampleCountTest += child.sampleCount;
-	}
-	if (self.stackTraceCount == 0) {
-		self.stackTraceCount = 1;
-	}
-	if (self.sampleCount == 0 && self.parent == nil) {
-		self.sampleCount = sampleCountTest;
-	} else if (self.sampleCount < sampleCountTest) {
-		NSLog(@"self.sampleCount %ld sampleCountTest %ld", self.sampleCount, sampleCountTest);
+
+        self.sampleCount += child.sampleCount;
+        self.stackTraceCount += child.stackTraceCount;
+        self.blockedTicks += child.blockedTicks;
 	}
 }
 
@@ -152,11 +154,11 @@
 	if (!self.file) {
 		self.file = callTreeToAdd.file;
 	}
-    if (bottomUp) {
-		self.totalTime += time;
-    } else {
-		self.totalTime += callTreeToAdd.totalTime;
-    }
+//    if (bottomUp) {
+//		self.totalTime += time;
+//    } else {
+//		self.totalTime += callTreeToAdd.totalTime;
+//    }
 	if (self.startLine == 0) {
 		self.startLine = callTreeToAdd.startLine;
 	}
@@ -237,52 +239,36 @@
 	return result;
 }
 
-- (void) _exportToBuffer:(NSMutableString*)buffer indendation:(int)indentation
-{
-    [buffer appendString:@"    "];
-    for (int i = 0; i < indentation; i++) {
-        [buffer appendString:@" "];
-    }
-    NSString* symb = self.symbol;
-    if (nil == symb) {
-        symb = @"Unknown";
-    }
-    if (self.ns) {
-        symb = [NSString stringWithFormat:@"%@:%@", self.ns, symb];
-    }
-    [buffer appendFormat:@"%ld %@\n", self.sampleCount, symb];
-    for (RPCallTree* child in self.children) {
-        [child _exportToBuffer:buffer indendation:indentation+1];
-    }
-}
-
 
 #pragma mark -
 #pragma mark Simple Tree Manipulation functions 
 
+- (id)copy
+{
+    return [[[self class] alloc] init];
+}
+
 - (RPCallTree *)copyWithParent:(RPCallTree*)parent withRoot:(RPCallTree*)root
 {
-    RPCallTree* treeCopy = [[RPCallTree alloc] init];
+    RPCallTree* treeCopy = [[[self class] alloc] init];
     
     treeCopy.functionId = self.functionId;
     treeCopy.classId = self.classId;
     treeCopy.fileId = self.fileId;
 
+    treeCopy.selfSampleCount = self.selfSampleCount;
+    treeCopy.selfStackTraceCount = self.selfStackTraceCount;
+    treeCopy.selfBlockedTicks = self.selfBlockedTicks;
+    
     treeCopy.symbolId = self.symbolId;
     treeCopy.symbol = self.symbol;
     treeCopy.ns = self.ns;
     treeCopy.file = self.file;
     treeCopy.thread = self.thread;
-    treeCopy.stackDepth = self.stackDepth;
-    treeCopy.totalTime = self.totalTime;
-    treeCopy.selfTime = self.selfTime;
     treeCopy.startLine = self.startLine;
-    treeCopy.sampleCount = self.sampleCount;
-    treeCopy.blockedTicks = self.blockedTicks;
     
     treeCopy.parent = parent;
-    if (root == nil) root = treeCopy;
-    treeCopy.root = root;
+
     
     if (self.subTrees) {
         treeCopy.subTrees = [[NSMutableArray alloc] initWithCapacity:self.subTrees.count];
@@ -300,21 +286,21 @@
 #pragma mark Advanced Tree Manipulation functions
 
 
-
-- (void) moveToUpperCallTree:(RPCallTree*)upperCallTree
+- (void) moveToUpperCallTree:(RPCallTree* __unsafe_unretained)upperCallTree
 {
     NSAssert(self.parent, @"How can we move to an upper level without having a parent");
     RPCallTree* tree = self; // Since we're ARC-based, avoid accidental release of self when calling removeSubTree
     [tree.parent removeSubTree:self];
     [tree mergeTreeTo:upperCallTree deep:YES];
+    self.root = nil;
+    self.parent = nil;
 }
 
 - (void) mergeTreeTo:(RPCallTree*)otherTree deep:(BOOL)deepMerge
 {
-    otherTree.totalTime += self.totalTime;
-    otherTree.selfTime += self.selfTime;
-    otherTree.sampleCount += self.sampleCount;
-    otherTree.blockedTicks += self.blockedTicks;
+    otherTree.selfSampleCount += self.selfSampleCount;
+    otherTree.selfStackTraceCount += self.selfStackTraceCount;
+    otherTree.selfBlockedTicks += self.selfBlockedTicks;
 
     if (deepMerge) {
         [self eachChild:^(RPCallTree* child) {
@@ -328,10 +314,24 @@
     }
 }
 
+- (void) addTreeTo:(RPCallTree*)otherTree deep:(BOOL)deepMerge
+{
+    otherTree.selfSampleCount += self.selfSampleCount;
+    otherTree.selfStackTraceCount += self.selfStackTraceCount;
+    otherTree.selfBlockedTicks += self.selfBlockedTicks;
+    
+    if (deepMerge) {
+        [self eachChild:^(RPCallTree* child) {
+            RPCallTree* otherChild = [otherTree matchingSubTree:child create:YES];
+            [child addTreeTo:otherChild deep:YES];
+        }];
+    }
+}
+
 - (void) mergeRecursionsWithMaxRecursionHops:(NSInteger)maxHops
 {
-    RPCallTree* duplicateAncestor = nil;
-    RPCallTree* ancestor = self.parent;
+    RPCallTree* __unsafe_unretained duplicateAncestor = nil;
+    RPCallTree* __unsafe_unretained ancestor = self.parent;
     NSInteger hops = 0;
     
     while (hops<maxHops && ancestor && !duplicateAncestor) {
@@ -350,20 +350,23 @@
     } else {
         // no duplicate found in self ancestors. We can now proceed with children.
         NSArray* currentChildren = [self snapshotOfCurrentChildren];
-        for (RPCallTree* child in currentChildren) {
-            [child mergeRecursionsWithMaxRecursionHops:maxHops];
+        for (RPCallTree* __unsafe_unretained child in currentChildren) {
+            if (child.parent == self) [child mergeRecursionsWithMaxRecursionHops:maxHops];
         }
     }
 }
 
-- (RPCallTree *)callTreeByFlattenRecursionInSubTree:(RPCallTree*)subtree
+
+- (void) recursivelyMergeIdenticalCalls:(RPCallTree*)targetCall into:(RPCallTree*)rootDestination
 {
-    RPCallTree* result = [subtree copyWithParent:nil withRoot:nil];
-    
-    [result mergeRecursionsWithMaxRecursionHops:6];
-    
-    [result freeze];
-    return result;
+    if ([self isSameFrameAs:targetCall]) {
+        [self addTreeTo:rootDestination deep:YES];
+    } else {
+        for (RPCallTree* child in self.subTrees) {
+            [child recursivelyMergeIdenticalCalls:targetCall into:rootDestination];
+        }
+    }
 }
+
 
 @end

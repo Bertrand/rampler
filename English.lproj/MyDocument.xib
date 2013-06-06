@@ -476,7 +476,7 @@
 							<string key="NSFrame">{{20, 434}, {154, 17}}</string>
 							<reference key="NSSuperview" ref="568628114"/>
 							<reference key="NSWindow"/>
-							<reference key="NSNextKeyView" ref="740399430"/>
+							<reference key="NSNextKeyView"/>
 							<bool key="NSEnabled">YES</bool>
 							<object class="NSButtonCell" key="NSCell" id="26221491">
 								<int key="NSCellFlags">-1543503872</int>
@@ -484,29 +484,6 @@
 								<string key="NSContents">Merge down on function</string>
 								<reference key="NSSupport" ref="26"/>
 								<reference key="NSControlView" ref="604121045"/>
-								<int key="NSButtonFlags">-2038153216</int>
-								<int key="NSButtonFlags2">164</int>
-								<string key="NSAlternateContents"/>
-								<string key="NSKeyEquivalent"/>
-								<int key="NSPeriodicDelay">400</int>
-								<int key="NSPeriodicInterval">75</int>
-							</object>
-							<bool key="NSAllowsLogicalLayoutDirection">NO</bool>
-						</object>
-						<object class="NSButton" id="740399430">
-							<reference key="NSNextResponder" ref="568628114"/>
-							<int key="NSvFlags">268</int>
-							<string key="NSFrame">{{20, 410}, {154, 17}}</string>
-							<reference key="NSSuperview" ref="568628114"/>
-							<reference key="NSWindow"/>
-							<reference key="NSNextKeyView" ref="393000875"/>
-							<bool key="NSEnabled">YES</bool>
-							<object class="NSButtonCell" key="NSCell" id="328670107">
-								<int key="NSCellFlags">-1543503872</int>
-								<int key="NSCellFlags2">134348800</int>
-								<string key="NSContents">Merge up on function</string>
-								<reference key="NSSupport" ref="26"/>
-								<reference key="NSControlView" ref="740399430"/>
 								<int key="NSButtonFlags">-2038153216</int>
 								<int key="NSButtonFlags2">164</int>
 								<string key="NSAlternateContents"/>
@@ -781,7 +758,7 @@
 							<reference key="NSNextKeyView" ref="615412139"/>
 							<bool key="NSEnabled">YES</bool>
 							<object class="NSButtonCell" key="NSCell" id="991716951">
-								<int key="NSCellFlags">-1543503872</int>
+								<int key="NSCellFlags">-2080374784</int>
 								<int key="NSCellFlags2">134348800</int>
 								<string key="NSContents">flatten recursion</string>
 								<reference key="NSSupport" ref="26"/>
@@ -927,28 +904,12 @@
 					<int key="connectionID">100145</int>
 				</object>
 				<object class="IBConnectionRecord">
-					<object class="IBOutletConnection" key="connection">
-						<string key="label">focusUpFunctionButton</string>
-						<reference key="source" ref="512844837"/>
-						<reference key="destination" ref="740399430"/>
-					</object>
-					<int key="connectionID">100146</int>
-				</object>
-				<object class="IBConnectionRecord">
 					<object class="IBActionConnection" key="connection">
 						<string key="label">focusDownFunctionButtonAction:</string>
 						<reference key="source" ref="512844837"/>
 						<reference key="destination" ref="604121045"/>
 					</object>
 					<int key="connectionID">100147</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBActionConnection" key="connection">
-						<string key="label">focusUpFunctionButtonAction:</string>
-						<reference key="source" ref="512844837"/>
-						<reference key="destination" ref="740399430"/>
-					</object>
-					<int key="connectionID">100148</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBOutletConnection" key="connection">
@@ -1153,22 +1114,6 @@
 				<object class="IBConnectionRecord">
 					<object class="IBOutletConnection" key="connection">
 						<string key="label">nextKeyView</string>
-						<reference key="source" ref="604121045"/>
-						<reference key="destination" ref="740399430"/>
-					</object>
-					<int key="connectionID">100158</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBOutletConnection" key="connection">
-						<string key="label">nextKeyView</string>
-						<reference key="source" ref="740399430"/>
-						<reference key="destination" ref="146707959"/>
-					</object>
-					<int key="connectionID">100159</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBOutletConnection" key="connection">
-						<string key="label">nextKeyView</string>
 						<reference key="source" ref="605487873"/>
 						<reference key="destination" ref="393000875"/>
 					</object>
@@ -1234,7 +1179,6 @@
 							<reference ref="605487873"/>
 							<reference ref="581930014"/>
 							<reference ref="604121045"/>
-							<reference ref="740399430"/>
 							<reference ref="393000875"/>
 							<reference ref="683722997"/>
 						</array>
@@ -1432,19 +1376,6 @@
 						<int key="objectID">100140</int>
 						<reference key="object" ref="26221491"/>
 						<reference key="parent" ref="604121045"/>
-					</object>
-					<object class="IBObjectRecord">
-						<int key="objectID">100143</int>
-						<reference key="object" ref="740399430"/>
-						<array class="NSMutableArray" key="children">
-							<reference ref="328670107"/>
-						</array>
-						<reference key="parent" ref="568628114"/>
-					</object>
-					<object class="IBObjectRecord">
-						<int key="objectID">100144</int>
-						<reference key="object" ref="328670107"/>
-						<reference key="parent" ref="740399430"/>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">100165</int>
@@ -1666,8 +1597,6 @@
 				<string key="100136.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="100139.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="100140.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
-				<string key="100143.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
-				<string key="100144.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="100165.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="100166.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="100167.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
@@ -1728,20 +1657,14 @@
 					<string key="className">RPTraceDocument</string>
 					<string key="superclassName">NSDocument</string>
 					<dictionary class="NSMutableDictionary" key="actions">
-						<string key="exportSample:">id</string>
 						<string key="flattenRecursionButtonAction:">id</string>
 						<string key="focusButtonAction:">id</string>
 						<string key="focusDownFunctionButtonAction:">id</string>
-						<string key="focusUpFunctionButtonAction:">id</string>
 						<string key="followHottestSubpath:">id</string>
+						<string key="outlineDoubleAction:">id</string>
 						<string key="unfocusButtonAction:">id</string>
-						<string key="urlTextFieldClicked:">id</string>
 					</dictionary>
 					<dictionary class="NSMutableDictionary" key="actionInfosByName">
-						<object class="IBActionInfo" key="exportSample:">
-							<string key="name">exportSample:</string>
-							<string key="candidateClassName">id</string>
-						</object>
 						<object class="IBActionInfo" key="flattenRecursionButtonAction:">
 							<string key="name">flattenRecursionButtonAction:</string>
 							<string key="candidateClassName">id</string>
@@ -1754,20 +1677,16 @@
 							<string key="name">focusDownFunctionButtonAction:</string>
 							<string key="candidateClassName">id</string>
 						</object>
-						<object class="IBActionInfo" key="focusUpFunctionButtonAction:">
-							<string key="name">focusUpFunctionButtonAction:</string>
-							<string key="candidateClassName">id</string>
-						</object>
 						<object class="IBActionInfo" key="followHottestSubpath:">
 							<string key="name">followHottestSubpath:</string>
 							<string key="candidateClassName">id</string>
 						</object>
-						<object class="IBActionInfo" key="unfocusButtonAction:">
-							<string key="name">unfocusButtonAction:</string>
+						<object class="IBActionInfo" key="outlineDoubleAction:">
+							<string key="name">outlineDoubleAction:</string>
 							<string key="candidateClassName">id</string>
 						</object>
-						<object class="IBActionInfo" key="urlTextFieldClicked:">
-							<string key="name">urlTextFieldClicked:</string>
+						<object class="IBActionInfo" key="unfocusButtonAction:">
+							<string key="name">unfocusButtonAction:</string>
 							<string key="candidateClassName">id</string>
 						</object>
 					</dictionary>

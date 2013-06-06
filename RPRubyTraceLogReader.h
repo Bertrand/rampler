@@ -9,6 +9,7 @@
 #import "RPStackFrame.h"
 #import "RPLogReader.h"
 
+@class RPSampleSession;
 
 @interface RPRubyTraceLogReader : NSObject<RPLogReader> {
     // declare those vars so they can be mutable internally
@@ -34,9 +35,12 @@
 
 @property (nonatomic) NSError* parseError;
 
+
 - (id) initWithData:(NSData*)data;
 
 - (BOOL) readData;
 - (RPStackFrame*) parseLine:(NSString*)line;
+
+- (RPSampleSession*)sampleSession;
 
 @end

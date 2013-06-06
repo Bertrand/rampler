@@ -7,6 +7,7 @@
 
 #import "RPRubyTraceLogReader.h"
 #import "RPCallTree.h"
+#import "RPSampleSession.h"
 #import "RPStackTrace.h"
 
 
@@ -218,6 +219,7 @@ NSInteger RPRubyTraceParseError = -1;
             PARSE_ASSERT(curLine, @"unexpected end of file while reading stack trace", NO);
             RPStackFrame* parsedLine  = [self parseLine:curLine];
             if (!parsedLine) return NO;
+            parsedLine.isLeaf = (i == stackDepth-1);
             [stackLines addObject:parsedLine];
         }
         stackTrace.frames = stackLines;
@@ -270,13 +272,14 @@ NSInteger RPRubyTraceParseError = -1;
     return _functionsIndex[index-1];
 }
 
-- (RPCallTree*)callTree
+- (RPSampleSession*)sampleSession
 {
-	RPCallTree* callTree;
+	RPSampleSession* session;
 	int totalSampleCount = 0;
 	
-	callTree = [[RPCallTree alloc] init];
-	callTree.thread = 0; //self.currentLine.threadId;
+	session = [[RPSampleSession alloc] init];
+	session.thread = 0; //self.currentLine.threadId;
+
 	for (RPStackTrace *stackTrace in self.stacks) {
 		RPCallTree *callTreeFrame;
 		RPStackFrame *frame;
@@ -284,34 +287,38 @@ NSInteger RPRubyTraceParseError = -1;
 		
 		stackTraceSampleCount = [stackTrace sampleCount];
 		totalSampleCount += stackTraceSampleCount;
-		callTree.sampleCount += stackTraceSampleCount;
         
-		callTreeFrame = callTree;
+		callTreeFrame = session;
 		for (frame in stackTrace.frames) {
+            
             NSString* filePath = [self filePathForIndex:frame.fileId];
             NSString* className = [self classnameForIndex:frame.classId];
             NSString* function = [self functionForIndex:frame.functionId];
             NSString* symbolId = [NSString stringWithFormat:@"%ld", frame.functionId];
             
+
             callTreeFrame = [callTreeFrame subTreeForFunctionId:frame.functionId classId:frame.classId create:YES];
-//			if (callTreeFrame.symbol !=  nil && ![callTreeFrame.symbol isEqualToString:frame.symbol]) {
-//				//NSLog(@"++ %@ ++ %@ ++ %@", callTreeFrame.symbol, frame.symbol, symbolId);
-//			}
-			callTreeFrame.sampleCount += stackTraceSampleCount;
-			callTreeFrame.thread = frame.threadId;
-			callTreeFrame.stackDepth = frame.stackDepth;
+            
+            if (frame.isLeaf) {
+                // last frame. Assign all canonical durations to this one.
+                callTreeFrame.selfSampleCount += stackTrace.sampleCount;
+                callTreeFrame.selfBlockedTicks += stackTrace.sampleCount - 1;
+                callTreeFrame.selfStackTraceCount += 1;
+            }
+
 			callTreeFrame.startLine = frame.logLineNumber;
 			callTreeFrame.symbolId = symbolId;
 			callTreeFrame.symbol = function;
 			callTreeFrame.file = filePath;
 			callTreeFrame.ns = className;
-			callTreeFrame.totalTime += self.duration * stackTraceSampleCount / self.sampleCount;
-			callTreeFrame.blockedTicks += stackTraceSampleCount - 1;
 		}
 	}
-	[callTree freeze];
+    
+    session.sessionDurationPerTick = self.duration / totalSampleCount;
+    
+	[session freeze];
 	NSLog(@"totalSampleCount %d", totalSampleCount);
-	return callTree;
+	return session;
 }
 
 @end

@@ -19,6 +19,7 @@
 		0608139E15BA1B9000A9B152 /* NSDataAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 0608139D15BA1B9000A9B152 /* NSDataAdditions.m */; };
 		0628E06A1253952A00B9255B /* RPCallTree.m in Sources */ = {isa = PBXBuildFile; fileRef = 0628E0691253952A00B9255B /* RPCallTree.m */; };
 		0628E4BA125A361E00B9255B /* RPStackFrame.m in Sources */ = {isa = PBXBuildFile; fileRef = 0628E4B9125A361E00B9255B /* RPStackFrame.m */; };
+		0631FE851760A4EC00BC80A6 /* RPSampleSession.m in Sources */ = {isa = PBXBuildFile; fileRef = 0631FE841760A4EC00BC80A6 /* RPSampleSession.m */; };
 		0642459215B987C2007A72D0 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0642459115B987C2007A72D0 /* Security.framework */; };
 		0677F80E134F257900107A56 /* RPApplication.m in Sources */ = {isa = PBXBuildFile; fileRef = 0677F80D134F257900107A56 /* RPApplication.m */; };
 		06B8C0A81756AA0B00F3FB0D /* RPStackTrace.m in Sources */ = {isa = PBXBuildFile; fileRef = 06B8C0A71756AA0B00F3FB0D /* RPStackTrace.m */; };
@@ -58,6 +59,8 @@
 		0628E0691253952A00B9255B /* RPCallTree.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RPCallTree.m; sourceTree = "<group>"; };
 		0628E4B8125A361E00B9255B /* RPStackFrame.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RPStackFrame.h; sourceTree = "<group>"; };
 		0628E4B9125A361E00B9255B /* RPStackFrame.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RPStackFrame.m; sourceTree = "<group>"; };
+		0631FE831760A4EC00BC80A6 /* RPSampleSession.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RPSampleSession.h; sourceTree = "<group>"; };
+		0631FE841760A4EC00BC80A6 /* RPSampleSession.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RPSampleSession.m; sourceTree = "<group>"; };
 		0642459115B987C2007A72D0 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		0677F80C134F257900107A56 /* RPApplication.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RPApplication.h; sourceTree = "<group>"; };
 		0677F80D134F257900107A56 /* RPApplication.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RPApplication.m; sourceTree = "<group>"; };
@@ -209,6 +212,8 @@
 				0227EC07128ACDAE0053012B /* RPURLLoaderController.m */,
 				02883C53128F74FC008E0AA4 /* RPWebViewController.h */,
 				02883C54128F74FC008E0AA4 /* RPWebViewController.m */,
+				0631FE831760A4EC00BC80A6 /* RPSampleSession.h */,
+				0631FE841760A4EC00BC80A6 /* RPSampleSession.m */,
 			);
 			name = Classes;
 			sourceTree = "<group>";
@@ -331,6 +336,7 @@
 				06C6901F15BFDAE2001692CF /* NSStringAdditions.m in Sources */,
 				06C6902315BFE07A001692CF /* RPKeychainWrapper.m in Sources */,
 				06B8C0A81756AA0B00F3FB0D /* RPStackTrace.m in Sources */,
+				0631FE851760A4EC00BC80A6 /* RPSampleSession.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

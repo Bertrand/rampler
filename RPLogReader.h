@@ -8,6 +8,8 @@
 
 #import <Foundation/Foundation.h>
 
+@class RPSampleSession;
+
 @protocol RPLogReader <NSObject>
 
 - (double)interval;
@@ -20,6 +22,6 @@
 - (NSDate *)startDate;
 - (double)duration;
 
-- (RPCallTree*)callTree;
+- (RPSampleSession*)sampleSession;
 
 @end

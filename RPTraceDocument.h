@@ -8,13 +8,11 @@
 
 #import <Cocoa/Cocoa.h>
 
-@class RPCallTree, RPOutlineView;
+@class RPSampleSession, RPCallTree, RPOutlineView;
 
 
 @interface RPTraceDocument : NSDocument <NSMenuDelegate>
 {	
-	IBOutlet NSNumberFormatter* __weak percentFormatter;
-	IBOutlet RPOutlineView* __weak mainOutlineView;
     IBOutlet NSButton* unfocusButton;
     IBOutlet NSButton* focusButton;
     IBOutlet NSButton* focusDownFunctionButton;
@@ -30,16 +28,14 @@
 	IBOutlet NSTextField* stackCountTextField;
 	IBOutlet NSTextField* versionTextField;
 	
-	BOOL displayTimeUnitAsPercentOfTotal;
     BOOL hideInsignificantCalls;
     
 	NSMutableArray *columnInfo;
 	BOOL updatingColumns;
-    RPTraceDocument *mainDocument;
 }
 
-@property (nonatomic, readonly) RPCallTree* root;
-@property (nonatomic, readonly) RPCallTree* displayRoot;
+@property (nonatomic, readonly) RPSampleSession* root;
+@property (nonatomic, readonly) RPSampleSession* displayRoot;
 @property (nonatomic, weak) NSNumberFormatter* percentFormatter;
 @property (nonatomic, readonly, weak) RPOutlineView* mainOutlineView;;
 @property (nonatomic, assign) BOOL displayTimeUnitAsPercentOfTotal;
@@ -55,10 +51,6 @@
 - (IBAction)focusButtonAction:(id)sender;
 - (IBAction)followHottestSubpath:(id)sender;
 - (IBAction)focusDownFunctionButtonAction:(id)sender;
-- (IBAction)focusUpFunctionButtonAction:(id)sender;
 - (IBAction)flattenRecursionButtonAction:(id)sender;
-- (IBAction)urlTextFieldClicked:(id)sender;
-- (IBAction)exportSample:(id)sender;
 - (void)updateTimeFormatter;
-- (void)exportAsSampleToFile:(NSURL*)url;
 @end

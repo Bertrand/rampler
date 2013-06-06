@@ -23,6 +23,7 @@
 @property (nonatomic, readwrite, assign) NSInteger	classId;
 @property (nonatomic, readwrite, assign) NSInteger	functionId;
 @property (nonatomic, readwrite, assign) NSInteger	fileId;
+@property (nonatomic, readwrite, assign) BOOL       isLeaf;
 
 //
 

@@ -8,6 +8,7 @@
 
 #import "RPTraceDocument.h"
 #import "RPCallTree.h"
+#import "RPSampleSession.h"
 #import "RPRubyTraceLogReader.h"
 #import "RPOutlineView.h"
 #import "RPTableHeaderView.h"
@@ -16,8 +17,8 @@
 
 @interface RPTraceDocument()
 
-@property (nonatomic) RPCallTree* root;
-@property (nonatomic) RPCallTree* displayRoot;
+@property (nonatomic) RPSampleSession* root;
+@property (nonatomic) RPSampleSession* displayRoot;
 @property (nonatomic, weak) RPOutlineView* mainOutlineView;;
 @property (nonatomic) RPTraceDocument *mainDocument;
 @property (nonatomic) NSString *version;
@@ -29,13 +30,6 @@
 
 
 @implementation RPTraceDocument
-
-@synthesize root;
-@synthesize percentFormatter;
-@synthesize displayTimeUnitAsPercentOfTotal;
-@synthesize mainOutlineView;
-@synthesize mainDocument;
-@synthesize secretKey;
 
 + (NSArray *)defaultOutlineColumnList
 {
@@ -49,7 +43,6 @@
 			[NSMutableDictionary dictionaryWithObjectsAndKeys:@"Tick count", @"title", @"tickCount", @"identifier", @52.0f, @"width", @NO, @"enabled", nil],
 			[NSMutableDictionary dictionaryWithObjectsAndKeys:@"Blocked ticks", @"title", @"blockedTicks", @"identifier", @52.0f, @"width", @YES, @"enabled", nil],
 			[NSMutableDictionary dictionaryWithObjectsAndKeys:@"File", @"title", @"file", @"identifier", @232.0f, @"width", @NO, @"enabled", nil],
-//			[NSMutableDictionary dictionaryWithObjectsAndKeys:@"Name Space", @"title", @"namespace", @"identifier", [NSNumber numberWithFloat:232], @"width", [NSNumber numberWithBool:YES], @"enabled", nil],
 			[NSMutableDictionary dictionaryWithObjectsAndKeys:@"Symbol", @"title", @"symbol", @"identifier", @300.0f, @"width", @YES, @"enabled", nil],
 			nil
 		];
@@ -86,7 +79,7 @@
 	self.root = nil;
 }
 
-- (void)loadWithMainDocument:(RPTraceDocument *)document root:(RPCallTree *)newRoot version:(NSString *)newVersion
+- (void)loadWithMainDocument:(RPTraceDocument *)document root:(RPSampleSession *)newRoot version:(NSString *)newVersion
 {
 	self.mainDocument = document;
 	self.root = newRoot;
@@ -114,13 +107,13 @@
 	return nil;
 }
 
-- (void)setRoot:(RPCallTree *)newRoot
+- (void)setRoot:(RPSampleSession *)newRoot
 {
-	if (newRoot != root) {
-		root = newRoot;
+	if (newRoot != _root) {
+		_root = newRoot;
 		self.displayRoot = newRoot;
-		if (root) {
-	    	[mainOutlineView reloadData];
+		if (_root) {
+	    	[_mainOutlineView reloadData];
 		}
 	}
 }
@@ -133,7 +126,7 @@
 		reader = [[RPRubyTraceLogReader alloc] initWithData:data];
 	}
     
-	self.root = [reader callTree];
+	self.root = [reader sampleSession];
 	self.version = [reader version];
 	self.url = [reader url];
 	self.interval = [reader interval];
@@ -149,7 +142,7 @@
 
 - (void) setDisplayTimeUnitAsPercentOfTotal:(BOOL)percentEnabled
 {
-	displayTimeUnitAsPercentOfTotal = percentEnabled;
+	_displayTimeUnitAsPercentOfTotal = percentEnabled;
 	[self updateTimeFormatter];
 	[self.mainOutlineView reloadData];
 	[self.mainOutlineView setNeedsDisplay];
@@ -163,18 +156,18 @@
 	for (NSDictionary *info in columnInfo) {
 		NSTableColumn *column;
 		
-		column = [mainOutlineView tableColumnWithIdentifier:info[@"identifier"]];
+		column = [_mainOutlineView tableColumnWithIdentifier:info[@"identifier"]];
 		if (!column && [info[@"enabled"] boolValue]) {
 			column = [[NSTableColumn alloc] initWithIdentifier:info[@"identifier"]];
-			[mainOutlineView addTableColumn:column];
+			[_mainOutlineView addTableColumn:column];
 		}
 		if ([info[@"enabled"] boolValue]) {
-			[mainOutlineView moveColumn:[mainOutlineView columnWithIdentifier:info[@"identifier"]] toColumn:ii];
+			[_mainOutlineView moveColumn:[_mainOutlineView columnWithIdentifier:info[@"identifier"]] toColumn:ii];
 			[column setWidth:[info[@"width"] floatValue]];
 			[[column headerCell] setTitle:info[@"title"]];
 			ii++;
 		} else if (column) {
-			[mainOutlineView removeTableColumn:column];
+			[_mainOutlineView removeTableColumn:column];
 		}
 	}
 	updatingColumns = NO;
@@ -204,8 +197,8 @@
 	[stackCountTextField setStringValue:[NSString stringWithFormat:@"%ld", self.root.stackTraceCount]];
 	[versionTextField setStringValue:self.version];
 	[urlTextField setStringValue:self.url ? [self.url absoluteString] : @""];
-    mainOutlineView.columnIdentifierForCopy = @"file";
-	[mainOutlineView setDoubleAction:@selector(outlineDoubleAction:)];
+    _mainOutlineView.columnIdentifierForCopy = @"file";
+	[_mainOutlineView setDoubleAction:@selector(outlineDoubleAction:)];
 	
 	columnInfo = [[[self class] defaultOutlineColumnList] mutableCopy];
 	[self _updateOutlineViewColumn];
@@ -213,7 +206,7 @@
 
 - (void)updateTimeFormatter
 {
-	if (displayTimeUnitAsPercentOfTotal) {
+	if (_displayTimeUnitAsPercentOfTotal) {
 		self.percentFormatter.multiplier = @(100.0 / self.displayRoot.totalTime);
 		self.percentFormatter.positiveSuffix = @"%";
 		self.percentFormatter.maximumFractionDigits = 2;
@@ -279,79 +272,20 @@
     for (RPCallTree *node in parents) {
         NSInteger row;
         
-        [mainOutlineView expandItem:node];
-        row = [mainOutlineView rowForItem:node];
+        [_mainOutlineView expandItem:node];
+        row = [_mainOutlineView rowForItem:node];
         if (row != -1) {
             selectedRow = row;
         }
     }
     if (selectedRow != -1) {
-        [mainOutlineView selectRowIndexes:[NSIndexSet indexSetWithIndex:selectedRow] byExtendingSelection:NO];
+        [_mainOutlineView selectRowIndexes:[NSIndexSet indexSetWithIndex:selectedRow] byExtendingSelection:NO];
     } else {
-        [mainOutlineView selectRowIndexes:[NSIndexSet indexSet] byExtendingSelection:NO];
+        [_mainOutlineView selectRowIndexes:[NSIndexSet indexSet] byExtendingSelection:NO];
     }
 }
 
-- (void)exportAsSampleToFile:(NSURL*)url
-{
-    NSError* e = nil;
-    NSMutableString* buffer = [NSMutableString new];
-    [buffer appendString:
-     @"Sampling process 83676 for 3 seconds with 1 millisecond of run time between samples\n"
-     "Sampling completed, processing symbols...\n"
-     "Analysis of sampling Google Chrome (pid 83676) every 1 millisecond\n"
-     "            Process:         Google Chrome [83676]\n"
-     "               Path:            /MesApps/Google Chrome.app/Contents/MacOS/Google Chrome\n"
-     "Load Address:    0xc1000\n"
-     "         Identifier:      com.google.Chrome\n"
-     "            Version:         20.0.1132.57 (1132.57)\n"
-     "Code Type:       X86 (Native)\n"
-     "Parent Process:  launchd [67629]\n"
-     "\n"
-     "Date/Time:       2012-07-27 10:56:26.981 +0200\n"
-     "OS Version:      Mac OS X 10.7.4 (11E53)\n"
-     "Report Version:  7\n"
-     "\n"
-     "Call graph:\n"
-     
-     ];
-    [self.root _exportToBuffer:buffer indendation:0];
-    [buffer appendString:
-     @"\n"
-     "Total number in stack (recursive counted multiple, when >=5):\n"
-     "27       _pthread_start  (in libsystem_c.dylib) + 335  [0x9b299ed9]\n"
-     "27       thread_start  (in libsystem_c.dylib) + 34  [0x9b29d6de]\n"
-     "25       ChromeMain  (in Google Chrome Framework) + 9926026  [0xa3ef0a]\n"
-     "18       ChromeMain  (in Google Chrome Framework) + 9793532  [0xa1e97c]\n"
-     "17       ChromeMain  (in Google Chrome Framework) + 9938289  [0xa41ef1]\n"
-     "17       ChromeMain  (in Google Chrome Framework) + 9938423  [0xa41f77]\n"
-     "17       __psynch_cvwait  (in libsystem_kernel.dylib) + 0  [0x905eb834]\n"
-     "17       _pthread_cond_wait  (in libsystem_c.dylib) + 827  [0x9b29de21]\n"
-     "10       ChromeMain  (in Google Chrome Framework) + 9905240  [0xa39dd8]\n"
-     "10       pthread_cond_wait$UNIX2003  (in libsystem_c.dylib) + 71  [0x9b24e42c]\n"
-     "8       ChromeMain  (in Google Chrome Framework) + 9806428  [0xa21bdc]\n"
-     "8       ChromeMain  (in Google Chrome Framework) + 9906182  [0xa3a186]\n"
-     "8       ChromeMain  (in Google Chrome Framework) + 9906443  [0xa3a28b]\n"
-     "8       mach_msg  (in libsystem_kernel.dylib) + 70  [0x905e91f6]\n"
-     "8       mach_msg_trap  (in libsystem_kernel.dylib) + 0  [0x905e9c18]\n"
-     "7       ChromeMain  (in Google Chrome Framework) + 9905463  [0xa39eb7]\n"
-     "7       pthread_cond_timedwait$UNIX2003  (in libsystem_c.dylib) + 70  [0x9b24e3e0]\n"
-     "\n"
-     "Sort by top of stack, same collapsed (when >= 5):\n"
-     "__psynch_cvwait  (in libsystem_kernel.dylib)        44523\n"
-     "mach_msg_trap  (in libsystem_kernel.dylib)        18326\n"
-     "kevent  (in libsystem_kernel.dylib)        10473\n"
-     "__read  (in libsystem_kernel.dylib)        2619\n"
-     "\n"
-     "Binary Images:\n"
-     "0xc1000 -    0xc1ff7 +com.google.Chrome (20.0.1132.57 - 1132.57) <681AF636-91E2-6FB2-E17F-BF8BBE452DE4> /MesApps/Google Chrome.app/Contents/MacOS/Google Chrome\n"
-     "0xc5000 -  0x365af03 +com.google.Chrome.framework (20.0.1132.57 - 1132.57) <64A660CA-DD92-DEB3-8CA4-3C069EACB0E7> /MesApps/Google Chrome.app/Contents/Versions/20.0.1132.57/Google Chrome Framework.framework/Google Chrome Framework\n"
-     "\n"
-     ];
-    if (![buffer writeToURL:url atomically:YES encoding:NSUTF8StringEncoding error:&e]){
-        [[NSAlert alertWithError:e] runModal];
-    }
-}
+
 #pragma mark -
 #pragma mark IBAction
 
@@ -362,12 +296,32 @@
 	if (selectedRow != -1) {
 		RPCallTree* selectedNode = [self.mainOutlineView itemAtRow:selectedRow];
 		
-		if ([mainOutlineView isItemExpanded:selectedNode]) {
-			[mainOutlineView collapseItem:selectedNode];
+		if ([_mainOutlineView isItemExpanded:selectedNode]) {
+			[_mainOutlineView collapseItem:selectedNode];
 		} else {
 			[self followHottestSubpath:nil];
 		}
 	}
+}
+
+- (void)openDerivedDocumentWithRoot:(RPSampleSession*)newRoot
+{
+    RPTraceDocument* newDocument = [[RPTraceDocument alloc] initWithType:@"Ruby trace" error:nil];
+
+    if (self.mainDocument) {
+        [newDocument loadWithMainDocument:self.mainDocument root:newRoot version:self.version];
+    } else {
+        [newDocument loadWithMainDocument:self root:newRoot version:self.version];
+    }
+    [[NSDocumentController sharedDocumentController] addDocument:newDocument];
+    [newDocument makeWindowControllers];
+    [newDocument showWindows];
+}
+
+- (RPCallTree*)selectedCallTree
+{
+  	NSInteger selectedRow = [_mainOutlineView selectedRow];
+    return selectedRow == -1 ? nil : [_mainOutlineView itemAtRow:selectedRow];
 }
 
 - (IBAction)followHottestSubpath:(id)sender
@@ -388,106 +342,46 @@
 	    RPCallTree *callTreeToSelect = nil;
 		NSInteger selectedRow;
     	
-	    selectedRow = [mainOutlineView selectedRow];
+	    selectedRow = [_mainOutlineView selectedRow];
         if (selectedRow == -1) {
 	        callTreeToSelect = self.displayRoot;
         } else {
-        	callTreeToSelect = [mainOutlineView itemAtRow:selectedRow];
+        	callTreeToSelect = [_mainOutlineView itemAtRow:selectedRow];
         }
     	self.displayRoot = self.root;
 		[self updateTimeFormatter];
-	    [mainOutlineView reloadData];
+	    [_mainOutlineView reloadData];
 	    [self expandAndSelectCallTree:callTreeToSelect];
     }
 }
 
 - (IBAction)focusButtonAction:(id)sender
 {
-	NSInteger selectedRow;
-    RPCallTree *callTreeToSelect = nil;
+    RPCallTree *callTreeToSelect = [self selectedCallTree];
+    if (!callTreeToSelect) return;
     
-    selectedRow = [mainOutlineView selectedRow];
-    if (selectedRow != -1) {
-    	self.displayRoot = [mainOutlineView itemAtRow:selectedRow];
-    } else {
-        callTreeToSelect = self.displayRoot;
-    	self.displayRoot = self.root;
-    }
+    self.displayRoot = [self.root sessionByFocussingOnSubTree:callTreeToSelect];
+    
 	[self updateTimeFormatter];
-    [mainOutlineView reloadData];
-    [self expandAndSelectCallTree:callTreeToSelect];
+    [_mainOutlineView reloadData];
+    [self expandAndSelectCallTree:self.displayRoot];
 }
-
-- (void)openDerivedDocumentWithRoot:(RPCallTree*)newRoot
-{
-    RPTraceDocument* newDocument = [[RPTraceDocument alloc] initWithType:@"Ruby trace" error:nil];
-
-    if (self.mainDocument) {
-        [newDocument loadWithMainDocument:self.mainDocument root:newRoot version:self.version];
-    } else {
-        [newDocument loadWithMainDocument:self root:newRoot version:self.version];
-    }
-    [[NSDocumentController sharedDocumentController] addDocument:newDocument];
-    [newDocument makeWindowControllers];
-    [newDocument showWindows];
-}
-
-- (RPCallTree*)selectedCallTree
-{
-  	NSInteger selectedRow = [mainOutlineView selectedRow];
-    return selectedRow == -1 ? nil : [mainOutlineView itemAtRow:selectedRow];
-}
-
-- (void)openFocusOnSelectionWithTopDown:(BOOL)topDown
-{
-    RPCallTree* selectedTree = [self selectedCallTree];
-    if (!selectedTree) return;
-    
-    RPCallTree *newRoot;
-    if (topDown) {
-        newRoot = [self.root topDownCallTreeForSymbolId:selectedTree.symbolId];
-    } else {
-        newRoot = [self.root bottomUpCallTreeForSymbolId:selectedTree.symbolId];
-    }
-    [self openDerivedDocumentWithRoot:newRoot];
-
-}
-
 
 - (IBAction)focusDownFunctionButtonAction:(id)sender;
 {
-	[self openFocusOnSelectionWithTopDown:YES];
+    RPCallTree* selectedCall = [self selectedCallTree];
+    if (!selectedCall) return;
+    
+    self.displayRoot = [self.root callTreeByMergingDownIdenticalCalls:selectedCall];
+	[self updateTimeFormatter];
+    [_mainOutlineView reloadData];
 }
 
-- (IBAction)focusUpFunctionButtonAction:(id)sender
-{
-	[self openFocusOnSelectionWithTopDown:NO];
-}
-
-- (IBAction)urlTextFieldClicked:(id)sender
-{
-	NSLog(@"test");
-}
 
 - (IBAction)flattenRecursionButtonAction:(id)sender
 {
-    RPCallTree* selectedTree = [self selectedCallTree];
-    if (!selectedTree) return;
-    
-    RPCallTree* flattenedTree = [self.root callTreeByFlattenRecursionInSubTree:selectedTree];
+    RPSampleSession* flattenedTree = [self.root sessionByFlatteningRecursion];
     [self openDerivedDocumentWithRoot:flattenedTree];
-}
-
-- (IBAction)exportSample:(id)sender
-{
-    NSSavePanel* panel = [NSSavePanel savePanel];
-    [panel beginWithCompletionHandler:^(NSInteger click){
-        if (NSFileHandlingPanelOKButton == click) {
-            NSURL* url = [panel URL];
-            NSLog(@"got url = %@", url);
-            [self exportAsSampleToFile:url];
-        }
-    }];
 }
 
 
@@ -498,7 +392,6 @@
 {
     if (!item) {
         item = self.displayRoot;
-        return item;
     }
     return [self childrenForCallTree:item][index];
 }
@@ -512,7 +405,6 @@
 {
     if (!item) {
     	item = self.displayRoot;
-        return 1;
     }
 	return [[self childrenForCallTree:item] count];
 }
@@ -543,13 +435,12 @@
 
 - (void)outlineViewSelectionDidChange:(NSNotification *)notification;
 {
-    BOOL allowSelectionDependentActions = [mainOutlineView selectedRow] != -1;
+    BOOL allowSelectionDependentActions = [_mainOutlineView selectedRow] != -1;
     
     [focusButton setEnabled:allowSelectionDependentActions];
     [focusDownFunctionButton setEnabled:allowSelectionDependentActions];
     [focusUpFunctionButton setEnabled:allowSelectionDependentActions];
     [hottestSubpathButton setEnabled:allowSelectionDependentActions];
-    [flattenRecursionButton setEnabled:allowSelectionDependentActions];
     
     [unfocusButton setEnabled:self.root != self.displayRoot];
 }
@@ -563,7 +454,7 @@
 	    selectedNode = [self.mainOutlineView itemAtRow:selectedRow];
     }
 	hideInsignificantCalls = value;
-    [mainOutlineView reloadData];
+    [_mainOutlineView reloadData];
     if (selectedNode) {
     	[self expandAndSelectCallTree:selectedNode];
     }
