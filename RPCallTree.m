@@ -133,8 +133,8 @@
     self.sampleCount = self.selfSampleCount;
     self.stackTraceCount = self.selfStackTraceCount;
     self.blockedTicks = self.selfBlockedTicks;
-	
-	self.children = [self.subTrees sortedArrayUsingDescriptors:[self.class defaultSortDescriptor]];
+    self.children = self.subTrees;
+
 	for (RPCallTree* child in self.children) {
 		[child freeze];
 
@@ -142,6 +142,8 @@
         self.stackTraceCount += child.stackTraceCount;
         self.blockedTicks += child.blockedTicks;
 	}
+    self.children = [self.children sortedArrayUsingDescriptors:[self.class defaultSortDescriptor]];
+
 }
 
 
